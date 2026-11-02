@@ -1,11 +1,11 @@
 {
   "name": "autoharness",
   "version": "0.5.3",
-  "description": "Per-symbol maintenance optimizer for an agent's skill layer \u2014 learns skills from real runs and keeps them by adherence in use, not by an offline eval score.",
+  "description": "KitHarness, a fork of AutoHarness: durable skill changes, task-scoped recall, and a measured three-arm study. The plugin id stays autoharness.",
   "author": {
-    "name": "Tigerless Labs"
+    "name": "KitHarness fork of Tigerless Labs"
   },
-  "homepage": "https://github.com/tigerless-labs/autoharness",
+  "homepage": "https://github.com/jiapy97/KitHarness",
   "license": "MIT",
   "mcpServers": {
     "stage_skill": {

@@ -121,4 +121,4 @@ PYTHONPATH=src python3.12 tools/evaluate_tasks.py smoke --output /tmp/kitharness
 
 [参考演练报告](../evals/tasks/smoke-report.json)标记为 `fixture_smoke`，使用人工构造的完整正确、部分错误和超时结果，三组采用相同构造。
 smoke 会读取预期答案来生成夹具，**不能把它的任何成功率写成项目效果**；耗时和模型费用保持未知，不伪造模型数据。
-该报告只验证准备、记录、评分、配对和缺报处理的流程；真实模型实验尚未运行。
+该报告只验证准备、记录、评分、配对和缺报处理的流程。随后的一轮真实模型实验见 [live-study-results.md](live-study-results.md)；smoke 本身仍然不是模型效果。

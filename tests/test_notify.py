@@ -107,7 +107,7 @@ def test_desktop_uses_notify_send_on_linux_when_present(monkeypatch):
     monkeypatch.setattr(notify.shutil, "which", lambda b: "/usr/bin/notify-send")
     calls = _capture(monkeypatch)
     notify.send({"run_id": "r", "verdicts": ROWS})
-    assert calls[0][0][:2] == ["notify-send", "autoharness"]
+    assert calls[0][0][:2] == ["notify-send", "KitHarness"]
 
 
 def test_desktop_silent_without_a_notifier(monkeypatch):

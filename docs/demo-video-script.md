@@ -1,5 +1,7 @@
 # AutoHarness 录屏演示 —— 完整流程 + 脚本
 
+> 这是上游 AutoHarness 的录屏工作稿，不是 KitHarness 的验收演示。下面的市场命令会装到 `tigerless-labs/autoharness`。本分支的安装入口是 `autoharness@kitharness`，不调用模型的复现步骤见 [demo.md](demo.md)。
+
 > 目标视频结构:安装 → 一次真实纠正被学成 skill → skill 被原地维护 → 新会话第一次就对。
 > 所有命令和 prompt **照英文原样输入**;台词为中文口播稿(括号内为英文版)。
 > 目录约定:`$DEMO = ~/autoharness-walkthrough-demo`,演示仓库 = `$DEMO/repo`(镜头里唯一出现的目录)。

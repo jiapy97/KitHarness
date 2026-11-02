@@ -25,7 +25,7 @@ import sys
 from autoharness import config
 from autoharness.lib import redact
 
-_TITLE = "autoharness"
+_TITLE = "KitHarness"
 _MAX_NAME = 64
 _MAX_LISTED = 5  # names per summary bucket before "+N more": a notification body, not a report
 

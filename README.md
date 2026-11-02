@@ -1,54 +1,34 @@
-<h1 align="center">AutoHarness</h1>
-<p align="center"><strong>Building the self-learning layer next-gen agents will ship with</strong></p>
+<h1 align="center">KitHarness</h1>
+<p align="center"><strong>A fork of AutoHarness with durable skill changes, task-scoped recall, and a measured three-arm study</strong></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Ftigerless-labs%2Fautoharness%2Fmain%2F.claude-plugin%2Fplugin.json&query=%24.version&label=release&prefix=v&color=brightgreen" alt="release" /> <img src="https://img.shields.io/badge/python-3.11%2B-blue.svg" alt="python" /> <img src="https://img.shields.io/badge/platform-Linux%20%7C%20macOS-lightgrey.svg" alt="platform" /> <img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="license MIT" /> <a href="https://repositoryradar.dev/repo/tigerless-labs/autoharness"><img src="https://repositoryradar.dev/badge/tigerless-labs/autoharness.svg" alt="Featured on Repository Radar" /></a>
+  <img src="https://img.shields.io/badge/python-3.11%2B-blue.svg" alt="python" /> <img src="https://img.shields.io/badge/platform-Linux%20%7C%20macOS-lightgrey.svg" alt="platform" /> <img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="license MIT" />
 </p>
 
-**With autoharness, we're building the self-learning layer next-gen agents will ship with, learning skills from real work.**
-Today it runs on Claude Code: it **learns** skills from your real sessions, **merges** same-scenario ones instead of stacking near-duplicates, **updates** them in use,
-and **prunes** any that stop getting used — so the layer **stays clean on its own**, **touching only
-the skills it wrote itself**.
+**KitHarness** is a fork of [tigerless-labs/autoharness](https://github.com/tigerless-labs/autoharness) at `f2de058`. It still runs on Claude Code: it **learns** skills from real sessions, **merges** same-scenario ones instead of stacking near-duplicates, **updates** them in use, and **prunes** skills it wrote itself. The reflector, curator, deterministic promoter, and lifecycle retirement are unchanged in role.
 
-Same model, different harness — 42% → 78% on CORE-Bench ([HAL](https://arxiv.org/abs/2510.11977)).
-The harness does much of the work (swyx's **Big Model vs Big Harness**), yet it's still rebuilt by
-hand every model generation. autoharness bets one slice of it — the skill layer — can maintain itself.
+The MIT license and upstream copyright stay in [LICENSE](LICENSE). This fork's own notes are in [项目说明](docs/project.md). A local demo that does not call a model is in [演示](docs/demo.md).
+
+Upstream marketing figures, including any CORE-Bench delta, are not KitHarness results and are not repeated here.
 
 | | |
 |---|---|
 | **Learns from real work** | Each episode is distilled into a skill from the session you were already having — no separate data-collection or replay loop. It fires on its own once a session has done enough work; `/learn` distills on demand when you want a lesson kept now. |
 | **Groups, doesn't just pile up** | A new episode doesn't always add a skill — the reflector compares it against what's there and folds same-scenario skills into one, so the layer consolidates by category instead of accreting near-duplicates. A fold records which skill absorbed which, so a merge is never mistaken for a death. |
 | **Offers skills for the current task** | Each submitted prompt selects related agent-created skills with explainable lexical ranking and an injection budget. A grouped startup catalog remains available as a compatibility mode. The host's native recall stays untouched. |
-| **Validated in use, not on a benchmark** | A skill survives by being adhered to in later turns (loads over the requests it was available for), not a held-out score. No oracle on the active path, and no tokens spent on a dedicated eval. |
+| **Kept by use; measured apart** | A skill still survives by later adherence, not by a held-out score on the live path. Separately, this fork measured synthetic recall and one live three-arm study. That study did not show an accuracy gain. |
 | **Only its own skills** | Touches only the skills it generated through this plugin — everything else, whether you wrote it or installed it, is left completely alone. |
 | **Evidence kept for later** | Every create/update logs its scenario and decision to a per-skill ledger — the raw material to build a benchmark from real usage if you ever want one. |
 
-## KitHarness development
+## What this fork adds
 
-This checkout is the starting point for KitHarness. See the [iteration plan](docs/PLAN.md)
-for progress and verification results. Model-proposed `delete` operations require a non-empty
-`absorbed_into` naming a live, agent-created merge target; naming the target only in `reason`
-is insufficient. Older queued deletes without that field are rejected, leaving the source skill
-in place. Pure retirement remains the lifecycle manager's responsibility.
+Progress and the acceptance record are in the [iteration plan](docs/PLAN.md). The three changes below are the ones with checks in this repo. They are not a claim that learning raised task accuracy.
 
-Within a claimed batch, content changes run in their original order before any merge archives.
-If any content change to a merge target is rejected, its dependent archives are rejected too,
-even when another change to the same target succeeds. A skill scheduled for archive in the
-same batch cannot receive another merge; split chains into separate, verified batches instead.
-Run-account verdicts retain proposal order. Dependency rejections carry `merge_dependency`
-and `depends_on`, a list of zero-based positions in that batch's verdicts. These checks apply
-to normal drains and abandoned-queue recovery; standalone `promote()` has no batch context.
-They do not establish semantic completeness of a merge or provide cross-batch transactions.
-
-Queued operations now have durable identities and result receipts, so account retries do not
-repeat successful edits. Validated skill changes save full-directory pre-images and a write-ahead
-journal: incomplete changes are recovered before the next managed operation, while committed
-changes reuse their outcome. An operator CLI can list versions and restore a complete directory,
-including an undo version for the rollback itself. See [reliable skill evolution](docs/reliable-skill-evolution.md)
-for commands, crash behavior, storage limits, and the boundary around unlocked host reads.
-
-New provenance is redacted before queue and ledger persistence, and the staging tool rejects
-recognized credentials in skill bodies and subfiles before writing a queue record.
+| | Change | What was measured |
+|---|---|---|
+| **Durable edits** | A model delete must name a live merge target. A failed update in the same batch keeps the source skill. Landed edits have an operation id, a full-directory snapshot, and a rollback. | Recovery and rollback behavior is covered by the non-live suite. Commands: [reliable skill evolution](docs/reliable-skill-evolution.md). |
+| **Task recall** | The current prompt selects agent-created skills with explainable lexical ranking and a byte budget. Chinese trigger text is accepted, and the full description is no longer cut to the 60-character preview. | On 18 synthetic queries and 20 skills, task ranking recalled 15/16 relevant skills (MRR 0.938) at a mean 171.6 injected bytes. The full catalog recalled 16/16 at 2093 bytes. This is not a live task-success result. See [task recall](docs/task-recall.md). |
+| **A recorded study** | The same 6 tasks and 24 cases can be prepared, scored, and rechecked without executing candidate code. One live run compared no learning, upstream `f2de058`, and KitHarness `b232f74`. | All three arms were 6/6 tasks and 24/24 cases with `deepseek-flash`, one repeat. Mean plugin injection was 582 bytes upstream and 506 bytes here. That does not show an accuracy gain or a general token saving. See [live study](docs/live-study-results.md). |
 
 ## Install
 
@@ -59,9 +39,16 @@ bare `python3`, so an older interpreter earlier on your PATH (Xcode ships 3.9.6 
 
 Type these in the Claude Code input box.
 
+The product name is KitHarness. Two ids are intentional and must be used together:
+
+- Plugin id: `autoharness`, from `.claude-plugin/plugin.json`. Hooks, the MCP tool name, and the state directory (`.claude/autoharness`) keep this id so existing state and the recorded study stay valid.
+- Marketplace id: `kitharness`, from `.claude-plugin/marketplace.json`. This is the catalog for this fork, not the upstream marketplace.
+
+Install from this checkout. Do not install `tigerless-labs/autoharness` if you want these changes. If `autoharness@autoharness` is already installed, remove it first; both copies use the same plugin id.
+
 ```
-/plugin marketplace add tigerless-labs/autoharness
-/plugin install autoharness@autoharness
+/plugin marketplace add /absolute/path/to/KitHarness
+/plugin install autoharness@kitharness
 ```
 
 Then run `/reload-plugins` (or restart Claude Code).
@@ -76,7 +63,7 @@ proposal-and-validation chain the background pass uses.
 **MCP server naming.** `.claude-plugin/plugin.json` registers the server as `stage_skill`, but agent
 definitions reference the fully-qualified name `mcp__plugin_autoharness_stage_skill__stage_skill`.
 This translation is automatic: the plugin runtime constructs the qualified name from the plugin
-name (`autoharness`) and the server key. Outside the plugin context (e.g., registering the server
+id (`autoharness`, not the marketplace id) and the server key. Outside the plugin context (e.g., registering the server
 by hand), the tool would be available as `mcp__stage_skill__stage_skill` — but the agent allowlists
 still reference the plugin-namespaced form. Always install as a plugin to match both names. The
 server is declared in the manifest, not in a root `.mcp.json`, because the plugin root is the repo
@@ -93,8 +80,8 @@ Update from a terminal — refresh the catalog by marketplace name, then update 
 **full `plugin@marketplace` id**, then restart:
 
 ```
-claude plugin marketplace update autoharness
-claude plugin update autoharness@autoharness
+claude plugin marketplace update kitharness
+claude plugin update autoharness@kitharness
 ```
 
 Then **restart Claude Code** to apply — a version bump is a fresh cached copy, not a hot reload.
@@ -103,15 +90,15 @@ The refresh is first on purpose: without it, `update` checks a stale local catal
 `already at the latest version` when a newer release actually shipped.
 
 Third-party marketplaces have auto-update **off** by default. To make future releases hands-off,
-enable it once: `/plugin` → **Marketplaces** → **autoharness** → **Enable auto-update**. The
+enable it once: `/plugin` → **Marketplaces** → **kitharness** → **Enable auto-update**. The
 installed copy is cached by the `version` in `plugin.json`; a release reaches users only when that
 field is bumped.
 
 ### Uninstall
 
 ```
-claude plugin uninstall autoharness@autoharness
-claude plugin marketplace remove autoharness
+claude plugin uninstall autoharness@kitharness
+claude plugin marketplace remove kitharness
 ```
 
 Uninstalling only stops it from running — the skills it landed and its own state live **outside** the
@@ -315,10 +302,9 @@ All three arms passed the 24 synthetic cases; this small run does not demonstrat
 ## How it compares
 
 A self-learning skill layer can be validated against a held-out benchmark, or against its own use.
-autoharness takes the second — cheaper, and it works on a live host doing open-ended work where no
-benchmark exists.
+The live path still takes the second. The synthetic recall check and the one live study are separate measurements; they are not a held-out accuracy win.
 
-| | Grow unbounded | Offline-gated self-edit<br/>([Self-Harness](https://arxiv.org/abs/2606.09498)) | Timer + daemon<br/>([hermes-agent](https://github.com/NousResearch/hermes-agent)) | autoharness |
+| | Grow unbounded | Offline-gated self-edit<br/>([Self-Harness](https://arxiv.org/abs/2606.09498)) | Timer + daemon<br/>([hermes-agent](https://github.com/NousResearch/hermes-agent)) | KitHarness |
 | --- | --- | --- | --- | --- |
 | Bounds the skill layer | No | Yes | Yes | Yes |
 | Validation signal | None | Held-out benchmark score | Wall-clock inactivity | Adherence in use |
@@ -330,18 +316,19 @@ benchmark exists.
 ## Acknowledgements
 
 [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) — studying its
-auto-skill-creation and memory-consolidation design helped sharpen autoharness's adherence-based,
-daemon-free take.
+auto-skill-creation and memory-consolidation design helped sharpen the upstream adherence-based,
+daemon-free take. That design is inherited here.
 
 [AI Coding Tools (Tigerless Labs Workflow 2026)](https://www.youtube.com/watch?v=TM6tGpug1Hc) —
-a third-party walkthrough by the AI Insider channel; not ours, and not reviewed by us.
+a third-party walkthrough of the upstream project; not ours, and not reviewed by us.
 
-Built by Tigerless Labs.
+Upstream AutoHarness is by Tigerless Labs: <https://github.com/tigerless-labs/autoharness>.
+This fork is <https://github.com/jiapy97/KitHarness>. Its changes are listed in [docs/PLAN.md](docs/PLAN.md).
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE). The upstream copyright notice in that file is unchanged.
 
 ---
 
-© Tigerless · [tigerless.ai](https://tigerless.ai) · [tigerless.com](https://www.tigerless.com)
+Fork of AutoHarness · upstream [tigerless-labs/autoharness](https://github.com/tigerless-labs/autoharness)
