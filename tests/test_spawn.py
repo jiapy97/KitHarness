@@ -166,6 +166,7 @@ def test_run_curator_lands_merge_and_archives_narrow(tmp_path):
                                   "reason": "fold widget-delta into the widgets umbrella",
                                   "evidence": "widgets [project] / widget-delta [project]"}, root)
         intent_queue.append(rid, {"action": "delete", "name": "widget-delta",
+                                  "absorbed_into": "widgets",
                                   "reason": "absorbed into widgets umbrella",
                                   "evidence": "widgets [project] / widget-delta [project]"}, root)
 
@@ -182,11 +183,14 @@ def test_run_curator_cannot_touch_native_skill(tmp_path):
     roots = _roots(tmp_path)
     root = roots["project"]
     skill_store.write_body("project", "native", GOOD.format(n="native", d="native"), root)  # no sidecar
+    skill_store.write_body("project", "umbrella", GOOD.format(n="umbrella", d="umbrella"), root)
+    sidecar.create("project", "umbrella", 0, root)
 
     def fake_curator(argv, env, bundle):
         from autoharness.lib import intent_queue
         intent_queue.append(env[config.RUN_ID_ENV],
                             {"action": "delete", "name": "native",
+                             "absorbed_into": "umbrella",
                              "reason": "tried to prune a native skill", "evidence": "native [project]"}, root)
 
     verdicts = spawn.run_curator("run-r", roots=roots, spec_path=config.FORMAT_SPEC, spawn_fn=fake_curator)
@@ -257,6 +261,7 @@ def _fake_curator_script(tmp_path):
         "              'new_string': 'body\\n## delta\\nabsorbed', 'reason': 'fold into umbrella',\n"
         "              'evidence': ev}, run_id=run_id, root=root)\n"
         "server.stage({'action': 'delete', 'name': 'widget-delta',\n"
+        "              'absorbed_into': 'widgets',\n"
         "              'reason': 'absorbed into widgets', 'evidence': ev}, run_id=run_id, root=root)\n"
         "sys.exit(0)\n"
     )

@@ -263,21 +263,25 @@ def test_delete_archives_and_ledgers(tmp_path):
     root = roots["project"]
     skill_store.write_body("project", "foo", GOOD_BODY, root)
     sidecar.create("project", "foo", 0, root)
-    intent = {"action": "delete", "name": "foo", "reason": "stale", "evidence": "led"}
+    _mk_agent(roots, "umbrella")
+    intent = {"action": "delete", "name": "foo", "reason": "merged", "evidence": "led",
+              "absorbed_into": "umbrella"}
     v = promoter.promote(intent, roots=roots)
     assert v["ok"]
     assert not skill_store.exists("project", "foo", root)        # moved out of live
     arch = layer.archive_dir("project", root) / "foo"
     assert arch.exists()                                          # archive retained
     entries = [json.loads(x) for x in (arch / ".ledger.jsonl").read_text().splitlines() if x.strip()]
-    assert entries[-1]["action"] == "delete"                     # retirement event survives with the archive
+    assert entries[-1]["action"] == "delete"                     # merge event survives with the archive
 
 
 def test_delete_user_skill_rejected(tmp_path):
     roots = _roots(tmp_path)
     root = roots["project"]
     skill_store.write_body("project", "foo", GOOD_BODY, root)  # no created_by
-    intent = {"action": "delete", "name": "foo", "reason": "r", "evidence": "e"}
+    _mk_agent(roots, "umbrella")
+    intent = {"action": "delete", "name": "foo", "reason": "r", "evidence": "e",
+              "absorbed_into": "umbrella"}
     v = promoter.promote(intent, roots=roots)
     assert not v["ok"] and "self_produced" in _families(v)
     assert skill_store.exists("project", "foo", root)  # untouched
@@ -490,12 +494,14 @@ def test_delete_materializes_evidence_and_archives_it(tmp_path):
     root = roots["project"]
     skill_store.write_body("project", "foo", GOOD_BODY, root)
     sidecar.create("project", "foo", 0, root)
+    _mk_agent(roots, "umbrella")
     v = promoter.promote({"action": "delete", "name": "foo",
-                          "reason": "stale", "evidence": "retire slice"}, roots=roots)
+                          "reason": "merged", "evidence": "merge slice",
+                          "absorbed_into": "umbrella"}, roots=roots)
     assert v["ok"], v["findings"]
     arch = layer.archive_dir("project", root) / "foo"
     slices = list((arch / "references").glob("evidence-*.md"))
-    assert len(slices) == 1 and slices[0].read_text() == "retire slice"  # provenance rides the mv
+    assert len(slices) == 1 and slices[0].read_text() == "merge slice"  # provenance rides the mv
     entries = [json.loads(x) for x in (arch / ".ledger.jsonl").read_text().splitlines() if x.strip()]
     assert entries[-1]["evidence"].startswith("references/evidence-")
 

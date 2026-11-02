@@ -23,6 +23,15 @@ hand every model generation. autoharness bets one slice of it — the skill laye
 | **Only its own skills** | Touches only the skills it generated through this plugin — everything else, whether you wrote it or installed it, is left completely alone. |
 | **Evidence kept for later** | Every create/update logs its scenario and decision to a per-skill ledger — the raw material to build a benchmark from real usage if you ever want one. |
 
+## KitHarness development
+
+This checkout is the starting point for KitHarness. See the [iteration plan](docs/PLAN.md)
+for progress and verification results. Model-proposed `delete` operations require a non-empty
+`absorbed_into` naming a live, agent-created merge target; naming the target only in `reason`
+is insufficient. Older queued deletes without that field are rejected, leaving the source skill
+in place. Pure retirement remains the lifecycle manager's responsibility. This initial guard
+does not provide batch dependency checks or a full transaction across skill files.
+
 ## Install
 
 **Requires Python 3.11+ as the `python3` on your PATH** — autoharness runs entirely as Python

@@ -101,15 +101,17 @@ def test_patch_rejects_body(tmp_path):
 
 
 def test_delete_appends_no_body(tmp_path):
-    v = server.stage({"action": "delete", "name": "foo", "reason": "r", "evidence": "e"},
+    v = server.stage({"action": "delete", "name": "foo", "reason": "r", "evidence": "e",
+                      "absorbed_into": "umbrella"},
                      run_id=RUN, root=tmp_path)
     assert v["ok"], v["errors"]
-    assert _queue(tmp_path)[0] == {"action": "delete", "name": "foo", "reason": "r", "evidence": "e"}
+    assert _queue(tmp_path)[0] == {"action": "delete", "name": "foo", "reason": "r", "evidence": "e",
+                                 "absorbed_into": "umbrella"}
 
 
 def test_delete_rejects_body(tmp_path):
     v = server.stage({"action": "delete", "name": "foo", "body": GOOD_BODY,
-                      "reason": "r", "evidence": "e"}, run_id=RUN, root=tmp_path)
+                      "reason": "r", "evidence": "e", "absorbed_into": "umbrella"}, run_id=RUN, root=tmp_path)
     assert not v["ok"] and "schema" in _errs(v)
 
 
@@ -139,8 +141,9 @@ def test_unsafe_run_id_surfaced_not_crash(tmp_path):
 
 def test_stage_never_writes_skill_tree_any_action(tmp_path):
     server.stage(_params(), run_id=RUN, root=tmp_path)
-    server.stage({"action": "delete", "name": "foo", "reason": "r", "evidence": "e"},
-                 run_id=RUN, root=tmp_path)
+    result = server.stage({"action": "delete", "name": "foo", "reason": "r", "evidence": "e",
+                           "absorbed_into": "umbrella"}, run_id=RUN, root=tmp_path)
+    assert result["ok"]
     assert not layer.skills_dir("project", tmp_path).exists()
     assert not layer.archive_dir("project", tmp_path).exists()
 
@@ -178,7 +181,7 @@ def test_files_on_patch_rejected(tmp_path):
 
 def test_files_on_delete_rejected(tmp_path):
     v = server.stage({"action": "delete", "name": "foo", "reason": "r", "evidence": "e",
-                      "files": GOOD_FILES}, run_id=RUN, root=tmp_path)
+                      "files": GOOD_FILES, "absorbed_into": "umbrella"}, run_id=RUN, root=tmp_path)
     assert not v["ok"] and "schema" in _errs(v)
 
 

@@ -10,6 +10,8 @@ validating admission (validate in-flight, persist only on allow) + POSIX atomic-
   (same name across layers errors, missing is rejected).
 - Validation: reuse lib.validate's six classes, fed {**intent, level: resolved layer} (the global gate
   applies to update too).
+- Model-proposed delete is merge-only: absorbed_into must name a live self-produced skill.
+  Lifecycle retirement uses skill_store.archive independently of model proposals.
 - Land (after pass): land intent subfiles first (paths re-gated; every landing parent resolved and
   escape-checked BEFORE any write — a pre-planted symlink rejects with zero writes) → materialize the
   evidence slice into references/evidence-<hash>.md (redacted again at this egress, content-addressed →
@@ -213,7 +215,10 @@ def _promote_resolved(intent, action, name, level, roots, repo_name):
         target_created = sidecar.is_agent_created(level, name, root)
 
     absorbed = intent.get("absorbed_into")
-    if action == "delete" and absorbed:
+    if action == "delete":
+        if not isinstance(absorbed, str) or not absorbed.strip():
+            return _reject(action, level,
+                           [("absorbed_into", "delete requires a non-empty merge target; pure retirement is managed by lifecycle")])
         # fail-closed absorption claim (direction D, Hermes trust-chain tier 1): the umbrella must be
         # a live, self-produced skill distinct from the target — a hallucinated name rejects the intent.
         try:

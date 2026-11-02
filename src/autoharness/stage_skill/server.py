@@ -51,8 +51,8 @@ TOOL_SCHEMA = {
                  "description": "remove_file only: relative path of the subfile to remove; the live "
                                 "SKILL.md must no longer reference it (patch the pointer out first)"},
         "absorbed_into": {"type": "string",
-                          "description": "delete only: the umbrella skill that absorbed this one's "
-                                         "content (empty/omitted = pure retirement). The promoter "
+                          "description": "required for delete: the umbrella skill that absorbed this one's "
+                                         "content. Pure retirement is managed by lifecycle, not this tool. The promoter "
                                          "verifies the umbrella actually exists — a hallucinated "
                                          "name rejects the whole intent"},
     },
@@ -120,6 +120,8 @@ def _schema_errors(params):
         if has_body or has_delta or has_files:
             errors.append(("schema", "remove_file takes only path, no body/delta/files"))
     elif action == "delete":
+        if not _nonempty(params, "absorbed_into"):
+            errors.append(("schema", "delete requires non-empty absorbed_into; pure retirement is managed by lifecycle"))
         if has_body or has_delta:
             errors.append(("schema", "delete takes no body/delta"))
         if has_files:
