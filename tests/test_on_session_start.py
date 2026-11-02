@@ -243,7 +243,7 @@ def test_summary_line_silent_when_all_categorized(tmp_path):
 
 
 def test_index_marks_a_truncated_description_as_cut(tmp_path):
-    # legacy descriptions predate the budget gate; the reader must be able to tell a line was severed
+    # Descriptions may exceed the preview budget; the reader must be able to tell a line was severed
     # rather than read a fragment as the whole trigger
     roots = _roots(tmp_path)
     long = "Use when auditing " + "x" * config.INDEX_DESC_MAX_CHARS

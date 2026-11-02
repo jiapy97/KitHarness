@@ -123,15 +123,14 @@ def test_trigger_patch_exempt():
     assert "trigger" not in _families(v)
 
 
-def test_description_over_the_index_budget_rejected():
-    # hermes' rule, adopted whole: the description IS the index line, so a new skill that cannot fit
-    # the budget is refused rather than silently truncated to a fragment. All 58 of its own bundled
-    # skills fit; ours were running 385 chars and getting cut mid-clause.
+def test_description_over_the_index_budget_accepted_within_full_limit():
+    # Index display and full authoring text have independent limits.
     from autoharness import config
     long = "Diagnoses responsive CSS bugs in embedded iframe widgets on mobile. Use when a widget clips."
     assert len(long) > config.INDEX_DESC_MAX_CHARS
+    assert len(long) < config.SKILL_DESC_MAX_CHARS
     v = validate.validate(GOOD_INTENT, _desc_body(long))
-    assert not v["ok"] and "description" in _families(v)
+    assert v["ok"]
 
 
 def test_description_inside_the_budget_passes():
@@ -142,8 +141,9 @@ def test_description_inside_the_budget_passes():
 
 
 def test_description_budget_exempts_patch():
-    # same carve-out hermes makes on its edit/patch path: a legacy over-long description stays fixable
-    long = "x" * 300 + " use when auditing."
+    # A legacy description beyond the full limit must remain repairable by patch.
+    from autoharness import config
+    long = "x" * config.SKILL_DESC_MAX_CHARS + " use when auditing."
     intent = {"action": "patch", "name": "foo", "reason": "r", "evidence": "e"}
     v = validate.validate(intent, _desc_body(long), target_is_agent_created=True)
     assert "description" not in _families(v)

@@ -33,13 +33,19 @@ _PY_REF = re.compile(r"(?<![\w./:-])[\w./-]+\.py")
 _SUBFILE_REF = re.compile(r"(?<![A-Za-z0-9_./-])(?:\./)?(?:{})/[A-Za-z0-9._/-]+".format("|".join(layer.SUBFILE_DIRS)))
 _MODIFY = ("update", "patch", "remove_file", "delete")
 # description-as-trigger proxy: a firing description names WHEN to use it ("use when …") or lists a
-# literal phrase the user would type (quoted). A bare topic-label has neither and never fires.
+# literal phrase the user would type (quoted). This is a syntax heuristic, not a relevance score.
 _QUOTED_PHRASE = re.compile(r'"[^"]+"|\'[^\']+\'|`[^`]+`')
 _WHEN = re.compile(r"(?i)\bwhen")
+_CHINESE_WHEN = re.compile(r"(?:当|當|在|需要)[^。！？!?；;]+[时時]")
+_CHINESE_USAGE = re.compile(r"(?:适用于|適用於|用于|用於|用来|用來|遇到)\s*[^，,。！？!?；;\s]")
+_CHINESE_QUOTE = re.compile(r"“[^”]+”|‘[^’]+’|「[^」]+」|『[^』]+』")
 
 
 def _has_cue(text):
-    return bool(_WHEN.search(text) or _QUOTED_PHRASE.search(text))
+    flat = " ".join(text.split())
+    return bool(_WHEN.search(flat) or _QUOTED_PHRASE.search(flat)
+                or _CHINESE_WHEN.search(flat) or _CHINESE_USAGE.search(flat)
+                or any(match.group()[1:-1].strip() for match in _CHINESE_QUOTE.finditer(flat)))
 
 
 def _block_scalar(lines, start, parent_indent, header):
@@ -132,19 +138,15 @@ def _body_lines(body):
 
 
 def description_findings(desc):
-    """Description is the host's recall key. Over-length truncates; a cue-less label never fires."""
+    """Validate full authoring text independently of its compact display preview."""
     findings = []
-    if len(desc) > config.INDEX_DESC_MAX_CHARS:
-        findings.append(("description",
-                         f"description is {len(desc)} chars — a new skill must fit the "
-                         f"{config.INDEX_DESC_MAX_CHARS}-char index budget (one sentence, trigger "
-                         f"first, ends with a period). The session-start index truncates longer "
-                         f"descriptions to {config.INDEX_DESC_MAX_CHARS - 3} chars + '...', which "
-                         "destroys the routing signal. Move the detail into the body"))
+    if len(desc) > config.SKILL_DESC_MAX_CHARS:
+        return [("description", f"description is {len(desc)} chars (maximum {config.SKILL_DESC_MAX_CHARS}); "
+                 "shorten the full trigger description; INDEX_DESC_MAX_CHARS only controls its display preview")]
     if not _has_cue(desc):
         findings.append(("trigger",
-                         "description has no trigger cue: add 'use when …' and/or a literal phrase "
-                         "the user would type — an abstract topic-label never fires"))
+                         "description has no trigger cue: use 'use when …', '当…时', '用于…', "
+                         "or a quoted user phrase such as “检查日期边界”"))
     return findings
 
 

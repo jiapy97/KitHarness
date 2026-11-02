@@ -14,7 +14,7 @@ YAML frontmatter that parses, carrying at least:
 
 - `name` — short identifier for the skill.
 - `description` — the trigger; see "Description is the trigger" below. This is what the host matches
-  recall on, so a cue-less label never fires and is rejected.
+  recall on. Write a concrete usage condition or quoted user phrase; a bare topic label is rejected.
 
 - `category` — one lowercase word or hyphenated phrase naming the class of work the skill serves
   (`testing`, `git-workflow`, `deployment`). An open set: **pick one already visible in the injected
@@ -24,41 +24,42 @@ YAML frontmatter that parses, carrying at least:
 
   Enforcement is deliberately asymmetric with the description gate: an illegal value (anything but a
   single safe segment of letters, digits, `.`, `_`, `-`) is **rejected**, but a *missing* one is
-  **allowed through** and noted in the run account — a cue-less description can never be recalled at
-  all, while a missing category only files the skill badly. The curator backfills what lands without
-  one.
+  **allowed through** and noted in the run account. A missing category only files the skill badly;
+  the curator backfills what lands without one.
 
-## Description is the trigger — one sentence, inside the index budget
+## Description is the trigger — full text and display preview
 
-The description is the routing signal, and it **is the index line**: the session-start index renders
-one line per skill from it, and the host preloads it too. So it has exactly one job — make the right
-task match — and one budget: `INDEX_DESC_MAX_CHARS`. Over budget, the index truncates to
-`INDEX_DESC_MAX_CHARS - 3` + `...` and the routing signal dies mid-clause, so a `create`/`update`
-over it is **rejected**. `patch` is exempt, so a legacy over-long description stays fixable.
+`description` is the full routing signal, stored unchanged in SKILL.md and used in the authoring
+comparison index. Its create/update limit is `SKILL_DESC_MAX_CHARS` (default 1024 characters).
+The session-start index displays a separate, derived prefix preview, limited by
+`INDEX_DESC_MAX_CHARS` (default 60). This is a **display only** budget: a longer full description
+is accepted when it fits its own limit. There is no separate summary field to maintain.
+Truncated previews end in `...`; whitespace is flattened. They do not rewrite the stored description
+and are not semantic summaries. A legacy over-limit or cue-less description remains repairable
+through `patch`, preserving the existing exemption on that action.
 
-Write **one sentence, trigger first, ending in a period**. Name the concrete objects and the words a
-user would actually type — the nouns, verbs, tools and file types. Detail goes in the body; the
-description is not a summary of the skill, it is the thing that decides whether the skill is even
-read.
+Prefer **one sentence, trigger first**, ending in a period or `。`. This is writing advice, not a
+sentence-count gate. Name the concrete objects and the words a user would actually type — the
+nouns, verbs, tools and file types. Keep reusable instructions and detailed procedures in the body.
+Putting important cues early makes the short preview more useful, but the preview length never
+restricts the full description's authoring limit.
 
-Good, all inside the budget:
+English, Chinese, and mixed descriptions are supported. Examples:
 
-    Use when a fetch fails: 403/429, paywall, WAF, bot wall.
-    Search arXiv papers by keyword, author, category, or ID.
-    4-phase root cause debugging: understand bugs before fixing.
+    Use when a fetch fails with 403/429 or a bot wall.
+    Fires on 'audit this repo'.
+    当需要检查日期格式和跨时区边界时使用。
+    用于验证分页接口的重试与超时处理。
+    用户提出“检查日期边界”则使用。
 
-Bad: `Manages project operations` — a topic label with no trigger at all; nothing a user types
-matches it.
+Chinese cue forms include `当…时` / `在…时` / `需要…时`, `遇到…`, `用于…`, `适用于…`,
+and `用来…`, with common traditional variants. Chinese quote pairs `“…”`, `‘…’`, `「…」`,
+and `『…』` can contain literal user phrases, alongside existing ASCII quotes and backticks.
+Bare labels such as `Manages project operations` or `日期格式工具` still fail the cue check.
 
-Bad: a 300-char paragraph opening with a verb phrase and reaching `Use when …` only halfway through.
-It reads well in a file and is a fragment in the index, which is where recall actually happens.
-
-One sentence straining to cover five distinct triggers → split into separate skills, each with its
-own.
-
-**Enforced (a floor, not the standard):** the promoter rejects a `create`/`update` whose description
-exceeds `INDEX_DESC_MAX_CHARS`, or carries no trigger cue at all — neither a `when` clause nor a
-quoted phrase. Passing is not the same as routing well; that judgment stays the author's.
+**Enforced (a floor, not the standard):** MCP and the promoter share the full-description limit
+and cue heuristic for `create`/`update`. Passing this syntax check does not prove relevance or
+recall quality, and it does not recognize every natural-language expression.
 
 ## Structure (#416)
 

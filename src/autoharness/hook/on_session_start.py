@@ -41,12 +41,12 @@ def _sanitize(text, limit):
     return " ".join(str(text).split())[:limit]  # line-based surface: newlines are forgery, collapse them
 
 
-def _fit(text, limit):
-    """Truncate with an ellipsis so a cut line reads as cut (hermes' index does the same).
+def _description_preview(text, limit):
+    """Return a bounded, single-line prefix, marking cuts without changing stored text.
 
-    New descriptions are held inside the budget by the promoter, so this only fires on skills that
-    predate the gate — and there it matters that the reader can tell the line was severed rather
-    than take a fragment for the whole trigger."""
+    This is a display preview, not a semantic summary. Full descriptions have an
+    independent authoring limit and remain available in SKILL.md and authoring indexes.
+    """
     flat = " ".join(str(text).split())
     return flat if len(flat) <= limit else flat[:limit - 3] + "..."
 
@@ -78,9 +78,9 @@ def recall_index(roots, cwd=None):
             if not sidecar.is_agent_created(lyr, name, root):
                 continue
             fm = validate._frontmatter(path.read_text(encoding="utf-8")) or {}
-            desc = _fit(fm.get("description") or "(no description)", config.INDEX_DESC_MAX_CHARS)
+            preview = _description_preview(fm.get("description") or "(no description)", config.INDEX_DESC_MAX_CHARS)
             cat = _sanitize(fm.get("category") or "general", 64) or "general"
-            groups.setdefault(cat, []).append(f"- {_sanitize(name, 64)} [{lyr}]: {desc}")
+            groups.setdefault(cat, []).append(f"- {_sanitize(name, 64)} [{lyr}]: {preview}")
             has_project = has_project or lyr == layer.PROJECT
     if not groups:
         return None  # empty library -> zero injection

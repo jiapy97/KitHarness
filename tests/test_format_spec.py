@@ -46,10 +46,8 @@ def test_format_spec_states_category_field():
     assert "**rejected**" in text and "**allowed through**" in text
 
 
-def test_format_spec_states_the_one_sentence_rule():
+def test_format_spec_recommends_trigger_first_writing():
     text = config.FORMAT_SPEC.read_text()
-    # adopted from hermes: the description IS the index line, so the rule is one sentence inside the
-    # budget with the trigger first — the old four-element recipe produced 385-char descriptions that
-    # the index cut mid-clause (E11, first real replay)
+    # Prefer concise trigger-first wording; full text has an independent authoring limit.
     for token in ["one sentence", "trigger first", "user would actually type", "body"]:
         assert token in text

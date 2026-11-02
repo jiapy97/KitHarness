@@ -368,12 +368,12 @@ def test_absorbed_into_rejected_on_non_delete(tmp_path):
         assert not r["ok"], action
 
 
-def test_stage_rejects_an_over_budget_description_on_the_spot(tmp_path):
+def test_stage_rejects_a_description_over_the_full_limit_on_the_spot(tmp_path):
     # the promoter runs after the child session exits, so a gate enforced only there is one the model
     # can never learn from. hermes validates inside skill_manage and hands the error back; the same
     # rule has to hold at our tool boundary or every over-long description is silently lost.
-    long = "Use when an iframe widget's rounded corners look wrong against the host container " * 2
-    assert len(long) > config.INDEX_DESC_MAX_CHARS
+    long = "Use when " + "x" * config.SKILL_DESC_MAX_CHARS
+    assert len(long) > config.SKILL_DESC_MAX_CHARS
     body = f"---\nname: foo\ndescription: {long}\n---\n# Foo\nRule.\n"
     out = server.stage({"action": "create", "name": "foo", "level": "project", "body": body,
                         "reason": "r", "evidence": "e"}, run_id="rb1", root=tmp_path)

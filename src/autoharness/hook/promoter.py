@@ -273,7 +273,7 @@ def _notes(action, body):
 
     A missing category only groups the skill badly (the index falls back to `general`), so refusing
     real content over it is out of proportion — the opposite call from the description gate, where a
-    cue-less description can never be recalled at all. It still has to reach the account, or the
+    cue-less description fails the authoring gate. It still has to reach the account, or the
     library drifts into one flat group with nobody noticing."""
     if action not in ("create", "update"):
         return []
