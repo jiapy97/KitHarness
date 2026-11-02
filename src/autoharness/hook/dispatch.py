@@ -47,6 +47,7 @@ from autoharness.hook import (  # noqa: E402
     on_session_start,
     on_skill_call,
     on_stop,
+    on_user_prompt,
     promoter,
 )
 from autoharness.lib import counters, layer, redact  # noqa: E402
@@ -144,6 +145,8 @@ def dispatch(event, *, roots=None, reflect=None, consolidate=None):
     try:
         if name == "SessionStart":
             return {"handled": name, "result": on_session_start.on_session_start(event, roots=roots)}
+        if name == "UserPromptSubmit":
+            return {"handled": name, "result": on_user_prompt.on_user_prompt(event, roots=roots)}
         if name == "Stop":
             if os.environ.get(config.CHILD_SESSION_ENV):
                 return {"handled": name, "result": {"triggered": False, "reason": "recursion_guard"}}
@@ -204,9 +207,9 @@ def _emit(verdict):
         }}))
         return
     result = verdict.get("result") or {}
-    if verdict.get("handled") == "SessionStart" and result.get("context"):
+    if verdict.get("handled") in ("SessionStart", "UserPromptSubmit") and result.get("context"):
         print(json.dumps({"hookSpecificOutput": {
-            "hookEventName": "SessionStart",
+            "hookEventName": verdict["handled"],
             "additionalContext": result["context"],
         }}))
         return

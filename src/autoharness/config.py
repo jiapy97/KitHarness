@@ -49,7 +49,7 @@ SKILL_BODY_MAX_LINES = _int_env("AUTOHARNESS_SKILL_BODY_MAX_LINES", 25, minimum=
 # Full trigger description: create/update authoring limit, independent of display previews.
 # Python string length counts Unicode code points, not UTF-8 bytes or model tokens.
 SKILL_DESC_MAX_CHARS = _int_env("AUTOHARNESS_SKILL_DESC_MAX_CHARS", 1024, minimum=1)
-# self-injected recall index (SessionStart additionalContext): per-line description truncation,
+# Injected recall index (UserPromptSubmit/task or SessionStart/catalog): per-line display preview,
 # mirroring Hermes's tier-0 index discipline — display only, never an authoring validation limit.
 INDEX_DESC_MAX_CHARS = _int_env("AUTOHARNESS_INDEX_DESC_MAX_CHARS", 60, minimum=4)
 # self-injection off switch: the index stops being emitted, everything else (lifecycle pass,
@@ -69,6 +69,14 @@ def _bool_env(name, default):
 
 INDEX_SUSPENDED = _bool_env("AUTOHARNESS_INDEX_SUSPENDED", False)
 DISABLE_GLOBAL = _bool_env("AUTOHARNESS_DISABLE_GLOBAL", False)
+
+# Task retrieval runs on UserPromptSubmit; catalog retains the SessionStart overview.
+RECALL_MODE = os.environ.get("AUTOHARNESS_RECALL_MODE", "task").strip().lower()
+if RECALL_MODE not in ("task", "catalog"):
+    warnings.warn("AUTOHARNESS_RECALL_MODE must be task or catalog; using task", stacklevel=1)
+    RECALL_MODE = "task"
+RECALL_MAX_BYTES = _int_env("AUTOHARNESS_RECALL_MAX_BYTES", 4096, minimum=0)
+RECALL_TOP_K = _int_env("AUTOHARNESS_RECALL_TOP_K", 5, minimum=1)
 
 
 def active_layers():

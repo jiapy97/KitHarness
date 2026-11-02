@@ -13,7 +13,6 @@ ponytail: GC of orphan session counts (residue from crashed sessions) needs a se
 import json
 import os
 import uuid
-from pathlib import Path
 
 from autoharness import config
 from autoharness.hook import recovery
@@ -21,77 +20,18 @@ from autoharness.lib import (
     counters,
     layer,
     lifecycle,
+    recall,
     sidecar,
     skill_store,
-    validate,
     versions,
 )
 
-# Recall self-injection (mng.md §召回面自持): the host's native description recall stays untouched;
-# this compact index of self-produced skills rides SessionStart additionalContext so "whether the
-# library is offered" is our own config, not host behavior. Grouped by frontmatter category
-# (open set, absent -> general), alphabetical within a group, layer-tagged per line.
-INDEX_HEADER = (
-    "Self-accumulated skills (autoharness-managed). When the task at hand matches a "
-    "description below, you MUST consider loading that skill before proceeding."
-)
 
-
-def _sanitize(text, limit):
-    return " ".join(str(text).split())[:limit]  # line-based surface: newlines are forgery, collapse them
-
-
-def _description_preview(text, limit):
-    """Return a bounded, single-line prefix, marking cuts without changing stored text.
-
-    This is a display preview, not a semantic summary. Full descriptions have an
-    independent authoring limit and remain available in SKILL.md and authoring indexes.
-    """
-    flat = " ".join(str(text).split())
-    return flat if len(flat) <= limit else flat[:limit - 3] + "..."
-
-
-def _read_hint(roots, cwd):
-    """A linked worktree's project layer is remapped to the main checkout (layer.default_root),
-    which the host does not scan for skills — so from a worktree session those skills are listed
-    here but the Skill tool cannot load them. Point the model at the files instead."""
-    if not cwd:
-        return None
-    skills = layer.skills_dir(layer.PROJECT, roots.get(layer.PROJECT)).resolve()
-    if Path(cwd).resolve().is_relative_to(skills.parent.parent):
-        return None
-    return (f"[project] skills live outside this checkout, so the Skill tool cannot load them: "
-            f"Read {skills}/<name>/SKILL.md instead.")
-
-
-def recall_index(roots, cwd=None):
+def recall_index(roots, cwd=None, *, max_bytes=None):
+    """Explicit catalog API; normal task mode injects matches at UserPromptSubmit."""
     if config.INDEX_SUSPENDED:
         return None
-    groups, has_project = {}, False
-    for lyr in config.active_layers():
-        root = roots.get(lyr)
-        skills = layer.skills_dir(lyr, root)
-        if not skills.exists():
-            continue
-        for path in skills.glob(f"*/{skill_store.SKILL_FILE}"):
-            name = path.parent.name
-            if not sidecar.is_agent_created(lyr, name, root):
-                continue
-            fm = validate._frontmatter(path.read_text(encoding="utf-8")) or {}
-            preview = _description_preview(fm.get("description") or "(no description)", config.INDEX_DESC_MAX_CHARS)
-            cat = _sanitize(fm.get("category") or "general", 64) or "general"
-            groups.setdefault(cat, []).append(f"- {_sanitize(name, 64)} [{lyr}]: {preview}")
-            has_project = has_project or lyr == layer.PROJECT
-    if not groups:
-        return None  # empty library -> zero injection
-    lines = [INDEX_HEADER, ""]
-    for cat in sorted(groups):
-        lines.append(f"## {cat}")
-        lines.extend(sorted(groups[cat]))
-    hint = _read_hint(roots, cwd) if has_project else None
-    if hint:
-        lines += ["", hint]
-    return "\n".join(lines)
+    return recall.retrieve(roots, mode="catalog", cwd=cwd, max_bytes=max_bytes)["context"]
 
 
 def last_run_summary(roots):
@@ -162,6 +102,11 @@ def on_session_start(event=None, *, roots=None):
         for name in names:
             skill_store.archive(lyr, name, root)
         archived[lyr] = names
-    parts = [last_run_summary(roots), recall_index(roots, (event or {}).get("cwd"))]  # index built after archiving
+    summary = last_run_summary(roots)
+    parts = [summary] if summary and len(summary.encode("utf-8")) <= config.RECALL_MAX_BYTES else []
+    if config.RECALL_MODE == "catalog":
+        remaining = max(0, config.RECALL_MAX_BYTES - len("\n\n".join(parts).encode("utf-8")) - (2 if parts else 0))
+        if remaining:
+            parts.append(recall_index(roots, (event or {}).get("cwd"), max_bytes=remaining))
     context = "\n\n".join(p for p in parts if p) or None
     return {"archived": archived, "context": context}

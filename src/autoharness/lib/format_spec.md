@@ -31,7 +31,7 @@ YAML frontmatter that parses, carrying at least:
 
 `description` is the full routing signal, stored unchanged in SKILL.md and used in the authoring
 comparison index. Its create/update limit is `SKILL_DESC_MAX_CHARS` (default 1024 characters).
-The session-start index displays a separate, derived prefix preview, limited by
+The injected recall index displays a separate, derived prefix preview, limited by
 `INDEX_DESC_MAX_CHARS` (default 60). This is a **display only** budget: a longer full description
 is accepted when it fits its own limit. There is no separate summary field to maintain.
 Truncated previews end in `...`; whitespace is flattened. They do not rewrite the stored description

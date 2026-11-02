@@ -18,7 +18,7 @@ hand every model generation. autoharness bets one slice of it — the skill laye
 |---|---|
 | **Learns from real work** | Each episode is distilled into a skill from the session you were already having — no separate data-collection or replay loop. It fires on its own once a session has done enough work; `/learn` distills on demand when you want a lesson kept now. |
 | **Groups, doesn't just pile up** | A new episode doesn't always add a skill — the reflector compares it against what's there and folds same-scenario skills into one, so the layer consolidates by category instead of accreting near-duplicates. A fold records which skill absorbed which, so a merge is never mistaken for a death. |
-| **Keeps its own library in view** | Every session opens with a grouped index of the skills it wrote, so recall doesn't depend on the host happening to surface them. The host's native recall is left exactly as it was; the index is added on top. |
+| **Offers skills for the current task** | Each submitted prompt selects related agent-created skills with explainable lexical ranking and an injection budget. A grouped startup catalog remains available as a compatibility mode. The host's native recall stays untouched. |
 | **Validated in use, not on a benchmark** | A skill survives by being adhered to in later turns (loads over the requests it was available for), not a held-out score. No oracle on the active path, and no tokens spent on a dedicated eval. |
 | **Only its own skills** | Touches only the skills it generated through this plugin — everything else, whether you wrote it or installed it, is left completely alone. |
 | **Evidence kept for later** | Every create/update logs its scenario and decision to a per-skill ledger — the raw material to build a benchmark from real usage if you ever want one. |
@@ -151,14 +151,19 @@ aging; they are not converted into historical tool activity.
 
 | Variable | Default | What it does |
 |---|---|---|
-| `AUTOHARNESS_INDEX_SUSPENDED` | `0` | Set to `1` to stop injecting the index entirely. Everything else keeps running — the lifecycle pass, the use/view counters, the last-run summary — so this is the switch for measuring what the index is actually worth, and for anyone unwilling to spend the context on it. |
-| `AUTOHARNESS_INDEX_DESC_MAX_CHARS` | `60` | Display-only prefix preview length in the session-start index; truncated previews end in `...`. It never limits or rewrites the full stored description. |
+| `AUTOHARNESS_INDEX_SUSPENDED` | `0` | Set to `1` to stop skill-index injection in both task and catalog modes. Lifecycle, use/view counters and last-run reporting continue. |
+| `AUTOHARNESS_RECALL_MODE` | `task` | Rank matching skills on `UserPromptSubmit`; `catalog` instead offers a bounded grouped directory at SessionStart. No query history is stored. |
+| `AUTOHARNESS_RECALL_MAX_BYTES` | `4096` | Maximum decoded UTF-8 bytes of this plugin's additional context per hook event, including headings and path hints. `0` suppresses context. This does not cap the whole conversation or host-native skill context. |
+| `AUTOHARNESS_RECALL_TOP_K` | `5` | Maximum selected skills per injection. Zero-overlap task queries inject none; entries that do not fit are skipped whole. |
+| `AUTOHARNESS_INDEX_DESC_MAX_CHARS` | `60` | Display-only prefix preview length in either recall mode; truncated previews end in `...`. Full descriptions remain available for matching and authoring. |
 | `AUTOHARNESS_SKILL_DESC_MAX_CHARS` | `1024` | Independent full-description authoring cap for create/update, in Unicode characters. Chinese/English trigger cues are accepted; legacy descriptions remain repairable by patch. |
 | `AUTOHARNESS_SKILL_BODY_MAX_LINES` | `25` | Altitude cap: a `SKILL.md` body over this many non-blank lines is rejected as a transcript rather than a rule. Backing detail belongs in the skill's `references/`. |
 
 Descriptions support Chinese conditions such as `当…时使用` and `用于…`, and quoted user phrases
 such as `“检查日期边界”`. Full text and display previews have separate limits; the preview is
 a shortened prefix, not a semantic summary. See [description authoring](docs/description-routing.md).
+Task ranking, explanations, token-estimation limits and the fixed synthetic comparison are documented
+in [task recall](docs/task-recall.md).
 
 **Lifecycle — what survives**
 
@@ -199,19 +204,21 @@ on captured windows and staged files are fixed constants, not env knobs.
 
 A learning pipeline runs beside the host. Skills are plain native files, recalled by the host's own
 name-and-description mechanism as if a human had written them — that path is left untouched. On top
-of it, each session opens with an index of the skills autoharness wrote, so whether its own library
-gets offered is a property of this plugin rather than a hope about host behavior.
+of it, task mode offers lexical matches when a prompt is submitted. Catalog mode offers a bounded
+directory at session start. Both use only agent-created skills and keep retrieval separate from use counts.
 
 <p align="center"><img src="docs/assets/pipeline.svg" alt="autoharness pipeline: host → CAP → REF → promoter → .claude/skills → host, with the curator feeding the promoter, IDX injecting the index at session start, and MNG and LED beside" width="760" /></p>
 
 <sub>Diagram source: [`docs/assets/pipeline.mmd`](docs/assets/pipeline.mmd) — re-render to `pipeline.svg` after editing.</sub>
+
+The diagram shows the original catalog path; default task mode injects at UserPromptSubmit instead.
 
 | Component | Role |
 |---|---|
 | **CAP** · capture | Hook-driven dumb pipe: grabs each turn (user input, agent output, tool I/O), redacts at egress, points back at the host log instead of copying it. It also holds the trigger, which is deterministic and counts one thing — tool calls. The turn that crosses the threshold ends with a reflection; nothing about the content is judged here. |
 | **REF** · reflect | Reads the episode, compares it against the existing skill index, and decides add / merge / patch / drop a support file / delete — emitting an intent (body, delta, or path, plus reason and evidence). Where a new lesson contradicts an older skill, it must rewrite the stale one in the same run rather than leave the library arguing with itself. Proposes only; it has no write tools, and a fork carrier's inherited ones are denied at the hook. |
 | **promoter** · validate·store | The only writer. Lints the intent in memory (safety, structure, ledger, completeness, self-authored-only) and on pass does an atomic rename into the live skill directory. Full descriptions have their own authoring limit and accept English/Chinese trigger cues independently of the compact index preview. A fold must name the skill that absorbed the deleted one, and the umbrella has to be a live skill autoharness manages — an invented name fails the whole intent rather than losing the content. Each run leaves an account of what landed and what was rejected. |
-| **IDX** · surface | Builds the session-start index: the skills autoharness wrote, grouped by category, one truncated description per line, tagged by layer. Archived and hand-written skills are excluded, an empty library injects nothing, and the previous run's landed/rejected line rides along — so a rejected proposal is visible instead of silent. |
+| **IDX** · surface | Scores the full name/category/description with field-weighted BM25 and English/Chinese terms, selects matches within a byte and top-K budget, and displays short previews. Read-only CLI explanations show matched terms, scores and exclusion reasons. Catalog mode retains the grouped startup directory; last-run reporting remains at SessionStart. This is lexical retrieval, not embedding similarity or a measured task-success improvement. |
 | **MNG** · lifecycle | Daemon-free: recomputed lazily at session start, once per session. Ranks symbols by usage rate — loads over the requests that arrived since the symbol was created, so the measure is opportunity-relative and a closed laptop doesn't age anyone out (the wall-clock replacement). Three signals are kept apart: a **load** (the model invoked the skill) is the only thing the rate counts; a **view** (a session read into the skill's directory) is evidence it had recall value, but not adherence; a **patch** marks the skill being improved, so a load after one reads as reuse-after-improvement. New symbols sit in probation until they've had a fair sample of requests: recalled as usual, but neither counted against the cap nor evictable. At maturity, graduation review archives only a symbol that was never loaded *and* never viewed — no evidence of use is not the same as evidence of no use. For graduates, capacity contention is the only death — nothing is archived until a layer's mature pool exceeds its cap, then the lowest rates go first. Archives, never deletes: an archived symbol is a directory moved out of recall, and moving it back revives it. |
 | **curator** · consolidate | The rarer whole-library pass: reads the library as one thing and folds near-duplicates under umbrellas, which is the judgment a single episode can't make. Snapshots both skill trees before it starts, since a merge is the one operation an atomic rename can't undo. |
 | **LED** · ledger | Per-symbol append-only sidecar: why each symbol was born or changed, with evidence and a reflection watermark. Kept out of the skill body so recall stays clean. |

@@ -1,5 +1,15 @@
 {
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PYTHONPATH=\"${CLAUDE_PLUGIN_ROOT}/src\" python3 -m autoharness.runtime autoharness.hook.dispatch"
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [

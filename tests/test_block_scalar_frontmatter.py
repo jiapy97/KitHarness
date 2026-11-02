@@ -1,6 +1,7 @@
 """Expected string values follow YAML block scalar indentation, folding and chomping."""
 import pytest
 
+from autoharness import config
 from autoharness.hook import on_session_start, promoter
 from autoharness.lib import validate
 from autoharness.stage_skill import server
@@ -55,7 +56,8 @@ def test_quoted_indicators_are_literal_strings(literal):
 
 
 @pytest.mark.parametrize("header", [">-", "|-", ">", "|", ">2-"])
-def test_stage_drain_and_recall_use_the_decoded_description(tmp_path, header):
+def test_stage_drain_and_recall_use_the_decoded_description(tmp_path, header, monkeypatch):
+    monkeypatch.setattr(config, "RECALL_MODE", "catalog")
     body = ("---\nname: iso\ndescription: " + header
             + "\n  Use when formatting a date\n  as ISO.\n---\n# ISO\nUse strftime.\n")
     roots = {"project": tmp_path, "global": tmp_path / "unused"}

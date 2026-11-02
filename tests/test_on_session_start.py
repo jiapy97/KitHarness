@@ -11,6 +11,7 @@ from autoharness.lib import layer, sidecar, skill_store
 @pytest.fixture(autouse=True)
 def _not_a_child(monkeypatch):
     monkeypatch.delenv(config.CHILD_SESSION_ENV, raising=False)  # ambient may set it
+    monkeypatch.setattr(config, "RECALL_MODE", "catalog")  # exercise the explicit startup catalog mode
 
 
 def _roots(base):

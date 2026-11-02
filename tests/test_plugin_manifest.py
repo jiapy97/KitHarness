@@ -16,7 +16,7 @@ def test_plugin_json_has_identity():
 
 def test_hooks_route_all_events_to_dispatch():
     h = _load("hooks/hooks.json")["hooks"]
-    assert set(h) == {"SessionStart", "Stop", "PreToolUse", "SessionEnd"}
+    assert set(h) == {"SessionStart", "UserPromptSubmit", "Stop", "PreToolUse", "SessionEnd"}
     for groups in h.values():
         for group in groups:
             for hook in group["hooks"]:

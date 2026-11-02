@@ -1,0 +1,1073 @@
+{
+  "version": 1,
+  "fixture_sha256": "53cb2ea767a7878b4bb966325fa81383f317e9549146b4074cd351630ebb6a0e",
+  "algorithm": "field-bm25-v1",
+  "corpus_count": 20,
+  "query_count": 18,
+  "positive_queries": 16,
+  "token_estimator": "utf8-bytes-div-4; not host tokens or billing",
+  "scope": "Synthetic metadata relevance labels; no model task success or live hook validation.",
+  "systems": {
+    "original_full_catalog": {
+      "profile": {
+        "mode": "catalog",
+        "max_bytes": 1000000,
+        "top_k": 20
+      },
+      "summary": {
+        "macro_recall_positive": 1.0,
+        "mrr_positive": 0.146797,
+        "mean_precision_all": 0.044444,
+        "unrelated_injection_rate": 1.0,
+        "mean_bytes": 2093.0,
+        "mean_token_estimate": 524.0
+      },
+      "per_query": [
+        {
+          "id": "http-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.1111111111111111,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "http-zh",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.1111111111111111,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "dates-zh",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.05263157894736842,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "sql-mixed",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.5,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "pytest-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.05,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "credentials-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.06666666666666667,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "pagination-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.1,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "python-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.2,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "retention-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.058823529411764705,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "timeout-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.08333333333333333,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "encoding-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.25,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "flaky-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.05555555555555555,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "git-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.14285714285714285,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "layout-zh",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.16666666666666666,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "docker-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.3333333333333333,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "paraphrase-limit",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.06666666666666667,
+          "precision": 0.05,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "no-match-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": null,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 2093,
+          "token_estimate": 524
+        },
+        {
+          "id": "no-match-zh",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env",
+            "project:react-layout",
+            "project:git-recovery",
+            "project:worktree-paths",
+            "global:http-retry",
+            "project:pagination",
+            "project:atomic-write",
+            "project:timeout-groups",
+            "project:transaction-replay",
+            "project:context-budget",
+            "global:secret-redaction",
+            "project:archive-merge",
+            "project:version-prune",
+            "project:ci-flaky",
+            "project:date-boundaries",
+            "global:pytest-fixtures"
+          ],
+          "recall": null,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 2093,
+          "token_estimate": 524
+        }
+      ]
+    },
+    "budgeted_catalog": {
+      "profile": {
+        "mode": "catalog",
+        "max_bytes": 1200,
+        "top_k": 5
+      },
+      "summary": {
+        "macro_recall_positive": 0.25,
+        "mrr_positive": 0.080208,
+        "mean_precision_all": 0.044444,
+        "unrelated_injection_rate": 1.0,
+        "mean_bytes": 643.0,
+        "mean_token_estimate": 161.0
+      },
+      "per_query": [
+        {
+          "id": "http-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "http-zh",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "dates-zh",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "sql-mixed",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.5,
+          "precision": 0.2,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "pytest-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "credentials-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "pagination-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "python-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.2,
+          "precision": 0.2,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "retention-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "timeout-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "encoding-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.25,
+          "precision": 0.2,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "flaky-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "git-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "layout-zh",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "docker-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 0.3333333333333333,
+          "precision": 0.2,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "paraphrase-limit",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "no-match-en",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": null,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        },
+        {
+          "id": "no-match-zh",
+          "selected": [
+            "project:code-review",
+            "project:sql-plan",
+            "project:docker-cache",
+            "global:unicode-json",
+            "global:python-env"
+          ],
+          "recall": null,
+          "reciprocal_rank": 0,
+          "precision": 0.0,
+          "bytes": 643,
+          "token_estimate": 161
+        }
+      ]
+    },
+    "task_bm25": {
+      "profile": {
+        "mode": "task",
+        "max_bytes": 1200,
+        "top_k": 5
+      },
+      "summary": {
+        "macro_recall_positive": 0.9375,
+        "mrr_positive": 0.9375,
+        "mean_precision_all": 0.777778,
+        "unrelated_injection_rate": 0.0,
+        "mean_bytes": 171.555556,
+        "mean_token_estimate": 43.277778
+      },
+      "per_query": [
+        {
+          "id": "http-en",
+          "selected": [
+            "global:http-retry"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 1.0,
+          "bytes": 161,
+          "token_estimate": 41
+        },
+        {
+          "id": "http-zh",
+          "selected": [
+            "global:http-retry"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 1.0,
+          "bytes": 161,
+          "token_estimate": 41
+        },
+        {
+          "id": "dates-zh",
+          "selected": [
+            "project:date-boundaries",
+            "global:http-retry",
+            "project:pagination"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 0.3333333333333333,
+          "bytes": 358,
+          "token_estimate": 90
+        },
+        {
+          "id": "sql-mixed",
+          "selected": [
+            "project:sql-plan"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 1.0,
+          "bytes": 154,
+          "token_estimate": 39
+        },
+        {
+          "id": "pytest-en",
+          "selected": [
+            "global:pytest-fixtures",
+            "project:ci-flaky"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 0.5,
+          "bytes": 233,
+          "token_estimate": 59
+        },
+        {
+          "id": "credentials-en",
+          "selected": [
+            "global:secret-redaction",
+            "project:pagination"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 0.5,
+          "bytes": 257,
+          "token_estimate": 65
+        },
+        {
+          "id": "pagination-en",
+          "selected": [
+            "project:pagination"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 1.0,
+          "bytes": 156,
+          "token_estimate": 39
+        },
+        {
+          "id": "python-en",
+          "selected": [
+            "global:python-env"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 1.0,
+          "bytes": 150,
+          "token_estimate": 38
+        },
+        {
+          "id": "retention-en",
+          "selected": [
+            "project:version-prune",
+            "project:git-recovery",
+            "project:archive-merge"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 0.3333333333333333,
+          "bytes": 334,
+          "token_estimate": 84
+        },
+        {
+          "id": "timeout-en",
+          "selected": [
+            "project:timeout-groups"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 1.0,
+          "bytes": 160,
+          "token_estimate": 40
+        },
+        {
+          "id": "encoding-en",
+          "selected": [
+            "global:unicode-json"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 1.0,
+          "bytes": 157,
+          "token_estimate": 40
+        },
+        {
+          "id": "flaky-en",
+          "selected": [
+            "project:ci-flaky"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 1.0,
+          "bytes": 154,
+          "token_estimate": 39
+        },
+        {
+          "id": "git-en",
+          "selected": [
+            "project:git-recovery",
+            "project:archive-merge",
+            "project:worktree-paths"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 0.3333333333333333,
+          "bytes": 335,
+          "token_estimate": 84
+        },
+        {
+          "id": "layout-zh",
+          "selected": [
+            "project:react-layout"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 1.0,
+          "bytes": 160,
+          "token_estimate": 40
+        },
+        {
+          "id": "docker-en",
+          "selected": [
+            "project:docker-cache"
+          ],
+          "recall": 1.0,
+          "reciprocal_rank": 1.0,
+          "precision": 1.0,
+          "bytes": 158,
+          "token_estimate": 40
+        },
+        {
+          "id": "paraphrase-limit",
+          "selected": [],
+          "recall": 0.0,
+          "reciprocal_rank": 0,
+          "precision": 0,
+          "bytes": 0,
+          "token_estimate": 0
+        },
+        {
+          "id": "no-match-en",
+          "selected": [],
+          "recall": null,
+          "reciprocal_rank": 0,
+          "precision": 1,
+          "bytes": 0,
+          "token_estimate": 0
+        },
+        {
+          "id": "no-match-zh",
+          "selected": [],
+          "recall": null,
+          "reciprocal_rank": 0,
+          "precision": 1,
+          "bytes": 0,
+          "token_estimate": 0
+        }
+      ]
+    }
+  }
+}

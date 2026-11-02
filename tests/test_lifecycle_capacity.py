@@ -59,6 +59,7 @@ def seed(roots, lyr, name, *, use=0, view=0, anchor=0, author="agent"):
 
 @pytest.mark.parametrize("suspended", [False, True])
 def test_session_start_archives_overflow_before_recall_and_restore_is_complete(tmp_path, monkeypatch, suspended):
+    monkeypatch.setattr(config, "RECALL_MODE", "catalog")
     monkeypatch.delenv(config.CHILD_SESSION_ENV, raising=False)
     monkeypatch.setattr(config, "DISABLE_GLOBAL", False)
     monkeypatch.setattr(config, "GRADUATION_REVIEW_SUSPENDED", suspended)
