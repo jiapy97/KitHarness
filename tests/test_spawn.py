@@ -4,9 +4,19 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 from autoharness import config
-from autoharness.hook import spawn
-from autoharness.lib import counters, layer, ledger, sidecar, skill_store
+from autoharness.hook import jobs, spawn
+from autoharness.lib import (
+    counters,
+    intent_queue,
+    layer,
+    ledger,
+    run_owners,
+    sidecar,
+    skill_store,
+)
 
 _SRC = str(Path(__file__).resolve().parents[1] / "src")
 
@@ -402,9 +412,9 @@ def test_run_records_spawn_error_in_run_account(tmp_path):
     secret = "ghp_" + "a" * 36
     crash = subprocess.CompletedProcess([config.CLAUDE_BIN], 3, "",
                                         f"Error: agent not found; token={secret}")
-    verdicts = spawn.run("WINDOW", "run-x", roots=roots, spec_path=config.FORMAT_SPEC,
-                         spawn_fn=lambda a, e, b: crash)
-    assert verdicts == []
+    with pytest.raises(jobs.Deferred, match="child_failed"):
+        spawn.run("WINDOW", "run-x", roots=roots, spec_path=config.FORMAT_SPEC,
+                  spawn_fn=lambda a, e, b: crash)
     account = json.loads((roots["project"] / "autoharness" / "runs" / "run-x.json").read_text())
     assert account["run_id"] == "run-x"
     assert account["spawn_error"]["returncode"] == 3
@@ -413,7 +423,7 @@ def test_run_records_spawn_error_in_run_account(tmp_path):
     assert "REDACTED" in account["spawn_error"]["stderr_tail"]
 
 
-def test_spawn_error_record_preserves_landed_verdicts(tmp_path):
+def test_crashed_child_quarantines_staged_proposals(tmp_path):
     roots = _roots(tmp_path)
 
     def crashed_after_staging(argv, env, bundle):
@@ -425,12 +435,15 @@ def test_spawn_error_record_preserves_landed_verdicts(tmp_path):
                             roots["project"])
         return subprocess.CompletedProcess(argv, 3, "", "late crash")
 
-    verdicts = spawn.run("WINDOW", "run-x", roots=roots, spec_path=config.FORMAT_SPEC,
-                         spawn_fn=crashed_after_staging)
-    assert [v["ok"] for v in verdicts] == [True]
+    with pytest.raises(jobs.Deferred, match="child_failed"):
+        spawn.run("WINDOW", "run-x", roots=roots, spec_path=config.FORMAT_SPEC,
+                  spawn_fn=crashed_after_staging)
     account = json.loads((roots["project"] / "autoharness" / "runs" / "run-x.json").read_text())
     assert account["spawn_error"]["returncode"] == 3
-    assert account["verdicts"]  # child diagnostics augment, never replace, promoter verdicts
+    assert "verdicts" not in account
+    assert intent_queue.pending("run-x", roots["project"])
+    assert run_owners.cancelled("run-x", roots["project"])
+    assert not skill_store.exists("project", "learned", roots["project"])
 
 
 def test_successful_spawn_writes_no_spawn_error(tmp_path):
@@ -438,7 +451,10 @@ def test_successful_spawn_writes_no_spawn_error(tmp_path):
     ok = subprocess.CompletedProcess([config.CLAUDE_BIN], 0, "", "")
     spawn.run("WINDOW", "run-ok", roots=roots, spec_path=config.FORMAT_SPEC,
               spawn_fn=lambda a, e, b: ok)
-    assert not (roots["project"] / "autoharness" / "runs" / "run-ok.json").exists()
+    account = json.loads((roots["project"] / "autoharness" / "runs" / "run-ok.json").read_text())
+    assert "spawn_error" not in account
+    assert account["job"]["status"] == "success"
+    assert account["job"]["usage"] == {"available": False}
 
 
 def test_description_index_survives_a_foreign_skill_that_is_not_utf8(tmp_path):

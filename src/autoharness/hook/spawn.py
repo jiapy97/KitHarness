@@ -13,13 +13,12 @@ ponytail: run() is the body of the "detached background job" (synchronous spawnâ
 import json
 import logging
 import os
-import subprocess
 import sys
 import tarfile
 from pathlib import Path
 
 from autoharness import config
-from autoharness.hook import capture, promoter, recovery
+from autoharness.hook import capture, jobs, promoter, recovery
 from autoharness.lib import (
     atomic,
     counters,
@@ -92,7 +91,7 @@ FORK_INSTRUCTION = (
 
 def build_fork_command(*, session_id, claude_bin):
     return [claude_bin, "-p", "--resume", str(session_id), "--fork-session",
-            "--dangerously-skip-permissions"]
+            "--dangerously-skip-permissions", *_budget_args()]
 
 
 def build_fork_prompt(index, spec):
@@ -107,7 +106,11 @@ def build_command(*, agent, claude_bin):
     # (Read/Grep/Glob/stage_skill) + the top-level PreToolUse write backstop, not by the prompt.
     # (live e2e: a reflector's real stage_skill call gets blocked by the permission gate and can only
     # "narrate"; only with this flag does it land.)
-    return [claude_bin, "-p", "--agent", agent, "--dangerously-skip-permissions"]
+    return [claude_bin, "-p", "--agent", agent, "--dangerously-skip-permissions", *_budget_args()]
+
+
+def _budget_args():
+    return ["--output-format", "json", "--max-budget-usd", str(config.JOB_MAX_BUDGET_USD)]
 
 
 def child_env(run_id, root, *, base_env=None):
@@ -130,37 +133,66 @@ def _spawn_error(proc, argv):
 
 def _detached_spawn(argv, env, bundle):
     """Run the reflector child to completion; report a crash on stderr instead of discarding it."""
-    proc = subprocess.run(argv, input=bundle, text=True, encoding="utf-8", errors="replace",
-                          env=env, capture_output=True, check=False)
+    proc = jobs.execute(argv, env, bundle)
     if proc.returncode != 0:
         error = _spawn_error(proc, argv)
-        print(f"reflector child {error['argv0']} exited {proc.returncode}: "
+        print(f"background child {error['argv0']} exited {proc.returncode}: "
               f"{error['stderr_tail']}", file=sys.stderr)
     return proc
 
 
-def _record_spawn_failure(run_id, roots, proc, argv):
-    """Persist a crashed reflector in the run account (#160).
-
-    The detached launch DEVNULLs this whole process (dispatch.py), so neither the print above nor
-    the exit code reaches an operator. The runs/ account is where landed runs already live; verdicts
-    (if the child staged intents before dying) are preserved alongside the crash record.
-    """
-    if proc is None or getattr(proc, "returncode", 0) == 0:
+def _record_job(run_id, roots, proc, argv, *, deferred=None):
+    """Merge bounded diagnostics and numeric usage into the existing run account."""
+    if proc is None and deferred is None:
         return
     state = layer.state_dir(layer.PROJECT, roots.get(layer.PROJECT))
     runs = state / "runs"
     runs.mkdir(parents=True, exist_ok=True)
     account = runs / f"{run_id}.json"
     record = json.loads(account.read_text(encoding="utf-8")) if account.exists() else {"run_id": run_id}
-    record["spawn_error"] = _spawn_error(proc, argv)
+    record["job"] = {"status": deferred or ("success" if proc.returncode == 0 else "failed"),
+                     "timeout_s": config.JOB_TIMEOUT_S, "max_budget_usd": config.JOB_MAX_BUDGET_USD,
+                     "elapsed_ms": getattr(proc, "elapsed_ms", None), "usage": jobs.usage(proc)}
+    if proc is not None and proc.returncode != 0:
+        record["spawn_error"] = _spawn_error(proc, argv)
     atomic.write_text(account, json.dumps(record, ensure_ascii=False, indent=2))
+
+
+def _execute(run_id, roots, argv, payload, repo_name, spawn_fn, *, snapshot=False):
+    proot = roots.get(layer.PROJECT)
+    with jobs.slots(roots) as acquired:
+        if not acquired:
+            jobs.cancel(run_id, proot)
+            _record_job(run_id, roots, None, argv, deferred="concurrency_limit")
+            raise jobs.Deferred("concurrency limit; transcript offset retained")
+        if snapshot:
+            try:
+                _snapshot_skills(run_id, roots)
+            except OSError:
+                log.warning("could not snapshot library before curation")
+            except Exception:
+                log.exception("unexpected snapshot error; curator running without safety net")
+        with intent_queue.live_lock(run_id, proot):
+            proc = (spawn_fn or _detached_spawn)(argv, child_env(run_id, proot), payload)
+            response = jobs.response(proc)
+            deferred = ("timed_out" if getattr(proc, "timed_out", False) else
+                        "launch_failed" if getattr(proc, "launch_failed", False) else
+                        "budget_exhausted" if response.get("subtype") == "error_max_budget_usd" else
+                        "child_failed" if getattr(proc, "returncode", 0) != 0 or response.get("is_error") is True else None)
+            if deferred:
+                jobs.cancel(run_id, proot)
+                _record_job(run_id, roots, proc, argv, deferred=deferred)
+                raise jobs.Deferred(f"{deferred}; partial proposals quarantined")
+            try:
+                verdicts = promoter.drain(run_id, roots=roots, repo_name=repo_name)
+            finally:
+                _record_job(run_id, roots, proc, argv)
+        return verdicts
 
 
 def run(window_text, run_id, *, roots, repo_name=None, agent=None, claude_bin=None,
         spec_path=None, digest="", session_id=None, carrier=None, spawn_fn=None):
     roots = roots or {}
-    proot = roots.get(layer.PROJECT)
     spec = (spec_path or config.FORMAT_SPEC).read_text(encoding="utf-8")
 
     carrier = carrier or config.REFLECTOR_CARRIER
@@ -172,15 +204,10 @@ def run(window_text, run_id, *, roots, repo_name=None, agent=None, claude_bin=No
                              claude_bin=claude_bin or config.CLAUDE_BIN)
         payload = build_bundle(window_text, description_index(roots), spec, digest=digest)
 
-    env = child_env(run_id, proot)
     # the live lock marks the run as having a spawn parent: between here and the own drain below,
     # a foreign drain (the main session's Stop) leaves this queue alone instead of landing the
     # child's intents mid-flight or racing its appends
-    with intent_queue.live_lock(run_id, proot):
-        proc = (spawn_fn or _detached_spawn)(argv, env, payload)
-        verdicts = promoter.drain(run_id, roots=roots, repo_name=repo_name)
-        _record_spawn_failure(run_id, roots, proc, argv)
-    return verdicts
+    return _execute(run_id, roots, argv, payload, repo_name, spawn_fn)
 
 
 def _snapshot_skills(run_id, roots):
@@ -203,23 +230,12 @@ def _snapshot_skills(run_id, roots):
 def run_curator(run_id, *, roots, repo_name=None, agent=None, claude_bin=None,
                 spec_path=None, spawn_fn=None):
     roots = roots or {}
-    try:
-        _snapshot_skills(run_id, roots)
-    except OSError:
-        pass  # a transient disk issue must not silently disable curation
-    except Exception:
-        log.exception('unexpected snapshot error; curator running without safety net')
     spec = (spec_path or config.FORMAT_SPEC).read_text(encoding="utf-8")
     bundle = build_curator_bundle(description_index(roots, agent_only=True), spec)
 
     argv = build_command(agent=agent or config.CURATOR_AGENT,
                          claude_bin=claude_bin or config.CLAUDE_BIN)
-    env = child_env(run_id, roots.get(layer.PROJECT))
-    with intent_queue.live_lock(run_id, roots.get(layer.PROJECT)):  # same liveness marker as reflection
-        proc = (spawn_fn or _detached_spawn)(argv, env, bundle)
-        verdicts = promoter.drain(run_id, roots=roots, repo_name=repo_name)
-        _record_spawn_failure(run_id, roots, proc, argv)
-    return verdicts
+    return _execute(run_id, roots, argv, bundle, repo_name, spawn_fn, snapshot=True)
 
 
 def main(argv=None):
@@ -227,7 +243,10 @@ def main(argv=None):
     if argv and argv[0] == "--curate":
         run_id, proot, groot = argv[1:]
         owner = recovery.track(run_id, Path(proot))
-        result = run_curator(run_id, roots={layer.PROJECT: Path(proot), layer.GLOBAL: Path(groot)})
+        try:
+            result = run_curator(run_id, roots={layer.PROJECT: Path(proot), layer.GLOBAL: Path(groot)})
+        except jobs.Deferred:
+            return []
         recovery.complete(owner)
         return result
     transcript_path, session_id, run_id, proot, groot = argv
@@ -235,8 +254,11 @@ def main(argv=None):
     owner = recovery.track(run_id, roots[layer.PROJECT])
     offset = counters.session_offset(session_id, roots[layer.PROJECT])
     window_text, new_offset = capture.window(transcript_path, offset)
-    result = run(window_text, run_id, roots=roots, session_id=session_id,
-                 digest=capture.digest(transcript_path, offset))
+    try:
+        result = run(window_text, run_id, roots=roots, session_id=session_id,
+                     digest=capture.digest(transcript_path, offset))
+    except jobs.Deferred:
+        return []
     counters.write_session_offset(session_id, new_offset, roots[layer.PROJECT])
     recovery.complete(owner)
     return result

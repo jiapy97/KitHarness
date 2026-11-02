@@ -88,3 +88,22 @@ def held(path):
             return True
         _unlock(f)
         return False
+
+
+@contextmanager
+def try_file_lock(path):
+    """Nonblocking acquisition; yield the locked descriptor, or None when busy."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        try:
+            _try_lock(handle)
+        except OSError as exc:
+            if exc.errno not in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
+                raise
+            yield None
+            return
+        try:
+            yield handle
+        finally:
+            _unlock(handle)

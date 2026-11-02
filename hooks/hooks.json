@@ -1,16 +1,44 @@
 {
   "hooks": {
     "SessionStart": [
-      { "hooks": [ { "type": "command", "command": "PYTHONPATH=${CLAUDE_PLUGIN_ROOT}/src python3 -m autoharness.hook.dispatch" } ] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PYTHONPATH=\"${CLAUDE_PLUGIN_ROOT}/src\" python3 -m autoharness.runtime autoharness.hook.dispatch"
+          }
+        ]
+      }
     ],
     "Stop": [
-      { "hooks": [ { "type": "command", "command": "PYTHONPATH=${CLAUDE_PLUGIN_ROOT}/src python3 -m autoharness.hook.dispatch" } ] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PYTHONPATH=\"${CLAUDE_PLUGIN_ROOT}/src\" python3 -m autoharness.runtime autoharness.hook.dispatch"
+          }
+        ]
+      }
     ],
     "PreToolUse": [
-      { "hooks": [ { "type": "command", "command": "PYTHONPATH=${CLAUDE_PLUGIN_ROOT}/src python3 -m autoharness.hook.dispatch" } ] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PYTHONPATH=\"${CLAUDE_PLUGIN_ROOT}/src\" python3 -m autoharness.runtime autoharness.hook.dispatch"
+          }
+        ]
+      }
     ],
     "SessionEnd": [
-      { "hooks": [ { "type": "command", "command": "PYTHONPATH=${CLAUDE_PLUGIN_ROOT}/src python3 -m autoharness.hook.dispatch" } ] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PYTHONPATH=\"${CLAUDE_PLUGIN_ROOT}/src\" python3 -m autoharness.runtime autoharness.hook.dispatch"
+          }
+        ]
+      }
     ]
   }
 }

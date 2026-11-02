@@ -23,6 +23,11 @@ def tracked(run_id, root):
     return path(run_id, root).exists()
 
 
+def cancelled(run_id, root):
+    target = path(run_id, root)
+    return target.exists() and json.loads(target.read_text(encoding="utf-8")).get("status") == "cancelled"
+
+
 @contextmanager
 def writer(run_id, root):
     """Register every writer's actual group before it can commit to a tracked queue.

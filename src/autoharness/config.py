@@ -5,6 +5,7 @@ lives under experiments/. Tests assert only relationships (both layers present, 
 values. Overridable via AUTOHARNESS_* env — for the e2e runbook to shrink the knobs (so graduation /
 capacity contention fire within a short session); defaults fall back to the placeholders.
 """
+import math
 import os
 import warnings
 from pathlib import Path
@@ -90,6 +91,19 @@ CAPACITY = {layer.GLOBAL: _int_env("AUTOHARNESS_CAPACITY_GLOBAL", 20, minimum=0)
 GRADUATION_REVIEW_SUSPENDED = _bool_env("AUTOHARNESS_GRADUATION_SUSPENDED", False)
 SNAPSHOT_KEEP = _int_env("AUTOHARNESS_SNAPSHOT_KEEP", 5, minimum=0)  # curator pre-run library snapshots per layer (mirrors Hermes)
 
+# Limits apply independently to each background reflector/curator invocation.
+JOB_TIMEOUT_S = _int_env("AUTOHARNESS_JOB_TIMEOUT_S", 180, minimum=1)
+JOB_PROJECT_LIMIT = _int_env("AUTOHARNESS_JOB_PROJECT_LIMIT", 1, minimum=1)
+JOB_GLOBAL_LIMIT = _int_env("AUTOHARNESS_JOB_GLOBAL_LIMIT", 2, minimum=1)
+VERSION_KEEP = _int_env("AUTOHARNESS_VERSION_KEEP", 10, minimum=1)
+try:
+    JOB_MAX_BUDGET_USD = float(os.environ.get("AUTOHARNESS_JOB_MAX_BUDGET_USD", "1"))
+    if not math.isfinite(JOB_MAX_BUDGET_USD) or JOB_MAX_BUDGET_USD <= 0:
+        raise ValueError
+except ValueError:
+    warnings.warn("AUTOHARNESS_JOB_MAX_BUDGET_USD must be finite and positive; using 1", stacklevel=1)
+    JOB_MAX_BUDGET_USD = 1.0
+
 # run-account notification (lib/notify), opt-in: the SessionStart summary is a session late and
 # carries counts, not names. "desktop" = native notification; NOTIFY_CMD = argv fed the run record
 # on stdin. Fail-open, fired after the queue is cleared; the timeout (whole seconds, per channel,
@@ -111,7 +125,7 @@ REFLECTOR_CARRIER = os.environ.get("AUTOHARNESS_CARRIER", "bundle")
 
 REFLECTOR_AGENT = "autoharness:reflector"  # the --agent reference for spawn (plugin namespace, Phase 0 resolution pending live test)
 CURATOR_AGENT = "autoharness:curator"      # the --agent reference for the periodic consolidation pass (same spawn chain as reflector)
-CLAUDE_BIN = "claude"                       # the child-session executable for spawn; PATH resolution, overridable in tests
+CLAUDE_BIN = os.environ.get("AUTOHARNESS_CLAUDE_BIN", "claude")
 RUN_ID_ENV = "AUTOHARNESS_RUN_ID"           # spawn injects the intent-queue run_id into the child session via env (read by stage_skill)
 # The queue for intents staged from a live user session (/learn, or the model acting on its own).
 # spawn injects a run id into every child it launches and drains that run when the child exits; a

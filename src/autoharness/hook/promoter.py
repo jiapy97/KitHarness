@@ -308,7 +308,10 @@ def _account(run_id, intents, verdicts, proot):
     state = layer.state_dir(layer.PROJECT, proot)
     runs = state / "runs"
     runs.mkdir(parents=True, exist_ok=True)
-    record = {"run_id": run_id, "verdicts": rows}
+    account = runs / f"{run_id}.json"
+    previous = json.loads(account.read_text(encoding="utf-8")) if account.exists() else {}
+    record = {**{key: previous[key] for key in ("job", "spawn_error") if key in previous},
+              "run_id": run_id, "verdicts": rows}
     atomic.write_text(runs / f"{run_id}.json", json.dumps(record, ensure_ascii=False, indent=2))
     atomic.write_text(state / "last_run.json",
                       json.dumps({"run_id": run_id, "landed": landed,
@@ -436,6 +439,8 @@ def drain(run_id, *, roots=None, repo_name=None):
     # other's skill, and each lands. Held across read→land→clear, which also closes the crash window
     # the account comment below used to leave open to an external writer.
     with lock.file_lock(layer.state_dir(layer.PROJECT, proot) / "drain.lock"):
+        if run_owners.cancelled(run_id, proot):
+            return []  # an interrupted/budget-limited proposal set requires operator inspection
         versions.recover_all(roots)
         sweep(roots)
         # the queue is per-run, so a child that exits before its drain leaves its intents in the

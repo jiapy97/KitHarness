@@ -278,10 +278,68 @@ def completed(intent, roots):
 
 def list_versions(lyr, name, root=None):
     result = []
-    for path in _directory(lyr, name, root).glob("*/manifest.json"):
-        _, manifest = _manifest(lyr, name, path.parent.name, root)
+    directory = _directory(lyr, name, root)
+    for path in directory.iterdir() if directory.exists() else ():
+        if path.is_symlink():
+            raise ValueError("version must not be a symlink")
+        _, manifest = _manifest(lyr, name, path.name, root)
         result.append(manifest)
     return sorted(result, key=lambda item: item["created_ns"])
+
+
+def prune(lyr, name, root=None, *, keep=None, apply=False):
+    """Preview by default. Keep recent pre-images and every unfinished transaction.
+
+    Transaction journals and operation receipts are never removed: a committed
+    outcome is still needed when an old queue or claim is retried.
+    """
+    from autoharness import config
+    keep = config.VERSION_KEEP if keep is None else keep
+    if type(keep) is not int or keep < 1:
+        raise ValueError("keep must be an integer of at least 1")
+    if lyr == layer.GLOBAL and config.DISABLE_GLOBAL:
+        raise ValueError("global layer is disabled")
+    with lock.file_lock(layer.symbol_lock_path(lyr, name, root)):
+        protected = set()
+        transactions = _state(lyr, root) / "transactions"
+        if transactions.is_symlink():
+            raise ValueError("transaction directory must not be a symlink")
+        for path in transactions.glob("*.json"):
+            record = _read_journal(lyr, path, root)
+            if record["name"] == name and record["status"] == "prepared":
+                # Validate recovery evidence before deleting anything else.
+                _, manifest = _manifest(lyr, name, record["id"], root)
+                if manifest.get("operation_id") != record["operation_id"]:
+                    raise ValueError("transaction pre-image belongs to another operation")
+                protected.add(record["id"])
+        history = list_versions(lyr, name, root)
+        protected.update(item["id"] for item in history[-keep:])
+        restorable = [item for item in history if item["existed"]]
+        if restorable:
+            protected.add(restorable[-1]["id"])
+        candidates = []
+        for item in history:
+            directory = _version_dir(lyr, name, item["id"], root)
+            _tree_check(directory)
+            if item["id"] not in protected:
+                size = sum(p.stat().st_size for p in directory.rglob("*") if p.is_file())
+                candidates.append({"id": item["id"], "bytes": size})
+        trash = _state(lyr, root) / "version-trash"
+        if trash.is_symlink():
+            raise ValueError("version trash must not be a symlink")
+        if apply and candidates:
+            trash.mkdir(mode=0o700, exist_ok=True)
+            for item in candidates:
+                source = _version_dir(lyr, name, item["id"], root)
+                destination = trash / uuid.uuid4().hex
+                # A crash during removal leaves an isolated trash directory,
+                # never a half-deleted entry in the list of usable versions.
+                os.replace(source, destination)
+                atomic.sync_dir(source.parent)
+                atomic.sync_dir(trash)
+                shutil.rmtree(destination)
+        return {"applied": apply, "keep": keep, "protected": sorted(protected),
+                "candidates": candidates, "bytes": sum(item["bytes"] for item in candidates)}
 
 
 def rollback(lyr, name, version_id, root=None):
@@ -317,16 +375,26 @@ def rollback(lyr, name, version_id, root=None):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("list", "rollback"))
+    parser.add_argument("command", choices=("list", "rollback", "prune"))
     parser.add_argument("name")
     parser.add_argument("--level", choices=layer.LAYERS, default=layer.PROJECT)
     parser.add_argument("--root", type=Path)
     parser.add_argument("--version")
+    parser.add_argument("--keep", type=int)
+    parser.add_argument("--apply", action="store_true", help="actually remove prune candidates")
     args = parser.parse_args()
     if args.command == "rollback" and not args.version:
         parser.error("rollback requires --version")
-    result = (list_versions(args.level, args.name, args.root) if args.command == "list" else
-              rollback(args.level, args.name, args.version, args.root))
+    if args.command != "prune" and (args.keep is not None or args.apply):
+        parser.error("--keep and --apply require prune")
+    if args.command == "prune":
+        if args.keep is not None and args.keep < 1:
+            parser.error("--keep must be at least 1")
+        result = prune(args.level, args.name, args.root, keep=args.keep, apply=args.apply)
+    elif args.command == "list":
+        result = list_versions(args.level, args.name, args.root)
+    else:
+        result = rollback(args.level, args.name, args.version, args.root)
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
