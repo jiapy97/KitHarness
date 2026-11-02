@@ -1,321 +1,227 @@
 <h1 align="center">KitHarness</h1>
-<p align="center"><strong>Durable skill changes, task-scoped recall, and a measured three-arm study</strong></p>
+<p align="center"><strong>让 Claude Code 把工作经验沉淀为可复用技能。</strong></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/python-3.11%2B-blue.svg" alt="python" /> <img src="https://img.shields.io/badge/platform-Linux%20%7C%20macOS-lightgrey.svg" alt="platform" /> <img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="license MIT" />
+  <img src="https://img.shields.io/badge/python-3.11%2B-blue.svg" alt="Python 3.11 及以上" />
+  <img src="https://img.shields.io/badge/platform-Linux%20%7C%20macOS-lightgrey.svg" alt="支持 Linux 和 macOS" />
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="MIT 许可证" /></a>
 </p>
 
-**KitHarness** runs on Claude Code. It **learns** skills from real sessions, **merges** same-scenario ones instead of stacking near-duplicates, **updates** them in use, and **prunes** skills it wrote itself. Reflection, curation, a deterministic promoter, and lifecycle retirement stay in the loop.
+<p align="center">
+  <a href="#快速开始">快速开始</a> ·
+  <a href="#使用方式">使用方式</a> ·
+  <a href="docs/configuration.md">配置文档</a> ·
+  <a href="docs/demo.md">本地演示</a> ·
+  <a href="https://github.com/jiapy97/KitHarness/issues">反馈问题</a>
+</p>
 
-The license is [MIT](LICENSE). Project notes are in [项目说明](docs/project.md). A local demo that does not call a model is in [演示](docs/demo.md).
+KitHarness 是一个 Claude Code 插件，从真实会话中提炼经验，保存为原生技能，并在后续任务中召回。相同场景的经验会合并，已有技能可以持续修订；使用率低的成熟技能会在容量不足时归档。
 
-| | |
-|---|---|
-| **Learns from real work** | Each episode is distilled into a skill from the session you were already having — no separate data-collection or replay loop. It fires on its own once a session has done enough work; `/learn` distills on demand when you want a lesson kept now. |
-| **Groups, doesn't just pile up** | A new episode doesn't always add a skill — the reflector compares it against what's there and folds same-scenario skills into one, so the layer consolidates by category instead of accreting near-duplicates. A fold records which skill absorbed which, so a merge is never mistaken for a death. |
-| **Offers skills for the current task** | Each submitted prompt selects related agent-created skills with explainable lexical ranking and an injection budget. A grouped startup catalog remains available as a compatibility mode. The host's native recall stays untouched. |
-| **Kept by use; measured apart** | A skill still survives by later adherence, not by a held-out score on the live path. Synthetic recall and one live three-arm study are recorded separately. That study did not show an accuracy gain. |
-| **Only its own skills** | Touches only the skills it generated through this plugin — everything else, whether you wrote it or installed it, is left completely alone. |
-| **Evidence kept for later** | Every create/update logs its scenario and decision to a per-skill ledger — the raw material to build a benchmark from real usage if you ever want one. |
+例如，一次调试确定了某类问题的排查顺序，你又补充了容易遗漏的步骤。KitHarness 可以把这段经验提炼为技能，在下次处理相关问题时提供给模型，并继续吸收后续修正。
 
-## What KitHarness adds
+## 特性
 
-Progress and the acceptance record are in the [iteration plan](docs/PLAN.md). The three changes below are the ones with checks in this repo. They are not a claim that learning raised task accuracy.
+- **自动学习**：按会话中的工具调用量触发后台反思，也支持 `/learn` 手动提炼。
+- **合并与更新**：对照已有技能处理新经验，优先修订同类内容，减少重复条目。
+- **按任务召回**：支持中英文词项匹配，按相关性选择技能，并限制上下文注入量。
+- **可追溯、可回滚**：修改带有原因、会话证据、操作 ID 和完整目录快照。
+- **按使用情况管理**：区分实际加载、查看和改进，按请求量观察技能，再进行转正审查与容量归档。
+- **轻量部署**：Python 实现，无第三方运行依赖，无需常驻守护进程；只管理自身生成的技能。
 
-| | Change | What was measured |
-|---|---|---|
-| **Durable edits** | A model delete must name a live merge target. A failed update in the same batch keeps the source skill. Landed edits have an operation id, a full-directory snapshot, and a rollback. | Recovery and rollback behavior is covered by the non-live suite. Commands: [reliable skill evolution](docs/reliable-skill-evolution.md). |
-| **Task recall** | The current prompt selects agent-created skills with explainable lexical ranking and a byte budget. Chinese trigger text is accepted, and the full description is no longer cut to the 60-character preview. | On 18 synthetic queries and 20 skills, task ranking recalled 15/16 relevant skills (MRR 0.938) at a mean 170.7 injected bytes. The full catalog recalled 16/16 at 2092 bytes. This is not a live task-success result. See [task recall](docs/task-recall.md). |
-| **A recorded study** | The same 6 tasks and 24 cases can be prepared, scored, and rechecked without executing candidate code. One live run compared no learning, the baseline at `f2de058`, and KitHarness at `b232f74`. | All three arms were 6/6 tasks and 24/24 cases with `deepseek-flash`, one repeat. Mean plugin injection was 582 bytes on the baseline and 506 bytes here. That does not show an accuracy gain or a general token saving. See [live study](docs/live-study-results.md). |
+## 快速开始
 
-## Install
+需要 **Claude Code**、**Python 3.11+**，支持 Linux 和 macOS。
 
-**Requires Python 3.11+ as the `python3` on your PATH** — KitHarness runs entirely as Python
-(zero third-party dependencies); its hooks and MCP server won't fire without it. The hooks resolve
-bare `python3`, so an older interpreter earlier on your PATH (Xcode ships 3.9.6 at
-`/usr/bin/python3`) turns every hook off for the session; KitHarness says so on stderr.
+**1. 获取仓库**
 
-Type these in the Claude Code input box. The plugin id and the marketplace id are both `kitharness`.
+在终端执行；已有本地仓库可跳过此步：
 
+```sh
+git clone https://github.com/jiapy97/KitHarness.git
+cd KitHarness
 ```
+
+**2. 安装插件**
+
+在 **Claude Code 输入框**中执行，将路径替换为本地仓库的绝对路径：
+
+```text
 /plugin marketplace add /absolute/path/to/KitHarness
 /plugin install kitharness@kitharness
+/reload-plugins
 ```
 
-Then run `/reload-plugins` (or restart Claude Code).
+也可以重启 Claude Code 来加载插件。插件 ID 和市场 ID 均为 `kitharness`。
 
-Zero config. It now watches your sessions and lands learned skills into `.claude/skills/` in the
-background. Cadence and lifecycle thresholds are tunable — see [Configuration](#configuration).
+**3. 正常工作，留下经验**
 
-Nothing to invoke, but one entry point exists when you want it: **`/learn`** distills the session
-you're in right now — say it after working something out and the lesson goes through the same
-proposal-and-validation chain the background pass uses.
+继续调试、开发或处理日常任务。默认每累计 50 次主会话工具调用，在达到阈值的轮次结束后请求后台反思；纯聊天不触发自动学习。
 
-**MCP server naming.** `.claude-plugin/plugin.json` registers the server as `stage_skill`, but agent
-definitions reference the fully-qualified name `mcp__plugin_kitharness_stage_skill__stage_skill`.
-This translation is automatic: the plugin runtime constructs the qualified name from the plugin
-id (`kitharness`) and the server key. Outside the plugin context (e.g., registering the server
-by hand), the tool would be available as `mcp__stage_skill__stage_skill` — but the agent allowlists
-still reference the plugin-namespaced form. Always install as a plugin to match both names. The
-server is declared in the manifest, not in a root `.mcp.json`, because the plugin root is the repo
-root: a `.mcp.json` there would also be this checkout's project config, which outranks the plugin's
-same-command server and leaves the reflector without its tool in sessions inside the repo.
+如果刚解决了一个值得复用的问题，可直接输入：
 
-
-### Update
-
-Update and uninstall are shown in their terminal form (`claude plugin …`); inside Claude Code the same
-operations live in the `/plugin` menu.
-
-Update from a terminal — refresh the catalog by marketplace name, then update the plugin by its
-**full `plugin@marketplace` id**, then restart:
-
+```text
+/learn
 ```
+
+通过校验的经验会写入项目的 `.claude/skills/` 或全局的 `~/.claude/skills/`。没有值得保留的经验时，不会强行创建技能。
+
+> 运行环境需要可用的 `python3` 启动入口。启动模块会自动寻找 Python 3.11+，也可用 `AUTOHARNESS_PYTHON` 指定解释器。诊断方法见 [常见问题](#常见问题)。
+
+## 使用方式
+
+### 自动学习与手动提炼
+
+自动学习在后台进行。`/learn` 则适合在完成排查、纠正做法或确认可复用流程后立即提炼，两者使用同一套提案、校验与落盘机制。
+
+模型负责提出修改，确定性执行器负责验证和写入。已有技能覆盖同一场景时，优先更新或合并；每次修改都留下原因与证据。具体文件和变更记录见 [技能学习流程](docs/how-it-works.md)。
+
+### 在后续任务中召回
+
+默认 `task` 模式在每次提交提示时匹配相关技能，最多选择 5 条，附加上下文最多 4096 字节。没有匹配项时不注入。Claude Code 原生技能召回继续工作。
+
+如果希望在会话启动时看到分组技能目录，可将 `AUTOHARNESS_RECALL_MODE` 设为 `catalog`。召回算法与解释方法见 [任务感知召回](docs/task-recall.md)。
+
+### 查看与恢复
+
+生成的技能使用原生 `SKILL.md` 格式，可直接查看：
+
+```text
+.claude/
+├── skills/<name>/
+│   ├── SKILL.md             # 技能内容
+│   ├── .ledger.jsonl        # 创建、修改原因与证据引用
+│   └── .sidecar.json        # 使用、查看与改进计数
+└── kitharness/
+    ├── runs/<run-id>.json   # 运行结果与拒绝原因
+    └── snapshots/           # 整理前的技能树快照
+```
+
+全局层使用 `~/.claude/` 下的对应目录。生命周期归档会保留技能历史，移回目录即可恢复；错误修改可通过版本快照回滚。详见 [可靠技能演进](docs/reliable-skill-evolution.md)。
+
+## 工作原理
+
+```text
+真实会话 → 捕获与脱敏 → 反思提案 → 校验与落盘 → 技能库
+                                                   ↓
+后续任务 ← 按任务召回 ←─────────────────────────────┘
+```
+
+反思者从单次工作中提炼经验，整理者定期审视整个技能库并合并重复内容。执行器是唯一写入方，负责校验、快照和故障恢复。
+
+生命周期管理按技能创建后收到的请求数观察使用情况，电脑闲置不会让技能老化。试用期内正常召回、不参与容量淘汰；之后对从未使用也未查看的技能进行归档审查，成熟技能超出容量时优先归档低使用率条目。
+
+组件说明、流水线图和逐步观察方法见 [技能学习流程](docs/how-it-works.md)。
+
+## 配置
+
+默认配置即可运行。需要调整时，在 `.claude/settings.json` 的 `env` 中设置，例如仅启用项目层学习：
+
+```json
+{
+  "env": {
+    "AUTOHARNESS_DISABLE_GLOBAL": "1"
+  }
+}
+```
+
+常用选项：
+
+| 环境变量 | 默认值 | 用途 |
+|---|---|---|
+| `AUTOHARNESS_DISABLE_GLOBAL` | `0` | 设为 `1`，仅管理项目层 |
+| `AUTOHARNESS_REFLECT_EVERY_N` | `50` | 每累计多少次主会话工具调用触发反思 |
+| `AUTOHARNESS_CONSOLIDATE_EVERY_N` | `250` | 同项目累计多少次工具调用触发整库整理；`0` 禁用 |
+| `AUTOHARNESS_RECALL_MODE` | `task` | 按任务召回，或使用启动目录模式 `catalog` |
+| `AUTOHARNESS_RECALL_MAX_BYTES` | `4096` | 每次事件的附加上下文字节上限 |
+| `AUTOHARNESS_NOTIFY` | 未设置 | 设为 `desktop`，开启运行结果桌面通知 |
+
+设置后从下一次会话起生效。全部选项见 [配置参考](docs/configuration.md)；后台调用的超时、并发和预算限制见 [运行诊断与限额](docs/runtime-controls.md)。
+
+## 评测与当前结果
+
+仓库分别记录了合成召回测试和一轮真实模型三组对照实验：
+
+| 测量 | 结果 | 说明 |
+|---|---|---|
+| 合成召回：20 个技能、18 条查询 | 任务排序召回 15/16，MRR 0.938，平均注入 170.7 字节；完整目录召回 16/16，平均 2092 字节 | 衡量相关技能的检索表现 |
+| 真实三组对照：6 类任务、24 个用例 | 不学习、基线和 KitHarness 三组均通过 6/6 任务、24/24 用例 | 使用 `deepseek-flash`，仅一轮 |
+| 同轮插件注入量 | 基线平均 582 字节，KitHarness 平均 506 字节 | 仅统计插件注入内容 |
+
+当前实验**尚未证明任务正确率提升**，也不足以推断普遍的 Token 节省。真实实验固定比较基线 `f2de058` 与 KitHarness `b232f74`；完整条件和证据见 [真实实验结果](docs/live-study-results.md)。
+
+想在本地复核，可按 [本地演示](docs/demo.md) 运行召回对照、评分夹具和已保存实验的离线重评分，均无需调用模型。评分夹具使用合成答案，不能作为模型效果证据。
+
+## 更新与卸载
+
+以下命令在**终端**执行。Claude Code 内也可通过 `/plugin` 菜单操作。
+
+更新时先刷新市场，再更新插件：
+
+```sh
 claude plugin marketplace update kitharness
 claude plugin update kitharness@kitharness
 ```
 
-Then **restart Claude Code** to apply — a version bump is a fresh cached copy, not a hot reload.
+更新后重启 Claude Code。先刷新目录可避免旧缓存造成“已是最新版”的误报。第三方市场默认关闭自动更新，可在 `/plugin` → **Marketplaces** → **kitharness** → **Enable auto-update** 中开启；发布新版本需提升 `plugin.json` 的 `version`。
 
-The refresh is first on purpose: without it, `update` checks a stale local catalog and may report
-`already at the latest version` when a newer release actually shipped.
+卸载：
 
-Third-party marketplaces have auto-update **off** by default. To make future releases hands-off,
-enable it once: `/plugin` → **Marketplaces** → **kitharness** → **Enable auto-update**. The
-installed copy is cached by the `version` in `plugin.json`; a release reaches users only when that
-field is bumped.
-
-### Uninstall
-
-```
+```sh
 claude plugin uninstall kitharness@kitharness
 claude plugin marketplace remove kitharness
 ```
 
-Uninstalling only stops it from running — the skills it landed and its own state live **outside** the
-plugin and stay on disk. To clear those too, delete its state dir (`~/.claude/kitharness/` global,
-`<repo>/.claude/kitharness/` per project) and the self-authored skills under `.claude/skills/` (each
-carries a `self-authored` ledger marker, so they're easy to tell from yours). Your own skills are
-never touched.
+卸载后，生成的技能和状态仍保留在磁盘上。需要彻底清理时，可删除项目与全局的 `kitharness/` 状态目录，以及带有 `self-authored` 账本标记的插件生成技能。请保留手写或从其他来源安装的技能。
 
-## Configuration
+## 常见问题
 
-Every knob is an `AUTOHARNESS_*` environment variable with a built-in default — nothing to
-configure unless you want to change the pace.
+### 为什么还没生成技能？
 
-**Placement — which layers it manages**
+默认自动反思需要累计 50 次主会话工具调用，纯聊天不推进计数。也可用 `/learn` 主动提炼。触发反思只是发起后台任务；是否成功以及提案被拒绝的原因，可查看 `.claude/kitharness/runs/`。
 
-| Variable | Default | What it does |
-|---|---|---|
-| `AUTOHARNESS_DISABLE_GLOBAL` | `0` | Set to `1` for a project-only deployment. Global create intents are rejected before staging and landing; global request/use/view counters, archiving, orphan sweeps, recall, curator snapshots, and metrics are skipped. Existing global skills stay untouched. Project-layer learning continues normally. |
-| `AUTOHARNESS_GLOBAL_ROOT` | _(unset)_ | Replaces `~/.claude` as the global layer's root. Unset, or set to blank, is stock behaviour — the real home. Set it when KitHarness itself has to run sandboxed (a pinned clone, CI, an evaluation harness) and the production skills library must stay untouched. The project layer is unaffected: it is still keyed to the session's own checkout. |
+### Python 环境有问题怎么办？
 
-**Cadence — when it learns**
+在仓库根目录执行只读诊断，不会登录或调用模型：
 
-| Variable | Default | What it does |
-|---|---|---|
-| `AUTOHARNESS_REFLECT_EVERY_N` | `50` | Reflection cadence, counted in **tool calls**, not turns: every main-session tool call advances a counter, and the turn that pushes it past N ends with a background reflection. A working stretch triggers; a conversation that only talks never does. Lower = learns faster and spawns more child sessions. |
-| `AUTOHARNESS_CONSOLIDATE_EVERY_N` | `250` | Curator cadence in **main-session tool calls**, accumulated across sessions in one project. Stop launches at most one pass when the threshold is crossed and preserves the remainder. `0` disables it; negative values fall back to the default. |
-| `AUTOHARNESS_DIGEST_EXCHANGES` | `20` | How many exchanges *before* the episode window are compressed into the reflector's prior-context digest (text + tool names only). Unused by the fork carrier, which replays the real conversation instead. |
-| `AUTOHARNESS_CARRIER` | `bundle` | What carries the reflection. `bundle` hands a redacted window + digest to a fresh subagent. `fork` resumes and forks the session that just ended, so the reflector reads the real conversation on the parent's warm cache. Stays `bundle` until the cache-hit measurement is in. |
-
-Chat-only turns do not advance either learning cadence. When both are due, Stop requests
-consolidation first and keeps reflection activity for a later Stop or SessionEnd. Background
-execution remains subject to the [runtime limits](docs/runtime-controls.md); a launch request
-is not proof that a model job completed. Existing request counters remain in turns for lifecycle
-aging; they are not converted into historical tool activity.
-
-**Recall — what the model sees**
-
-| Variable | Default | What it does |
-|---|---|---|
-| `AUTOHARNESS_INDEX_SUSPENDED` | `0` | Set to `1` to stop skill-index injection in both task and catalog modes. Lifecycle, use/view counters and last-run reporting continue. |
-| `AUTOHARNESS_RECALL_MODE` | `task` | Rank matching skills on `UserPromptSubmit`; `catalog` instead offers a bounded grouped directory at SessionStart. No query history is stored. |
-| `AUTOHARNESS_RECALL_MAX_BYTES` | `4096` | Maximum decoded UTF-8 bytes of this plugin's additional context per hook event, including headings and path hints. `0` suppresses context. This does not cap the whole conversation or host-native skill context. |
-| `AUTOHARNESS_RECALL_TOP_K` | `5` | Maximum selected skills per injection. Zero-overlap task queries inject none; entries that do not fit are skipped whole. |
-| `AUTOHARNESS_INDEX_DESC_MAX_CHARS` | `60` | Display-only prefix preview length in either recall mode; truncated previews end in `...`. Full descriptions remain available for matching and authoring. |
-| `AUTOHARNESS_SKILL_DESC_MAX_CHARS` | `1024` | Independent full-description authoring cap for create/update, in Unicode characters. Chinese/English trigger cues are accepted; legacy descriptions remain repairable by patch. |
-| `AUTOHARNESS_SKILL_BODY_MAX_LINES` | `25` | Altitude cap: a `SKILL.md` body over this many non-blank lines is rejected as a transcript rather than a rule. Backing detail belongs in the skill's `references/`. |
-
-Descriptions support Chinese conditions such as `当…时使用` and `用于…`, and quoted user phrases
-such as `“检查日期边界”`. Full text and display previews have separate limits; the preview is
-a shortened prefix, not a semantic summary. See [description authoring](docs/description-routing.md).
-Task ranking, explanations, token-estimation limits and the fixed synthetic comparison are documented
-in [task recall](docs/task-recall.md).
-
-**Lifecycle — what survives**
-
-| Variable | Default | What it does |
-|---|---|---|
-| `AUTOHARNESS_MATURITY_PROJECT` | `100` | Probation gate, project layer: after this many requests have arrived in its layer since a skill landed, it faces graduation review. Until then it's recalled as usual but can't be archived. |
-| `AUTOHARNESS_MATURITY_GLOBAL` | `300` | Same gate for the global layer — higher because a global skill loads in every project. |
-| `AUTOHARNESS_CAPACITY_PROJECT` | `50` | Cap on mature skills surviving graduation review, including viewed-only skills and those spared by suspended review. Lowest use/request rates go first; views do not raise that rate. Probation remains outside the cap, so this does not bound the full session-start index. |
-| `AUTOHARNESS_CAPACITY_GLOBAL` | `20` | Same cap for the global layer — smaller because its blast radius is every project. |
-| `AUTOHARNESS_GRADUATION_SUSPENDED` | `0` | Set to `1` to suspend graduation review when recall is unreliable. Mature zero-use skills still join capacity contention and can be archived under pressure. |
-| `AUTOHARNESS_SNAPSHOT_KEEP` | `5` | How many pre-run snapshots of each skill tree the curator keeps before merging. A merge is the one operation a single atomic rename can't undo. |
-
-**Notify — hearing about it as it happens**
-
-Off by default. The session-start summary line reports a run one session late, with counts but no
-names; these push the same run account out as soon as a drain finishes. Fail-open: the notifier runs
-only after the account is written and the intent queue cleared, so a missing, failing or hung
-notifier can delay a drain but never fail or replay it.
-
-| Variable | Default | What it does |
-|---|---|---|
-| `AUTOHARNESS_NOTIFY` | _(unset)_ | Set to `desktop` for a native notification per run — `osascript` on macOS, `notify-send` on Linux when installed (a silent no-op otherwise). Names what landed and what was rejected, e.g. `create foo, patch bar · rejected: baz`. On macOS the notification is attributed to Script Editor; if nothing appears, allow it under System Settings → Notifications. |
-| `AUTOHARNESS_NOTIFY_CMD` | _(unset)_ | A command (split like a shell argv, never run through a shell) that receives the run record JSON — the same shape as `runs/<run-id>.json` — on stdin, with the one-line summary in `AUTOHARNESS_NOTIFY_SUMMARY`. The hook for Slack, webhooks, or anything else. Skill names are redacted first, and the command runs with the child-session guard set, so a notifier that launches `claude` isn't itself captured. Works alongside `desktop`. |
-| `AUTOHARNESS_NOTIFY_TIMEOUT_S` | `5` | Whole seconds, minimum 1, per channel: how long a notifier may hold up a drain. The `/learn` drain runs inside the host's Stop hook, so this is also the most it can delay a turn. |
-
-Set them in the environment Claude Code launches with — either the shell
-(`export AUTOHARNESS_REFLECT_EVERY_N=10`) or the `env` map in `.claude/settings.json`:
-
-```json
-{ "env": { "AUTOHARNESS_REFLECT_EVERY_N": "10" } }
+```sh
+PYTHONPATH=src python3 -m autoharness.runtime doctor
 ```
 
-Hooks read the environment on every event, so a change applies from the next session. The defaults
-are deliberate placeholders pending empirical calibration; byte caps
-on captured windows and staged files are fixed constants, not env knobs.
+启动模块兼容 Python 3.9，会选择可用的 Python 3.11+。可通过 `AUTOHARNESS_PYTHON=/absolute/path/to/python3.12` 显式指定。详见 [运行诊断](docs/runtime-controls.md)。
 
-## How it works
+### 会修改我已有的技能吗？
 
-A learning pipeline runs beside the host. Skills are plain native files, recalled by the host's own
-name-and-description mechanism as if a human had written them — that path is left untouched. On top
-of it, task mode offers lexical matches when a prompt is submitted. Catalog mode offers a bounded
-directory at session start. Both use only agent-created skills and keep retrieval separate from use counts.
+只管理通过本插件生成、带有专属账本标记的技能。用户手写或从其他来源安装的技能不在管理范围内。
 
-<p align="center"><img src="docs/assets/pipeline.svg" alt="KitHarness pipeline: host → CAP → REF → promoter → .claude/skills → host, with the curator feeding the promoter, IDX injecting the index at session start, and MNG and LED beside" width="760" /></p>
+### 可以只注册 MCP 服务吗？
 
-<sub>Diagram source: [`docs/assets/pipeline.mmd`](docs/assets/pipeline.mmd) — re-render to `pipeline.svg` after editing.</sub>
+应按快速开始安装为插件。代理允许列表引用插件命名空间下的工具名，手动注册可能造成名称不匹配。服务命名和项目配置优先级见 [MCP 服务命名](docs/how-it-works.md#mcp-服务命名)。
 
-The diagram shows the original catalog path; default task mode injects at UserPromptSubmit instead.
+## 文档与贡献
 
-| Component | Role |
+| 文档 | 内容 |
 |---|---|
-| **CAP** · capture | Hook-driven dumb pipe: grabs each turn (user input, agent output, tool I/O), redacts at egress, points back at the host log instead of copying it. It also holds the trigger, which is deterministic and counts one thing — tool calls. The turn that crosses the threshold ends with a reflection; nothing about the content is judged here. |
-| **REF** · reflect | Reads the episode, compares it against the existing skill index, and decides add / merge / patch / drop a support file / delete — emitting an intent (body, delta, or path, plus reason and evidence). Where a new lesson contradicts an older skill, it must rewrite the stale one in the same run rather than leave the library arguing with itself. Proposes only; it has no write tools, and a fork carrier's inherited ones are denied at the hook. |
-| **promoter** · validate·store | The only writer. Lints the intent in memory (safety, structure, ledger, completeness, self-authored-only) and on pass does an atomic rename into the live skill directory. Full descriptions have their own authoring limit and accept English/Chinese trigger cues independently of the compact index preview. A fold must name the skill that absorbed the deleted one, and the umbrella has to be a live skill KitHarness manages — an invented name fails the whole intent rather than losing the content. Each run leaves an account of what landed and what was rejected. |
-| **IDX** · surface | Scores the full name/category/description with field-weighted BM25 and English/Chinese terms, selects matches within a byte and top-K budget, and displays short previews. Read-only CLI explanations show matched terms, scores and exclusion reasons. Catalog mode retains the grouped startup directory; last-run reporting remains at SessionStart. This is lexical retrieval, not embedding similarity or a measured task-success improvement. |
-| **MNG** · lifecycle | Daemon-free: recomputed lazily at session start, once per session. Ranks symbols by usage rate — loads over the requests that arrived since the symbol was created, so the measure is opportunity-relative and a closed laptop doesn't age anyone out (the wall-clock replacement). Three signals are kept apart: a **load** (the model invoked the skill) is the only thing the rate counts; a **view** (a session read into the skill's directory) is evidence it had recall value, but not adherence; a **patch** marks the skill being improved, so a load after one reads as reuse-after-improvement. New symbols sit in probation until they've had a fair sample of requests: recalled as usual, but neither counted against the cap nor evictable. At maturity, graduation review archives only a symbol that was never loaded *and* never viewed — no evidence of use is not the same as evidence of no use. For graduates, capacity contention is the only death — nothing is archived until a layer's mature pool exceeds its cap, then the lowest rates go first. Archives, never deletes: an archived symbol is a directory moved out of recall, and moving it back revives it. |
-| **curator** · consolidate | The rarer whole-library pass: reads the library as one thing and folds near-duplicates under umbrellas, which is the judgment a single episode can't make. Snapshots both skill trees before it starts, since a merge is the one operation an atomic rename can't undo. |
-| **LED** · ledger | Per-symbol append-only sidecar: why each symbol was born or changed, with evidence and a reflection watermark. Kept out of the skill body so recall stays clean. |
+| [配置参考](docs/configuration.md) | 全部环境变量、默认值和行为说明 |
+| [技能学习流程](docs/how-it-works.md) | 组件职责、文件结构与观察学习过程 |
+| [可靠技能演进](docs/reliable-skill-evolution.md) | 事务恢复、版本快照与回滚 |
+| [任务感知召回](docs/task-recall.md) | 排序、预算和可解释召回 |
+| [运行诊断与限额](docs/runtime-controls.md) | 解释器、并发、超时与预算 |
+| [任务评测](docs/task-evaluation.md) | 三组协议、评分工具和复现方法 |
+| [真实实验结果](docs/live-study-results.md) | 实验条件、结果和证据归档 |
+| [宿主预检记录](docs/live-evaluation.md) | 认证检查和试运行记录 |
+| [迭代计划](docs/PLAN.md) | 开发进度与验收记录 |
 
-## Walkthrough: watching it learn
+欢迎提交 [Issue](https://github.com/jiapy97/KitHarness/issues) 或 Pull Request。开发时需另行安装 `pytest` 和 `ruff`，在仓库根目录执行与 CI 一致的检查：
 
-Everything KitHarness does lands on disk as plain files — a demo is just opening them in the
-right order. For a fast-paced run, speed up the loop first (see [Configuration](#configuration)):
-
-```json
-{ "env": { "AUTOHARNESS_REFLECT_EVERY_N": "3",
-           "AUTOHARNESS_MATURITY_PROJECT": "5",
-           "AUTOHARNESS_CAPACITY_PROJECT": "2" } }
+```sh
+ruff check .
+python3 -m pytest -m "not live" -q
 ```
 
-**1 · The pipeline running.** Work a few normal turns on anything non-trivial (debug something,
-figure out a workflow). Once a turn pushes the tool-call count past N, a background reflection
-fires as that turn ends — nothing blocks your session. Its bookkeeping is visible in the state dir:
+## 致谢
 
-```
-ls .claude/kitharness/        # per project — ~/.claude/kitharness/ for the global layer
-  requests                     # layer request counter (MNG's denominator)
-  session-<id>                 # tool calls counted toward the next reflection
-  offset-<id>                  # byte watermark: where the last captured window ended
-  intents/                     # queued skill proposals awaiting the promoter
-  runs/<run-id>.json           # what that run proposed, landed, and rejected — with reasons
-  last_run.json                # the summary line awaiting the next session start
-  snapshots/                   # skill-tree tarballs the curator takes before merging
-```
+[NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) 的自动技能创建与记忆整理设计，为本项目提供了参考。
 
-**2 · A skill is born.** After a reflection lands, a new folder appears under `.claude/skills/`
-(project) or `~/.claude/skills/` (global — for techniques that aren't repo-specific). Use `ls -la`:
-the interesting files are hidden.
-
-```
-.claude/skills/<name>/
-  SKILL.md                     # the skill itself — plain native format, nothing proprietary
-  .ledger.jsonl                # LED: why it was born / changed (append-only)
-  .sidecar.json                # lifecycle counters MNG reads
-  references/evidence-*.md     # the transcript slice that justified each ledger entry
-  scripts/ templates/ ...      # optional support files the reflector attached
-```
-
-**3 · LED — the paper trail.** `cat .ledger.jsonl` — one JSON line per lifecycle event:
-
-```json
-{"action": "create", "reason": "User asked about the correct command to update a plugin ...", "evidence": "references/evidence-21cd22cc.md"}
-{"action": "patch",  "reason": "User discovered /reload-plugins is required in-session ...",  "evidence": "references/evidence-1a4ec51d.md"}
-```
-
-`action` + `reason` + `evidence` — and the evidence file is a real, redacted slice of the session
-that taught it, materialized by the promoter (content-addressed, so the model never names files).
-This is the "evidence kept for later" from the table above.
-
-**4 · An update, not a duplicate.** Hit the same scenario again with a correction ("that's missing
-a step") and let the next reflection run. The skill layer does **not** grow a near-duplicate:
-the existing skill's `SKILL.md` changes and its ledger appends a `patch`/`update` line — the
-two-line ledger above is a real example. `git diff` on a project-layer skill shows the edit.
-
-**5 · The next session opens knowing.** Start a new session and the first thing it receives is a
-grouped index of these skills — plus a one-line report of the last run, so a proposal that got
-rejected says so instead of vanishing. The host's own recall still runs untouched underneath;
-the index only makes sure the library is in front of the model either way.
-
-**6 · Use is counted three ways.** `cat .sidecar.json`: `use` ticks when the model actually loads
-the skill and is the only thing the survival rate counts; `view` ticks when a session reads into
-the skill's directory — recall value, but not adherence; `patch` ticks when the promoter lands an
-improvement, so a `use` after one is reuse-after-improvement. Keeping them apart is what stops a
-skill that was merely browsed from looking like one that was followed.
-
-**7 · Retirement is an archive, not a delete.** Two paths out, both a folder move to
-`.claude/skills/.archive/<name>/` — ledger, evidence and all, out of recall. Graduation review
-archives a skill only if its whole probation passed with no use *and* no view; after graduation,
-once a layer's mature pool exceeds capacity the lowest-usage-rate skills go. Moving the folder
-back revives it, history intact. With the shrunk knobs above this fires within one session; at
-defaults it takes hundreds of requests. A skill merged into another is archived the same way, but
-its ledger names the umbrella that absorbed it — a fold and a pruning stay distinguishable.
-
-**8 · Yours are never touched.** Every KitHarness-authored skill carries the ledger marker;
-anything without it — skills you wrote or installed — is invisible to the promoter and MNG.
-
-## Task evaluation toolkit
-
-Step 10 provides a pinned three-arm task protocol (`no_learning`, baseline,
-KitHarness), six structured workflow tasks, deterministic JSON grading, failure accounting,
-and telemetry coverage. It prepares and scores artifacts without invoking models or executing
-candidate code. The bundled smoke report uses synthetic answers and is not evidence of model gains.
-See [task evaluation](docs/task-evaluation.md) for reproduction and the remaining live-host protocol.
-The [host preflight](docs/live-evaluation.md) preserves authentication checks and failed pilot attempts.
-Step 11 completed a [controlled live DeepSeek study](docs/live-study-results.md), including real MCP
-reflection/curation, frozen libraries, all-phase accounting, and an offline-verifiable evidence archive.
-All three arms passed the 24 synthetic cases; this small run does not demonstrate an accuracy gain.
-
-## How it compares
-
-A self-learning skill layer can be validated against a held-out benchmark, or against its own use.
-The live path still takes the second. The synthetic recall check and the one live study are separate measurements; they are not a held-out accuracy win.
-
-| | Grow unbounded | Offline-gated self-edit<br/>([Self-Harness](https://arxiv.org/abs/2606.09498)) | Timer + daemon<br/>([hermes-agent](https://github.com/NousResearch/hermes-agent)) | KitHarness |
-| --- | --- | --- | --- | --- |
-| Bounds the skill layer | No | Yes | Yes | Yes |
-| Validation signal | None | Held-out benchmark score | Wall-clock inactivity | Adherence in use |
-| What starts a learning pass | — | An offline batch | Idle time and elapsed days | Work done in the session |
-| Puts its own library in front of the model | No | No | Yes | Yes |
-| Needs a benchmark / oracle | No | Yes | No | No |
-| Needs a resident daemon | No | No | Yes | No |
-
-## Acknowledgements
-
-[NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) — studying its
-auto-skill-creation and memory-consolidation design helped sharpen this adherence-based,
-daemon-free take.
-
-Changes and measurements are listed in [docs/PLAN.md](docs/PLAN.md). This checkout is <https://github.com/jiapy97/KitHarness>.
-
-## License
+## 许可证
 
 [MIT](LICENSE)
-
----
-
-KitHarness · <https://github.com/jiapy97/KitHarness>
