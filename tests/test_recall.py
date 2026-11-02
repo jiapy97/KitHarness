@@ -266,7 +266,7 @@ def test_catalog_mode_reserves_budget_for_last_run_summary(roots, monkeypatch):
     state.mkdir(parents=True, exist_ok=True)
     (state / "last_run.json").write_text(json.dumps({"run_id": "previous", "landed": 1}))
     result = on_session_start.on_session_start(roots=roots)
-    assert result["context"].startswith("autoharness last run")
+    assert result["context"].startswith("KitHarness last run")
     assert len(result["context"].encode("utf-8")) <= 280
     monkeypatch.setattr(config, "RECALL_MAX_BYTES", 0)
     assert on_session_start.on_session_start(roots=roots)["context"] is None

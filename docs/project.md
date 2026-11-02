@@ -1,12 +1,12 @@
 # KitHarness 项目说明
 
-KitHarness 是 [tigerless-labs/autoharness](https://github.com/tigerless-labs/autoharness) 在提交 `f2de058` 上的分支。反思者、整理者、确定性执行器和生命周期退役都还在。许可证仍是 MIT，[LICENSE](../LICENSE) 里的上游版权声明没有改。
+KitHarness 跑在 Claude Code 上。它从真实会话里学习技能，合并同类项，按使用情况更新，并清掉自己写过、后来不再用的技能。反思者、整理者、确定性执行器和生命周期退役都在这条链路上。许可证是 MIT，见 [LICENSE](../LICENSE)。
 
-本仓库是私有远程 `jiapy97/KitHarness`。安装入口不使用上游市场。产品名是 KitHarness；插件 id 仍是 `autoharness`，市场 id 是 `kitharness`。这两个名字必须成对出现，因为钩子、MCP 工具名和状态目录 `.claude/autoharness` 都绑在插件 id 上。改掉它会拆开已有状态，也会和已归档的真实实验对不上。
+本仓库是 `jiapy97/KitHarness`。插件 id 和市场 id 都是 `kitharness`，状态目录是 `.claude/kitharness`。
 
 ```
 /plugin marketplace add /absolute/path/to/KitHarness
-/plugin install autoharness@kitharness
+/plugin install kitharness@kitharness
 ```
 
 ## 实际加上的三件事
@@ -21,17 +21,17 @@ KitHarness 是 [tigerless-labs/autoharness](https://github.com/tigerless-labs/au
 
 每次提交的提示用可解释的词项排序挑选技能，并限制注入字节。中文触发可以写进描述；完整描述不再被 60 字预览截断。
 
-固定的 20 个合成技能、18 条查询上：任务排序召回 15/16 条相关技能，MRR 0.938，平均注入 171.6 字节。原版式完整目录是 16/16、平均 2093 字节。这是合成元数据对照，不是真实任务成功率。见 [任务感知召回](task-recall.md)。
+固定的 20 个合成技能、18 条查询上：任务排序召回 15/16 条相关技能，MRR 0.938，平均注入 170.7 字节。完整目录是 16/16、平均 2092 字节。这是合成元数据对照，不是真实任务成功率。见 [任务感知召回](task-recall.md)。
 
 ### 用同一套题看学了有没有用
 
-6 类任务、24 个用例。一组不学习，一组用上游 `f2de058`，一组用第九步时的 KitHarness `b232f74`。离线工具只准备和评分，不执行候选代码。
+6 类任务、24 个用例。一组不学习，一组用基线 `f2de058`，一组用第九步时的 KitHarness `b232f74`。离线工具只准备和评分，不执行候选代码。
 
-一轮真实实验使用 `deepseek-flash`，只重复一次。三组都是 6/6 任务、24/24 用例正确。插件注入平均字节是原版 582、KitHarness 506。无学习组同样满分，而且更便宜。所以这轮**没有证明正确率提升**，也不能写成整体 Token 节省。报告在 [真实实验结果](live-study-results.md)。
+一轮真实实验使用 `deepseek-flash`，只重复一次。三组都是 6/6 任务、24/24 用例正确。插件注入平均字节是基线 582、KitHarness 506。无学习组同样满分，而且更便宜。所以这轮**没有证明正确率提升**，也不能写成整体 Token 节省。报告在 [真实实验结果](live-study-results.md)。
 
 ## 不要写成简历成绩的内容
 
-- 上游材料里的 CORE-Bench 或其他公开基准分差，不是本仓库测出来的。
+- 没有在公开基准上测出正确率提升。不要把别人的分数写成这个仓库的结果。
 - 24/24 只说明这组题三方都做对了，不能说明学习提高了能力。
 - 13.1% 是这一轮插件注入字节的差别。技能库不同，只有一轮，而且不是整个会话的 Token。
 - 整理者归档技能，不等于生命周期退役。

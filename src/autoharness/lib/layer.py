@@ -6,7 +6,7 @@ builds filesystem paths: privilege escalation / path traversal must be stopped h
 
 The project layer's identity is the session's project dir: CLAUDE_PROJECT_DIR, which the host hands
 every hook, else the process cwd. Not the cwd first — a hook inherits the shell cwd, which the host
-carries across Bash calls, so after a `cd sub` it would seed a stray sub/.claude/autoharness. Inside a
+carries across Bash calls, so after a `cd sub` it would seed a stray sub/.claude/kitharness. Inside a
 linked git worktree that dir is remapped to the main worktree root, so counters / intents / skills
 from all worktrees of one repo land in one place and survive worktree removal. Only the
 linked-worktree case is remapped (git-dir differs from git-common-dir): plain repos, repo
@@ -138,7 +138,7 @@ def archive_dir(layer, root=None):
 
 
 def state_dir(layer, root=None):
-    return _root(layer, root) / "autoharness"
+    return _root(layer, root) / "kitharness"
 
 
 def symbol_dir(layer, name, root=None):

@@ -31,7 +31,7 @@ def test_mcp_server_receives_no_relay_key_and_cannot_spawn_models(tmp_path):
     env = study.context_env(tmp_path, "reflector-original", provider(), source=tmp_path / "pinned", child=True)
     path = study.mcp_config(tmp_path, tmp_path / "pinned", "reflector-original")
     config = json.loads(path.read_text())
-    mcp_env = config["mcpServers"]["plugin_autoharness_stage_skill"]["env"]
+    mcp_env = config["mcpServers"]["plugin_kitharness_stage_skill"]["env"]
     assert mcp_env["ANTHROPIC_AUTH_TOKEN"] == "" and mcp_env["ANTHROPIC_API_KEY"] == ""
     assert "private-real-key" not in path.read_text()
     assert env["AUTOHARNESS_CHILD_SESSION"] == "1"

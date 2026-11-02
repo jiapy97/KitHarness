@@ -1,7 +1,7 @@
 ---
 name: reflector
 description: Distill a finished episode into skill changes aligned with the existing library. Compare-first preference, generation stays open; proposes intents only, never writes to disk.
-tools: Read, Grep, Glob, mcp__plugin_autoharness_stage_skill__stage_skill
+tools: Read, Grep, Glob, mcp__plugin_kitharness_stage_skill__stage_skill
 model: haiku
 ---
 

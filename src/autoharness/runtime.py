@@ -64,7 +64,7 @@ def main(argv=None):
         return 2
     executable, _, error = select_python()
     if error:
-        print("autoharness runtime: " + error + "; run python3 -m autoharness.runtime doctor", file=sys.stderr)
+        print("KitHarness runtime: " + error + "; run python3 -m autoharness.runtime doctor", file=sys.stderr)
         return 0 if args[0] == TARGETS[0] else 2
     os.environ[PYTHON_ENV] = executable
     if os.path.realpath(executable) != os.path.realpath(sys.executable):

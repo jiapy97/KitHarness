@@ -11,18 +11,21 @@ def _load(rel):
 def test_install_entry_matches_the_two_manifest_names():
     plugin = _load(".claude-plugin/plugin.json")
     market = _load(".claude-plugin/marketplace.json")
-    assert plugin["name"] == "autoharness"
+    assert plugin["name"] == "kitharness"
     assert plugin["license"] == "MIT"
     assert market["name"] == "kitharness"
-    assert [item["name"] for item in market["plugins"]] == ["autoharness"]
+    assert [item["name"] for item in market["plugins"]] == ["kitharness"]
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    project = (ROOT / "docs/project.md").read_text(encoding="utf-8")
     assert '<h1 align="center">KitHarness</h1>' in readme
-    assert "/plugin install autoharness@kitharness" in readme
-    assert "marketplace add tigerless-labs/autoharness" not in readme
-    assert "https://github.com/tigerless-labs/autoharness" in readme
+    assert "/plugin install kitharness@kitharness" in readme
+    for surface in (readme, project):
+        lowered = surface.lower()
+        assert "autoharness" not in lowered.replace("autoharness_", "")
+        assert "tigerless" not in lowered
 
 
-def test_upstream_license_and_measured_limits_stay_visible():
+def test_license_and_measured_limits_stay_visible():
     license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
     assert license_text.startswith("MIT License\n")
     assert "Copyright (c) 2026 ryan" in license_text

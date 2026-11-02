@@ -40,7 +40,7 @@ def complete(path):
     if path is not None:
         with lock.file_lock(path.with_suffix(".lock")):
             owner = json.loads(path.read_text(encoding="utf-8"))
-            root = path.parents[2]  # <project>/autoharness/run_owners/<run>.json
+            root = path.parents[2]  # <project>/kitharness/run_owners/<run>.json
             if not intent_queue.pending(path.stem, root):
                 owner["status"] = "complete"
                 run_owners.write(path, owner)

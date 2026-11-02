@@ -14,5 +14,5 @@ def test_plugin_end_to_end_on_real_host():
     pytest.skip(
         "Manual/live: on a real Claude Code host with an isolated HOME, install the plugin, shrink the "
         "AUTOHARNESS_* knobs as in README 'Walkthrough: watching it learn', work a few turns, then check "
-        ".claude/autoharness/runs/ and .claude/skills/ for what landed and why."
+        ".claude/kitharness/runs/ and .claude/skills/ for what landed and why."
     )

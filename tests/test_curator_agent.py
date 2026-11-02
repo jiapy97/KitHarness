@@ -16,7 +16,7 @@ def test_curator_tools_are_least_privilege():
     for allowed in ("Read", "Grep", "Glob"):
         assert allowed in tools
     # same emit-only write face as the reflector — propose intents, never touch the live tree
-    assert "mcp__plugin_autoharness_stage_skill__stage_skill" in tools
+    assert "mcp__plugin_kitharness_stage_skill__stage_skill" in tools
     for forbidden in ("Write", "Edit", "Bash"):
         assert forbidden not in tools
 

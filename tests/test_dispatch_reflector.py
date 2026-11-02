@@ -4,7 +4,7 @@ from autoharness.hook.dispatch import _is_reflector
 
 
 def test_canonical_reflector():
-    assert _is_reflector({"agent_type": "autoharness:reflector"})
+    assert _is_reflector({"agent_type": "kitharness:reflector"})
 
 
 def test_other_namespace_reflector():

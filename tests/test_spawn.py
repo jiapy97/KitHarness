@@ -89,9 +89,9 @@ def test_build_bundle_prepends_digest_when_present():
 
 
 def test_build_command_carries_agent_and_print():
-    cmd = spawn.build_command(agent="autoharness:reflector", claude_bin="claude")
+    cmd = spawn.build_command(agent="kitharness:reflector", claude_bin="claude")
     assert cmd[0] == "claude"
-    assert "--agent" in cmd and "autoharness:reflector" in cmd
+    assert "--agent" in cmd and "kitharness:reflector" in cmd
     assert "-p" in cmd
     # autonomous spawn: no human to approve tool calls → must skip permission prompts
     assert "--dangerously-skip-permissions" in cmd
@@ -359,7 +359,7 @@ def test_run_curator_snapshots_before_spawn(tmp_path):
     order = []
     spawn.run_curator("c1", roots=roots,
                       spawn_fn=lambda a, e, b: order.append("spawned"))
-    snaps = list((roots["project"] / "autoharness" / "snapshots").glob("*.tar.gz"))
+    snaps = list((roots["project"] / "kitharness" / "snapshots").glob("*.tar.gz"))
     assert snaps and order == ["spawned"]
 
 
@@ -368,7 +368,7 @@ def test_snapshot_rotation_keeps_newest(tmp_path, monkeypatch):
     roots = _snap_roots(tmp_path)
     for i in range(4):
         spawn.run_curator(f"c{i}", roots=roots, spawn_fn=lambda a, e, b: None)
-    snaps = (roots["project"] / "autoharness" / "snapshots").glob("*.tar.gz")
+    snaps = (roots["project"] / "kitharness" / "snapshots").glob("*.tar.gz")
     assert len(list(snaps)) <= 2 * 2  # per-layer keep
 
 
@@ -415,7 +415,7 @@ def test_run_records_spawn_error_in_run_account(tmp_path):
     with pytest.raises(jobs.Deferred, match="child_failed"):
         spawn.run("WINDOW", "run-x", roots=roots, spec_path=config.FORMAT_SPEC,
                   spawn_fn=lambda a, e, b: crash)
-    account = json.loads((roots["project"] / "autoharness" / "runs" / "run-x.json").read_text())
+    account = json.loads((roots["project"] / "kitharness" / "runs" / "run-x.json").read_text())
     assert account["run_id"] == "run-x"
     assert account["spawn_error"]["returncode"] == 3
     assert "agent not found" in account["spawn_error"]["stderr_tail"]
@@ -438,7 +438,7 @@ def test_crashed_child_quarantines_staged_proposals(tmp_path):
     with pytest.raises(jobs.Deferred, match="child_failed"):
         spawn.run("WINDOW", "run-x", roots=roots, spec_path=config.FORMAT_SPEC,
                   spawn_fn=crashed_after_staging)
-    account = json.loads((roots["project"] / "autoharness" / "runs" / "run-x.json").read_text())
+    account = json.loads((roots["project"] / "kitharness" / "runs" / "run-x.json").read_text())
     assert account["spawn_error"]["returncode"] == 3
     assert "verdicts" not in account
     assert intent_queue.pending("run-x", roots["project"])
@@ -451,7 +451,7 @@ def test_successful_spawn_writes_no_spawn_error(tmp_path):
     ok = subprocess.CompletedProcess([config.CLAUDE_BIN], 0, "", "")
     spawn.run("WINDOW", "run-ok", roots=roots, spec_path=config.FORMAT_SPEC,
               spawn_fn=lambda a, e, b: ok)
-    account = json.loads((roots["project"] / "autoharness" / "runs" / "run-ok.json").read_text())
+    account = json.loads((roots["project"] / "kitharness" / "runs" / "run-ok.json").read_text())
     assert "spawn_error" not in account
     assert account["job"]["status"] == "success"
     assert account["job"]["usage"] == {"available": False}

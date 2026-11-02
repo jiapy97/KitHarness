@@ -1,6 +1,6 @@
 # 本地演示
 
-这三步都在仓库根目录运行，使用 Python 3.12，不调用模型，不读个人技能库，也不改已保存的实验证据。它们对应项目说明里的三块实测，不是录屏成片。上游那份录屏稿仍是 [demo-video-script.md](demo-video-script.md)，命令还指向上游市场，不能拿来安装这个分支。
+这三步都在仓库根目录运行，使用 Python 3.12，不调用模型，不读个人技能库，也不改已保存的实验证据。它们对应项目说明里的三块实测。
 
 ## 1. 召回对照
 
@@ -8,7 +8,7 @@
 PYTHONPATH=src python3.12 tools/evaluate_recall.py --output /tmp/kitharness-recall-report.json
 ```
 
-对照 [evals/recall/report.json](../evals/recall/report.json)。任务排序应仍是相关召回 15/16、MRR 0.9375、平均约 171.6 字节。完整目录仍是 16/16、2093 字节。不要把这次召回写成任务做对了。
+对照 [evals/recall/report.json](../evals/recall/report.json)。任务排序应仍是相关召回 15/16、MRR 0.9375、平均约 170.7 字节。完整目录仍是 16/16、2092 字节。不要把这次召回写成任务做对了。
 
 ## 2. 评分夹具
 

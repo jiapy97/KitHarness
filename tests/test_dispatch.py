@@ -191,7 +191,7 @@ def test_reflector_read_not_counted(tmp_path):
     skill_store.write_body("project", "foo", "b", root)
     sidecar.create("project", "foo", anchor=0, root=root)
     out = dispatch.dispatch({"hook_event_name": "PreToolUse", "tool_name": "Read",
-                             "agent_type": "autoharness:reflector",
+                             "agent_type": "kitharness:reflector",
                              "tool_input": {"file_path": str(root / "skills" / "foo" / "SKILL.md")}},
                             roots=roots)
     assert not out["result"]["counted"]
@@ -200,7 +200,7 @@ def test_reflector_read_not_counted(tmp_path):
 
 def test_reflector_write_is_denied(tmp_path):
     out = dispatch.dispatch({"hook_event_name": "PreToolUse", "tool_name": "Write",
-                             "agent_type": "autoharness:reflector"}, roots=_roots(tmp_path))
+                             "agent_type": "kitharness:reflector"}, roots=_roots(tmp_path))
     assert out["deny"] is True
 
 
@@ -286,7 +286,7 @@ def test_emit_deny_is_single_line_json_on_stdout_only(capsys):
 def test_denied_reflector_write_reaches_the_host_as_deny_json(tmp_path, capsys):
     # end to end through the dispatcher: dispatch() decides, _emit is what the host actually reads
     dispatch._emit(dispatch.dispatch({"hook_event_name": "PreToolUse", "tool_name": "Write",
-                                       "agent_type": "autoharness:reflector"}, roots=_roots(tmp_path)))
+                                       "agent_type": "kitharness:reflector"}, roots=_roots(tmp_path)))
     hso = json.loads(capsys.readouterr().out)["hookSpecificOutput"]
     assert hso["permissionDecision"] == "deny"
     assert "stage intents" in hso["permissionDecisionReason"]
@@ -337,7 +337,7 @@ def test_child_session_tool_outside_allowlist_denied(tmp_path, monkeypatch, tool
 
 @pytest.mark.parametrize(
     "tool",
-    ["Read", "Grep", "Glob", "mcp__plugin_autoharness_stage_skill__stage_skill"],
+    ["Read", "Grep", "Glob", "mcp__plugin_kitharness_stage_skill__stage_skill"],
 )
 def test_child_session_read_and_stage_allowlist_is_not_denied(tmp_path, monkeypatch, tool):
     monkeypatch.setenv(config.CHILD_SESSION_ENV, "1")

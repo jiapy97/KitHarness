@@ -28,7 +28,7 @@ MIN_PYTHON = (3, 11)  # tomllib (lib/redact.py) entered the stdlib here; README 
 
 
 def _below_floor(version):
-    return (f"autoharness: needs Python {MIN_PYTHON[0]}.{MIN_PYTHON[1]}+, got "
+    return (f"KitHarness: needs Python {MIN_PYTHON[0]}.{MIN_PYTHON[1]}+, got "
             f"{version[0]}.{version[1]} at {sys.executable}. Every hook is off for this session; "
             f"point the hooks.json commands at a newer interpreter.")
 
@@ -58,7 +58,7 @@ _CHILD_ALLOWED_TOOLS = frozenset((
     "Read",
     "Grep",
     "Glob",
-    "mcp__plugin_autoharness_stage_skill__stage_skill",
+    "mcp__plugin_kitharness_stage_skill__stage_skill",
 ))
 
 
@@ -175,7 +175,7 @@ def dispatch(event, *, roots=None, reflect=None, consolidate=None):
             tool = event.get("tool_name")
             child = bool(os.environ.get(config.CHILD_SESSION_ENV))
             if child and tool not in _CHILD_ALLOWED_TOOLS:
-                return {"deny": True, "reason": "autoharness child may only read and stage intents"}
+                return {"deny": True, "reason": "KitHarness child may only read and stage intents"}
             if tool in _WRITE_TOOLS and _is_reflector(event):
                 return {"deny": True, "reason": "reflector may only stage intents, not write files"}
             if not child:  # direction H: every main-session tool call advances the activity numerator

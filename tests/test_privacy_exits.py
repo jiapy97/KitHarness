@@ -48,7 +48,7 @@ def test_ledger_redacts_nested_metadata_without_mutating_caller(tmp_path):
 def test_queue_redacts_reason_and_evidence(tmp_path):
     intent_queue.append("run", {"action": "patch", "reason": f"api_key={SECRET}",
                                 "evidence": f"password={SECRET}"}, tmp_path)
-    text = (tmp_path / "autoharness/intents/run.jsonl").read_text()
+    text = (tmp_path / "kitharness/intents/run.jsonl").read_text()
     assert SECRET not in text
 
 

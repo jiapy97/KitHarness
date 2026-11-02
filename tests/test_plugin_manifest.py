@@ -10,7 +10,7 @@ def _load(rel):
 
 def test_plugin_json_has_identity():
     m = _load(".claude-plugin/plugin.json")
-    assert m["name"] == "autoharness"
+    assert m["name"] == "kitharness"
     assert m["version"]
 
 
@@ -62,7 +62,7 @@ def test_no_project_mcp_json_at_repo_root():
 
 def test_marketplace_lists_this_plugin():
     mk = _load(".claude-plugin/marketplace.json")
-    assert "autoharness" in [p["name"] for p in mk["plugins"]]
+    assert [p["name"] for p in mk["plugins"]] == ["kitharness"]
 
 
 def test_agents_reflector_present():

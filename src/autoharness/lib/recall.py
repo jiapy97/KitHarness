@@ -25,10 +25,10 @@ _PIECES = re.compile(r"[a-z]+(?:\+\+|#)?|[0-9]+|[\u3400-\u9fff]+")
 _STOP = frozenset("a an and are as at be by can do for from how i in is it me of on or please that the this to use when with you your redacted".split())
 _ZH_STOP = frozenset(("用于", "适用", "用来", "使用", "需要", "当需", "时使", "时候"))
 INDEX_HEADER = (
-    "Self-accumulated skills (autoharness-managed). When the task at hand matches a "
+    "Self-accumulated skills (KitHarness-managed). When the task at hand matches a "
     "description below, you MUST consider loading that skill before proceeding."
 )
-TASK_HEADER = "Skills related to this request (autoharness-managed; lexical matches):"
+TASK_HEADER = "Skills related to this request (KitHarness-managed; lexical matches):"
 
 
 def tokens(text):

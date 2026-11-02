@@ -79,7 +79,7 @@ def build_curator_bundle(index, spec):
 # forked conversation) — never as --agent/--system-prompt, which would invalidate the parent prefix.
 # Carries the F1 reconcile duty: a new rule must supersede contradicting old statements.
 FORK_INSTRUCTION = (
-    "Autoharness reflection pass (forked session: the conversation above is your evidence source).\n"
+    "KitHarness reflection pass (forked session: the conversation above is your evidence source).\n"
     "Compare-first against the skill index below: prefer patching an existing skill over creating a\n"
     "new one; distill only class-level reusable lessons, never session narratives. When you distill\n"
     "a new rule or preference, search the managed skill trees for overlapping or contradicting\n"

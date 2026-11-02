@@ -16,7 +16,7 @@ from autoharness.lib import live_accounting as accounting
 from autoharness.lib import live_auth, live_pilot, redact, task_eval
 
 MODEL = accounting.MODEL
-STAGE_TOOL = "mcp__plugin_autoharness_stage_skill__stage_skill"
+STAGE_TOOL = "mcp__plugin_kitharness_stage_skill__stage_skill"
 READ_TOOLS = ("Read", "Grep", "Glob")
 ALLOWANCE = {"pilot": 0.1, "warmup": 0.1, "reflector": 0.75, "curator": 0.75, "evaluation": 0.15}
 SOLVER_SYSTEM = "Solve the supplied synthetic workflow task. You may read relevant learned skills. Return only the requested JSON object. Do not modify files."
@@ -121,7 +121,7 @@ def mcp_config(visible, source, call_id):
            "AUTOHARNESS_GLOBAL_ROOT": str(visible / "global-config"), "AUTOHARNESS_DISABLE_GLOBAL": "1",
            "AUTOHARNESS_CHILD_SESSION": "1", "AUTOHARNESS_RUN_ID": call_id,
            "ANTHROPIC_AUTH_TOKEN": "", "ANTHROPIC_API_KEY": "", "ANTHROPIC_BASE_URL": ""}
-    value = {"mcpServers": {"plugin_autoharness_stage_skill": {
+    value = {"mcpServers": {"plugin_kitharness_stage_skill": {
         "command": str(Path(sys.executable).resolve()), "args": ["-m", "autoharness.stage_skill.server"], "env": env}}}
     path = visible / "sessions" / call_id / "mcp.json"
     save(path, value)
@@ -207,7 +207,7 @@ def call(root, plan, grant, provider, *, call_id, stage, condition, visible, pro
     advertised = set(initial.get("tools", []))
     connected = initial.get("mcp_servers", [])
     tools_valid = advertised == allowed and set(tools) <= allowed
-    mcp_valid = (any(item.get("name") == "plugin_autoharness_stage_skill" and item.get("status") == "connected"
+    mcp_valid = (any(item.get("name") == "plugin_kitharness_stage_skill" and item.get("status") == "connected"
                      for item in connected) if maintenance else connected == [])
     ok = (result["returncode"] == 0 and final.get("subtype") == "success" and final.get("is_error") is False
           and models == [plan["model"]] and tools_valid and mcp_valid)

@@ -131,8 +131,8 @@ CHILD_SESSION_ENV = "AUTOHARNESS_CHILD_SESSION"  # recursion-guard signal: set O
 # (window+digest via stdin to the registered subagent) until the fork cache-hit spike passes.
 REFLECTOR_CARRIER = os.environ.get("AUTOHARNESS_CARRIER", "bundle")
 
-REFLECTOR_AGENT = "autoharness:reflector"  # the --agent reference for spawn (plugin namespace, Phase 0 resolution pending live test)
-CURATOR_AGENT = "autoharness:curator"      # the --agent reference for the periodic consolidation pass (same spawn chain as reflector)
+REFLECTOR_AGENT = "kitharness:reflector"  # the --agent reference for spawn (plugin namespace, Phase 0 resolution pending live test)
+CURATOR_AGENT = "kitharness:curator"      # the --agent reference for the periodic consolidation pass (same spawn chain as reflector)
 CLAUDE_BIN = os.environ.get("AUTOHARNESS_CLAUDE_BIN", "claude")
 RUN_ID_ENV = "AUTOHARNESS_RUN_ID"           # spawn injects the intent-queue run_id into the child session via env (read by stage_skill)
 # The queue for intents staged from a live user session (/learn, or the model acting on its own).

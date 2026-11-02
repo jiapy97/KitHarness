@@ -16,7 +16,7 @@ def test_paths_nest_under_root(tmp_path, lyr):
     assert skills == tmp_path / "skills"
     assert layer.archive_dir(lyr, tmp_path) == skills / ".archive"
     assert layer.symbol_dir(lyr, "foo", tmp_path) == skills / "foo"
-    assert layer.state_dir(lyr, tmp_path) == tmp_path / "autoharness"
+    assert layer.state_dir(lyr, tmp_path) == tmp_path / "kitharness"
     # state area is disjoint from live skills (counters/queues never enter the live skills tree)
     assert layer.state_dir(lyr, tmp_path) != skills
     assert layer.archive_dir(lyr, tmp_path) != layer.symbol_dir(lyr, "foo", tmp_path)
@@ -33,7 +33,7 @@ def test_global_root_env_overrides_home(monkeypatch, tmp_path):
     assert layer.default_root("global") == tmp_path
     # every global path is derived from it, and none of them escape back to the real home
     assert layer.skills_dir("global") == tmp_path / "skills"
-    assert layer.state_dir("global") == tmp_path / "autoharness"
+    assert layer.state_dir("global") == tmp_path / "kitharness"
     assert layer.symbol_dir("global", "foo") == tmp_path / "skills" / "foo"
 
 

@@ -37,7 +37,7 @@ def test_global_patches_from_different_projects_both_survive(tmp_path, monkeypat
     @contextmanager
     def observed_lock(path):
         if (threading.current_thread().name == "global-drain-1"
-                and Path(path).parent.resolve() == (global_root / "autoharness").resolve()):
+                and Path(path).parent.resolve() == (global_root / "kitharness").resolve()):
             release.set()  # coordinated actor waits for the first actor's real file lock
         with real_lock(path):
             yield

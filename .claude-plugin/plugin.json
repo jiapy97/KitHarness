@@ -1,9 +1,9 @@
 {
-  "name": "autoharness",
+  "name": "kitharness",
   "version": "0.5.3",
-  "description": "KitHarness, a fork of AutoHarness: durable skill changes, task-scoped recall, and a measured three-arm study. The plugin id stays autoharness.",
+  "description": "KitHarness learns skills from real sessions, keeps durable edits, and recalls them for the current task.",
   "author": {
-    "name": "KitHarness fork of Tigerless Labs"
+    "name": "KitHarness"
   },
   "homepage": "https://github.com/jiapy97/KitHarness",
   "license": "MIT",

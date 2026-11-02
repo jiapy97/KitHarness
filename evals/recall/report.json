@@ -19,8 +19,8 @@
         "mrr_positive": 0.146797,
         "mean_precision_all": 0.044444,
         "unrelated_injection_rate": 1.0,
-        "mean_bytes": 2093.0,
-        "mean_token_estimate": 524.0
+        "mean_bytes": 2092.0,
+        "mean_token_estimate": 523.0
       },
       "per_query": [
         {
@@ -50,8 +50,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.1111111111111111,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "http-zh",
@@ -80,8 +80,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.1111111111111111,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "dates-zh",
@@ -110,8 +110,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.05263157894736842,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "sql-mixed",
@@ -140,8 +140,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.5,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "pytest-en",
@@ -170,8 +170,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.05,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "credentials-en",
@@ -200,8 +200,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.06666666666666667,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "pagination-en",
@@ -230,8 +230,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.1,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "python-en",
@@ -260,8 +260,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.2,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "retention-en",
@@ -290,8 +290,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.058823529411764705,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "timeout-en",
@@ -320,8 +320,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.08333333333333333,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "encoding-en",
@@ -350,8 +350,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.25,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "flaky-en",
@@ -380,8 +380,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.05555555555555555,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "git-en",
@@ -410,8 +410,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.14285714285714285,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "layout-zh",
@@ -440,8 +440,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.16666666666666666,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "docker-en",
@@ -470,8 +470,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.3333333333333333,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "paraphrase-limit",
@@ -500,8 +500,8 @@
           "recall": 1.0,
           "reciprocal_rank": 0.06666666666666667,
           "precision": 0.05,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "no-match-en",
@@ -530,8 +530,8 @@
           "recall": null,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         },
         {
           "id": "no-match-zh",
@@ -560,8 +560,8 @@
           "recall": null,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 2093,
-          "token_estimate": 524
+          "bytes": 2092,
+          "token_estimate": 523
         }
       ]
     },
@@ -576,7 +576,7 @@
         "mrr_positive": 0.080208,
         "mean_precision_all": 0.044444,
         "unrelated_injection_rate": 1.0,
-        "mean_bytes": 643.0,
+        "mean_bytes": 642.0,
         "mean_token_estimate": 161.0
       },
       "per_query": [
@@ -592,7 +592,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -607,7 +607,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -622,7 +622,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -637,7 +637,7 @@
           "recall": 1.0,
           "reciprocal_rank": 0.5,
           "precision": 0.2,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -652,7 +652,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -667,7 +667,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -682,7 +682,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -697,7 +697,7 @@
           "recall": 1.0,
           "reciprocal_rank": 0.2,
           "precision": 0.2,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -712,7 +712,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -727,7 +727,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -742,7 +742,7 @@
           "recall": 1.0,
           "reciprocal_rank": 0.25,
           "precision": 0.2,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -757,7 +757,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -772,7 +772,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -787,7 +787,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -802,7 +802,7 @@
           "recall": 1.0,
           "reciprocal_rank": 0.3333333333333333,
           "precision": 0.2,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -817,7 +817,7 @@
           "recall": 0.0,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -832,7 +832,7 @@
           "recall": null,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         },
         {
@@ -847,7 +847,7 @@
           "recall": null,
           "reciprocal_rank": 0,
           "precision": 0.0,
-          "bytes": 643,
+          "bytes": 642,
           "token_estimate": 161
         }
       ]
@@ -863,8 +863,8 @@
         "mrr_positive": 0.9375,
         "mean_precision_all": 0.777778,
         "unrelated_injection_rate": 0.0,
-        "mean_bytes": 171.555556,
-        "mean_token_estimate": 43.277778
+        "mean_bytes": 170.722222,
+        "mean_token_estimate": 43.0
       },
       "per_query": [
         {
@@ -875,8 +875,8 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 1.0,
-          "bytes": 161,
-          "token_estimate": 41
+          "bytes": 160,
+          "token_estimate": 40
         },
         {
           "id": "http-zh",
@@ -886,8 +886,8 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 1.0,
-          "bytes": 161,
-          "token_estimate": 41
+          "bytes": 160,
+          "token_estimate": 40
         },
         {
           "id": "dates-zh",
@@ -899,7 +899,7 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 0.3333333333333333,
-          "bytes": 358,
+          "bytes": 357,
           "token_estimate": 90
         },
         {
@@ -910,7 +910,7 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 1.0,
-          "bytes": 154,
+          "bytes": 153,
           "token_estimate": 39
         },
         {
@@ -922,8 +922,8 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 0.5,
-          "bytes": 233,
-          "token_estimate": 59
+          "bytes": 232,
+          "token_estimate": 58
         },
         {
           "id": "credentials-en",
@@ -934,8 +934,8 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 0.5,
-          "bytes": 257,
-          "token_estimate": 65
+          "bytes": 256,
+          "token_estimate": 64
         },
         {
           "id": "pagination-en",
@@ -945,7 +945,7 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 1.0,
-          "bytes": 156,
+          "bytes": 155,
           "token_estimate": 39
         },
         {
@@ -956,7 +956,7 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 1.0,
-          "bytes": 150,
+          "bytes": 149,
           "token_estimate": 38
         },
         {
@@ -969,7 +969,7 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 0.3333333333333333,
-          "bytes": 334,
+          "bytes": 333,
           "token_estimate": 84
         },
         {
@@ -980,7 +980,7 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 1.0,
-          "bytes": 160,
+          "bytes": 159,
           "token_estimate": 40
         },
         {
@@ -991,8 +991,8 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 1.0,
-          "bytes": 157,
-          "token_estimate": 40
+          "bytes": 156,
+          "token_estimate": 39
         },
         {
           "id": "flaky-en",
@@ -1002,7 +1002,7 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 1.0,
-          "bytes": 154,
+          "bytes": 153,
           "token_estimate": 39
         },
         {
@@ -1015,7 +1015,7 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 0.3333333333333333,
-          "bytes": 335,
+          "bytes": 334,
           "token_estimate": 84
         },
         {
@@ -1026,7 +1026,7 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 1.0,
-          "bytes": 160,
+          "bytes": 159,
           "token_estimate": 40
         },
         {
@@ -1037,7 +1037,7 @@
           "recall": 1.0,
           "reciprocal_rank": 1.0,
           "precision": 1.0,
-          "bytes": 158,
+          "bytes": 157,
           "token_estimate": 40
         },
         {

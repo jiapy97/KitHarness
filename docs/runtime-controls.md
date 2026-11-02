@@ -51,7 +51,7 @@ Windows 终止直接子进程，提案隔离规则相同；本轮进程组测试
 
 ## 查看运行用量
 
-项目配置根目录下的 `autoharness/runs/<run_id>.json` 增加 `job` 字段，包含子进程状态、耗时、限额和宿主报告的用量。
+项目配置根目录下的 `kitharness/runs/<run_id>.json` 增加 `job` 字段，包含子进程状态、耗时、限额和宿主报告的用量。
 白名单字段包括输入/输出 Token、缓存读写 Token、`total_cost_usd`、`num_turns` 和 `duration_ms`。
 只保存有效数字，不保存模型回复、输入窗口或原始 JSON。未知或过大的输出格式会标记 `usage.available: false`，不把缺失数据当作零成本。
 stdout/stderr 先进入临时文件，只限量读取；错误摘要仍经过脱敏。临时文件没有额外的磁盘配额。
@@ -73,7 +73,7 @@ PYTHONPATH=src python3.12 -m autoharness.lib.versions prune dates --root /path/t
 因此实际保留数量可能大于 `--keep`。先校验历史目录、摘要和事务记录；损坏或符号链接会阻止删除。
 只处理指定技能；不扫描其他技能、归档副本或整理者的整库备份。
 
-候选目录先原子移动到 `autoharness/version-trash/` 再移除。清理中断可能留下隔离目录，需要人工检查后清除，但版本列表不会出现删到一半的快照。
+候选目录先原子移动到 `kitharness/version-trash/` 再移除。清理中断可能留下隔离目录，需要人工检查后清除，但版本列表不会出现删到一半的快照。
 不删除 `transactions/` 中的完成日志和 `operations/` 中的回执，旧队列重试仍能复用结果，避免再次修改技能。
 本步提供手动保留策略，默认不会自动删历史；小体积审计记录仍会随使用增长。
 

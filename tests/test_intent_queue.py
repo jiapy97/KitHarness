@@ -93,7 +93,7 @@ def test_append_does_not_interleave_concurrent_writers(tmp_path, monkeypatch):
 
     monkeypatch.undo()
 
-    raw = tmp_path / "autoharness" / "intents" / "run1.jsonl"
+    raw = tmp_path / "kitharness" / "intents" / "run1.jsonl"
     lines = [ln for ln in raw.read_text().splitlines() if ln.strip()]
     for line in lines:
         json.loads(line)  # a torn record raises here
@@ -103,7 +103,7 @@ def test_append_does_not_interleave_concurrent_writers(tmp_path, monkeypatch):
 def test_read_survives_a_torn_or_foreign_line(tmp_path):
     # a crash or full disk mid-append leaves half a line; it must not hide the rest of the queue
     intent_queue.append("run1", {"action": "create", "name": "a"}, tmp_path)
-    p = tmp_path / "autoharness" / "intents" / "run1.jsonl"
+    p = tmp_path / "kitharness" / "intents" / "run1.jsonl"
     with p.open("ab") as f:
         f.write(b'{"action": "create", "name": "b", "body": "\xe2\x80\n')  # torn line, cut UTF-8
         f.write(b"[1, 2]\n")  # valid JSON, not an intent
@@ -122,7 +122,7 @@ def test_unicode_line_separators_inside_a_value_stay_one_intent(tmp_path):
 
 def test_append_after_a_torn_tail_keeps_the_new_intent_whole(tmp_path):
     # a crash left half a line with no newline; the next staged intent must not glue onto it
-    p = tmp_path / "autoharness" / "intents" / "run1.jsonl"
+    p = tmp_path / "kitharness" / "intents" / "run1.jsonl"
     p.parent.mkdir(parents=True)
     p.write_bytes(b'{"action": "create", "name": "x", "bo')
     intent_queue.append("run1", {"action": "create", "name": "b"}, tmp_path)

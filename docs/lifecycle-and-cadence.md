@@ -46,7 +46,7 @@
 启动后被并发限制跳过、运行失败、宿主退出等情况，不保证自动补跑；本步没有增加调度服务或付费模型调用。
 
 升级时，原来的 `requests` 是对话轮数，不会当作工具次数迁移。新工具总数从首次记录开始积累，已有 sidecar、版本、回执和归档不需要迁移。
-新计数保存在项目配置根目录的 `autoharness/tool-calls` 和 `autoharness/curator-watermark`；它们是运行状态，不应手工改写成旧请求数。
+新计数保存在项目配置根目录的 `kitharness/tool-calls` 和 `kitharness/curator-watermark`；它们是运行状态，不应手工改写成旧请求数。
 
 ## 验证范围
 

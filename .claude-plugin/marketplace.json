@@ -1,11 +1,11 @@
 {
   "name": "kitharness",
-  "owner": { "name": "KitHarness fork of Tigerless Labs" },
+  "owner": { "name": "KitHarness" },
   "plugins": [
     {
-      "name": "autoharness",
+      "name": "kitharness",
       "source": "./",
-      "description": "KitHarness fork of AutoHarness. Plugin id remains autoharness; install it from the kitharness marketplace."
+      "description": "Learns skills from real sessions, keeps durable edits, and recalls them for the current task."
     }
   ]
 }
