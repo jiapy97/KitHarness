@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "kind": "controlled_live_three_arm",
+  "date": "2026-11-02",
+  "model": "deepseek-flash",
+  "provider": {
+    "source": "deepseek_project",
+    "provider_name": "DeepSeek official",
+    "provider_identity_sha256": "39ae6cbcdccfc016eddd011ee894a607e422cb510e4fee63df703b10844b7be5",
+    "configuration_sha256": "80627d3157f9129040077a12b18290827848b61afe623c8cd88ff1199d772f98",
+    "credential_kind": "ANTHROPIC_AUTH_TOKEN",
+    "relay_port": 443,
+    "credentials_persisted": false
+  },
+  "conditions": {
+    "no_learning": {
+      "tasks_passed": 6,
+      "tasks": 6,
+      "cases_correct": 24,
+      "cases": 24,
+      "final_active_skills": 0,
+      "mean_plugin_context_bytes": 0.0,
+      "mean_wall_seconds": 3.3989999999999996,
+      "skill_file_reads": 0,
+      "solver_peak_estimate_usd": 0.009621672,
+      "maintenance": {}
+    },
+    "original": {
+      "tasks_passed": 6,
+      "tasks": 6,
+      "cases_correct": 24,
+      "cases": 24,
+      "final_active_skills": 3,
+      "mean_plugin_context_bytes": 582.0,
+      "mean_wall_seconds": 6.276833333333333,
+      "skill_file_reads": 7,
+      "solver_peak_estimate_usd": 0.013549404,
+      "maintenance": {
+        "reflector": {
+          "accepted": 5,
+          "rejected": 0,
+          "archival_intents_accepted": 0
+        },
+        "curator": {
+          "accepted": 6,
+          "rejected": 0,
+          "archival_intents_accepted": 4
+        }
+      }
+    },
+    "kitharness": {
+      "tasks_passed": 6,
+      "tasks": 6,
+      "cases_correct": 24,
+      "cases": 24,
+      "final_active_skills": 2,
+      "mean_plugin_context_bytes": 506.0,
+      "mean_wall_seconds": 4.417666666666666,
+      "skill_file_reads": 3,
+      "solver_peak_estimate_usd": 0.011732771999999999,
+      "maintenance": {
+        "reflector": {
+          "accepted": 2,
+          "rejected": 0,
+          "archival_intents_accepted": 0
+        },
+        "curator": {
+          "accepted": 0,
+          "rejected": 0,
+          "archival_intents_accepted": 0
+        }
+      }
+    }
+  },
+  "costs": {
+    "model": "deepseek-flash",
+    "approved_budget_usd": 10.0,
+    "cli_sessions": 46,
+    "cli_estimated_usd": 2.1071429999999998,
+    "accounted_estimated_usd": 0.101828796,
+    "cost_receipt_coverage": 46,
+    "relay_normalized_units": 0.15000000000000036,
+    "relay_display_currency": "CNY",
+    "relay_attribution": "shared key; consumption includes any concurrent external usage",
+    "stages": {
+      "pilot": {
+        "sessions": 6,
+        "estimated_usd": 0.0024638999999999998
+      },
+      "warmup": {
+        "sessions": 18,
+        "estimated_usd": 0.0096849
+      },
+      "reflector": {
+        "sessions": 2,
+        "estimated_usd": 0.032389511999999995
+      },
+      "curator": {
+        "sessions": 2,
+        "estimated_usd": 0.022386636
+      },
+      "evaluation": {
+        "sessions": 18,
+        "estimated_usd": 0.034903847999999994
+      }
+    },
+    "halt_reason": null,
+    "limit_scope": "controller allocations, CLI estimated-cost guard and post-request relay counters; not a provider-side hard credit limit",
+    "successful_study_sessions": 43,
+    "previous_failed_sonnet_sessions": 3,
+    "native_cli_estimated_usd_this_study": 2.1071429999999998,
+    "native_cli_cost_coverage": 43,
+    "token_price_estimate_usd_this_study": 0.101828796,
+    "estimate_basis": "DeepSeek published peak rates, without assuming off-peak discounts",
+    "pricing_source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "account_balance_observation_note": "balance changes include shared-account concurrent use and endpoint rounding; not a per-request invoice",
+    "cli_estimate_coverage_sessions": 46,
+    "grant_status": "completed"
+  },
+  "observed_context_byte_reduction_vs_original": 0.13058419243986255,
+  "accuracy_improvement_demonstrated": false,
+  "limitations": [
+    "one repetition, six synthetic structured workflow tasks; no significance claim",
+    "same warmup lessons; one explicit batched reflection and curation per learning arm, not a native cadence comparison",
+    "different generated libraries confound retrieval/context comparisons",
+    "plugin context bytes include last-run summaries; native system prompt, skill body reads and other conversation tokens are separate",
+    "requested and reported model IDs match; provider model weights were not independently audited",
+    "curation archives are separate from lifecycle retirement; no forced retirement experiment",
+    "account balance and token-based peak estimate are different cost observations"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "models_called": 0,
+  "platform": "Darwin",
+  "python": "3.12.14",
+  "claude": {
+    "available": true,
+    "version": "2.1.312 (Claude Code)",
+    "flags": {
+      "--restricted": true,
+      "--setting-sources": true,
+      "--settings": true,
+      "--plugin-dir": true,
+      "--max-budget-usd": true,
+      "--output-format": true,
+      "--include-hook-events": true
+    },
+    "auth": {
+      "checked": true,
+      "logged_in": true,
+      "method": "claude.ai"
+    }
+  },
+  "isolated_auth": {
+    "checked": true,
+    "logged_in": false,
+    "config_directory_matches": true,
+    "credentials_copied": false
+  },
+  "sandbox_probe": {
+    "status": "passed",
+    "scope": "fixed synthetic helper; not a live Claude sandbox",
+    "baseline": {
+      "allowed_read": true,
+      "allowed_write": true,
+      "grading_read_denied": false,
+      "outside_write_denied": false,
+      "network_denied": false
+    },
+    "sandboxed": {
+      "allowed_read": true,
+      "allowed_write": true,
+      "grading_read_denied": true,
+      "outside_write_denied": true,
+      "network_denied": true
+    },
+    "exit_codes": {
+      "baseline": 0,
+      "sandboxed": 0
+    },
+    "profile_sha256": "5d1411a153ed91fa714b698b5b3817ca66cdd8e07b21ad472264ea14efb3e62f",
+    "models_called": 0
+  },
+  "live_experiment_ready": false,
+  "pending": [
+    "explicit model and usage/budget limits",
+    "isolated host authentication and provider access",
+    "verified live CLI sandbox",
+    "warmup and library-freezing driver",
+    "all-call accounting"
+  ]
+}

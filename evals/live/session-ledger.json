@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "authorization_text": "沿用 Sonnet 订阅，先限 3 次 CLI 会话预检",
+  "approved_cli_sessions": 3,
+  "model_alias": "sonnet",
+  "scope": "host_protocol_pilot; no warmup or curation; failures consume slots",
+  "reservations": [
+    {
+      "number": 1,
+      "condition": "no_learning",
+      "run_id": "kitharness-pilot-20261102-b",
+      "reserved_at_unix": 1793592535.0625448,
+      "status": "charged_before_launch",
+      "outcome": {
+        "returncode": 1,
+        "protocol_passed": false,
+        "receipt": "pilot-report.json",
+        "receipt_session_reservation": 1
+      }
+    },
+    {
+      "number": 2,
+      "condition": "original",
+      "run_id": "kitharness-pilot-20261102-c",
+      "reserved_at_unix": 1793592634.81373,
+      "status": "charged_before_launch",
+      "outcome": {
+        "returncode": 1,
+        "protocol_passed": false,
+        "receipt": "pilot-report.json",
+        "receipt_session_reservation": 2
+      }
+    },
+    {
+      "number": 3,
+      "condition": "kitharness",
+      "run_id": "kitharness-pilot-20261102-d",
+      "reserved_at_unix": 1793592738.4545121,
+      "status": "charged_before_launch",
+      "outcome": {
+        "returncode": 1,
+        "protocol_passed": false,
+        "receipt": "pilot-report.json",
+        "receipt_session_reservation": 3
+      }
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "models_launched": 0,
+  "checks": [
+    {
+      "condition": "no_learning",
+      "authenticated": true,
+      "local_auth_status_passed": true,
+      "relay_authentication": {
+        "kind": "relay_catalog_auth_check",
+        "model_requests": 0,
+        "authenticated": true,
+        "negative_control": {
+          "http_status": 401,
+          "valid_catalog": false
+        },
+        "authorized": {
+          "http_status": 200,
+          "valid_catalog": true,
+          "model_count": 14,
+          "sonnet_model_ids": [
+            "claude-sonnet-4-5-20250929",
+            "claude-sonnet-4-6",
+            "claude-sonnet-5",
+            "claude-sonnet-5-5"
+          ]
+        },
+        "credential_kind": "ANTHROPIC_AUTH_TOKEN",
+        "credentials_persisted": false,
+        "inference_verified": false
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "credentials_copied": false,
+      "isolation": "passed",
+      "isolation_baseline": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": false,
+        "outside_write_denied": false,
+        "network_denied": false
+      },
+      "isolation_sandboxed": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": true,
+        "outside_write_denied": true,
+        "network_denied": true
+      },
+      "descendant_cli_blocked": true,
+      "profile_sha256": "fdc061cf0a36efdd30043c34768f8b0f396a6bd671ed4c869f6ab91570e93a6d",
+      "auth_adapter_sha256": "a70ea920b7f65e1f10ed70a3639fa8c600fa0fb2344e167d31a2c4c8300e80d1"
+    },
+    {
+      "condition": "original",
+      "authenticated": true,
+      "local_auth_status_passed": true,
+      "relay_authentication": {
+        "kind": "relay_catalog_auth_check",
+        "model_requests": 0,
+        "authenticated": true,
+        "negative_control": {
+          "http_status": 401,
+          "valid_catalog": false
+        },
+        "authorized": {
+          "http_status": 200,
+          "valid_catalog": true,
+          "model_count": 14,
+          "sonnet_model_ids": [
+            "claude-sonnet-4-5-20250929",
+            "claude-sonnet-4-6",
+            "claude-sonnet-5",
+            "claude-sonnet-5-5"
+          ]
+        },
+        "credential_kind": "ANTHROPIC_AUTH_TOKEN",
+        "credentials_persisted": false,
+        "inference_verified": false
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "credentials_copied": false,
+      "isolation": "passed",
+      "isolation_baseline": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": false,
+        "outside_write_denied": false,
+        "network_denied": false
+      },
+      "isolation_sandboxed": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": true,
+        "outside_write_denied": true,
+        "network_denied": true
+      },
+      "descendant_cli_blocked": true,
+      "profile_sha256": "881b708ab787a9010313256fa6c838d5fc1c5f2bd214c9a8192e1e9b56784bbd",
+      "auth_adapter_sha256": "a70ea920b7f65e1f10ed70a3639fa8c600fa0fb2344e167d31a2c4c8300e80d1"
+    },
+    {
+      "condition": "kitharness",
+      "authenticated": true,
+      "local_auth_status_passed": true,
+      "relay_authentication": {
+        "kind": "relay_catalog_auth_check",
+        "model_requests": 0,
+        "authenticated": true,
+        "negative_control": {
+          "http_status": 401,
+          "valid_catalog": false
+        },
+        "authorized": {
+          "http_status": 200,
+          "valid_catalog": true,
+          "model_count": 14,
+          "sonnet_model_ids": [
+            "claude-sonnet-4-5-20250929",
+            "claude-sonnet-4-6",
+            "claude-sonnet-5",
+            "claude-sonnet-5-5"
+          ]
+        },
+        "credential_kind": "ANTHROPIC_AUTH_TOKEN",
+        "credentials_persisted": false,
+        "inference_verified": false
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "credentials_copied": false,
+      "isolation": "passed",
+      "isolation_baseline": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": false,
+        "outside_write_denied": false,
+        "network_denied": false
+      },
+      "isolation_sandboxed": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": true,
+        "outside_write_denied": true,
+        "network_denied": true
+      },
+      "descendant_cli_blocked": true,
+      "profile_sha256": "b885f71d65d2b2be7c56a953fdb70399eac240431ac03ed98813bf0fe1869a75",
+      "auth_adapter_sha256": "a70ea920b7f65e1f10ed70a3639fa8c600fa0fb2344e167d31a2c4c8300e80d1"
+    }
+  ],
+  "passed": true,
+  "relay": {
+    "source": "cc-switch",
+    "provider_name": "Micu",
+    "provider_identity_sha256": "203399e8aff17013d49b3e21c1f63c7f9b470a016cb002a190369c4d73bd9ea4",
+    "configuration_sha256": "c711b0c038e3234f5453baa31df5a10349d5d860c8a4744976739d1fd56c7c85",
+    "credential_kind": "ANTHROPIC_AUTH_TOKEN",
+    "relay_port": 443,
+    "credentials_persisted": false
+  },
+  "billing_mode": "api_relay",
+  "live_authentication_verified": false,
+  "relay_authentication_verified": true,
+  "scope": "protected relay catalog GET with negative control, native CLI status and local boundaries; inference not tested",
+  "version": 1,
+  "kind": "relay_authentication_repair",
+  "date": "2026-11-02",
+  "cli_version": "2.1.312 (Claude Code)",
+  "user_clarification": "Claude uses an API relay, not subscription authentication",
+  "repair": [
+    "read selected Claude provider from CC Switch in read-only mode",
+    "pass only allowlisted relay environment in memory",
+    "keep isolated CLI configuration; do not load personal hooks",
+    "verify protected model catalog with an unauthenticated negative control",
+    "remove personal OAuth and Keychain sandbox exemptions"
+  ],
+  "model_inference_requests_this_repair": 0,
+  "additional_cli_model_sessions": 0,
+  "old_session_ledger_modified": false,
+  "api_model_execution_enabled": false,
+  "credential_scan": {
+    "exact_current_key_matches_in_run_and_live_artifacts": 0
+  },
+  "pending": [
+    "new explicit API usage/cost authorization and execution accounting",
+    "actual model inference and full three-arm learning experiment"
+  ],
+  "validation": {
+    "python_3_11": {
+      "passed": 1223,
+      "deselected": 1
+    },
+    "python_3_12": {
+      "passed": 1223,
+      "deselected": 1
+    },
+    "new_regression_cases": 38,
+    "ruff": "passed",
+    "documentation_links": "passed"
+  }
+}

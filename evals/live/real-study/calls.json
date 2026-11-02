@@ -1,0 +1,3799 @@
+[
+  {
+    "call_id": "curator-kitharness",
+    "stage": "curator",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 7.886,
+    "usage": {
+      "input_tokens": 8783,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 15232,
+      "output_tokens": 997,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.003922692,
+    "native_cli_estimated_usd": 0.076456,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read",
+      "mcp__plugin_autoharness_stage_skill__stage_skill"
+    ],
+    "used_tools": [
+      "Glob",
+      "Glob",
+      "Read",
+      "Read",
+      "Read",
+      "Read"
+    ],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "curator-original",
+    "stage": "curator",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 70.623,
+    "usage": {
+      "input_tokens": 12370,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 106624,
+      "output_tokens": 11761,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.018463944,
+    "native_cli_estimated_usd": 0.40918699999999997,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read",
+      "mcp__plugin_autoharness_stage_skill__stage_skill"
+    ],
+    "used_tools": [
+      "Glob",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill"
+    ],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-kitharness-r00-merge-guard",
+    "stage": "evaluation",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.767,
+    "usage": {
+      "input_tokens": 3466,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 287,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0013841999999999997,
+    "native_cli_estimated_usd": 0.024505,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [],
+    "plugin_context_bytes": 506,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-kitharness-r00-nested-redaction",
+    "stage": "evaluation",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 3.542,
+    "usage": {
+      "input_tokens": 3374,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 477,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0015845999999999998,
+    "native_cli_estimated_usd": 0.028795,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [],
+    "plugin_context_bytes": 506,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-kitharness-r00-pagination",
+    "stage": "evaluation",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.365,
+    "usage": {
+      "input_tokens": 3453,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 285,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0013778999999999998,
+    "native_cli_estimated_usd": 0.02439,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [],
+    "plugin_context_bytes": 506,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-kitharness-r00-retry-plan",
+    "stage": "evaluation",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 7.25,
+    "usage": {
+      "input_tokens": 5041,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 8704,
+      "output_tokens": 1112,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0028989239999999998,
+    "native_cli_estimated_usd": 0.057357000000000005,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [
+      "Glob",
+      "Glob",
+      "Read",
+      "Read"
+    ],
+    "plugin_context_bytes": 506,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-kitharness-r00-transaction-recovery",
+    "stage": "evaluation",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 7.682,
+    "usage": {
+      "input_tokens": 5519,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 14208,
+      "output_tokens": 1043,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.002992548,
+    "native_cli_estimated_usd": 0.060773999999999995,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [
+      "Glob",
+      "Glob",
+      "Read",
+      "Read",
+      "Grep"
+    ],
+    "plugin_context_bytes": 506,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Grep",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Grep",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-kitharness-r00-utc-boundaries",
+    "stage": "evaluation",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.9,
+    "usage": {
+      "input_tokens": 3314,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 417,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0014946,
+    "native_cli_estimated_usd": 0.026995,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [],
+    "plugin_context_bytes": 506,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-no_learning-r00-merge-guard",
+    "stage": "evaluation",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.615,
+    "usage": {
+      "input_tokens": 3317,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 329,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0013899,
+    "native_cli_estimated_usd": 0.02481,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "evaluation-no_learning-r00-nested-redaction",
+    "stage": "evaluation",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 3.433,
+    "usage": {
+      "input_tokens": 3483,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 3328,
+      "output_tokens": 468,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0016264679999999998,
+    "native_cli_estimated_usd": 0.030779,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [
+      "Glob"
+    ],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "evaluation-no_learning-r00-pagination",
+    "stage": "evaluation",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 3.344,
+    "usage": {
+      "input_tokens": 3304,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 547,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0016476,
+    "native_cli_estimated_usd": 0.030195,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "evaluation-no_learning-r00-retry-plan",
+    "stage": "evaluation",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 3.775,
+    "usage": {
+      "input_tokens": 3326,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 547,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0016541999999999998,
+    "native_cli_estimated_usd": 0.030305,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "evaluation-no_learning-r00-transaction-recovery",
+    "stage": "evaluation",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 5.052,
+    "usage": {
+      "input_tokens": 3347,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 3584,
+      "output_tokens": 744,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0019184039999999999,
+    "native_cli_estimated_usd": 0.037127,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [
+      "Glob",
+      "Glob"
+    ],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "evaluation-no_learning-r00-utc-boundaries",
+    "stage": "evaluation",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.175,
+    "usage": {
+      "input_tokens": 3165,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 363,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0013851,
+    "native_cli_estimated_usd": 0.0249,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "evaluation-original-r00-merge-guard",
+    "stage": "evaluation",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 6.192,
+    "usage": {
+      "input_tokens": 4395,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 12288,
+      "output_tokens": 767,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.002312628,
+    "native_cli_estimated_usd": 0.047294,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [
+      "Glob",
+      "Glob",
+      "Glob",
+      "Glob",
+      "Read"
+    ],
+    "plugin_context_bytes": 582,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-original-r00-nested-redaction",
+    "stage": "evaluation",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 4.871,
+    "usage": {
+      "input_tokens": 3506,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 3712,
+      "output_tokens": 560,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.001746072,
+    "native_cli_estimated_usd": 0.033386,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [
+      "Glob"
+    ],
+    "plugin_context_bytes": 582,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-original-r00-pagination",
+    "stage": "evaluation",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 7.939,
+    "usage": {
+      "input_tokens": 4411,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 8320,
+      "output_tokens": 946,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.00250842,
+    "native_cli_estimated_usd": 0.049865,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [
+      "Glob",
+      "Read",
+      "Read"
+    ],
+    "plugin_context_bytes": 582,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-original-r00-retry-plan",
+    "stage": "evaluation",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 8.176,
+    "usage": {
+      "input_tokens": 4148,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 8960,
+      "output_tokens": 1236,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0027813599999999996,
+    "native_cli_estimated_usd": 0.056119999999999996,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [
+      "Glob",
+      "Glob",
+      "Read"
+    ],
+    "plugin_context_bytes": 582,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-original-r00-transaction-recovery",
+    "stage": "evaluation",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 6.095,
+    "usage": {
+      "input_tokens": 4752,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 7808,
+      "output_tokens": 704,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0023172479999999996,
+    "native_cli_estimated_usd": 0.045264,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [
+      "Glob",
+      "Glob",
+      "Read",
+      "Read"
+    ],
+    "plugin_context_bytes": 582,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "evaluation-original-r00-utc-boundaries",
+    "stage": "evaluation",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 4.388,
+    "usage": {
+      "input_tokens": 4041,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 7296,
+      "output_tokens": 523,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.001883676,
+    "native_cli_estimated_usd": 0.036928,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read"
+    ],
+    "used_tools": [
+      "Glob",
+      "Read"
+    ],
+    "plugin_context_bytes": 582,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Glob",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:Read",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "pilot-kitharness",
+    "stage": "pilot",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.378,
+    "usage": {
+      "input_tokens": 1360,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 345,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.000822,
+    "native_cli_estimated_usd": 0.015425,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "pilot-no_learning",
+    "stage": "pilot",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.139,
+    "usage": {
+      "input_tokens": 1359,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 357,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0008360999999999999,
+    "native_cli_estimated_usd": 0.01572,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "pilot-original",
+    "stage": "pilot",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.582,
+    "usage": {
+      "input_tokens": 1358,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 332,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0008058,
+    "native_cli_estimated_usd": 0.01509,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "reflector-kitharness",
+    "stage": "reflector",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 63.023,
+    "usage": {
+      "input_tokens": 13215,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 67840,
+      "output_tokens": 10249,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.01667034,
+    "native_cli_estimated_usd": 0.35622,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read",
+      "mcp__plugin_autoharness_stage_skill__stage_skill"
+    ],
+    "used_tools": [
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill"
+    ],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "reflector-original",
+    "stage": "reflector",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 52.881,
+    "usage": {
+      "input_tokens": 12671,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 160512,
+      "output_tokens": 9129,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.015719172,
+    "native_cli_estimated_usd": 0.371836,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [
+      "Glob",
+      "Grep",
+      "Read",
+      "mcp__plugin_autoharness_stage_skill__stage_skill"
+    ],
+    "used_tools": [
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill",
+      "mcp__plugin_autoharness_stage_skill__stage_skill"
+    ],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "PreToolUse",
+        "hook_name": "PreToolUse:mcp__plugin_autoharness_stage_skill__stage_skill",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-kitharness-merge-guard",
+    "stage": "warmup",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.099,
+    "usage": {
+      "input_tokens": 1080,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 128,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0004776,
+    "native_cli_estimated_usd": 0.0086,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-kitharness-nested-redaction",
+    "stage": "warmup",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.025,
+    "usage": {
+      "input_tokens": 1083,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 150,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0005049,
+    "native_cli_estimated_usd": 0.009165,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-kitharness-pagination",
+    "stage": "warmup",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.202,
+    "usage": {
+      "input_tokens": 1082,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 166,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0005237999999999999,
+    "native_cli_estimated_usd": 0.009559999999999999,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-kitharness-retry-plan",
+    "stage": "warmup",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.048,
+    "usage": {
+      "input_tokens": 1083,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 130,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0004809,
+    "native_cli_estimated_usd": 0.008664999999999999,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-kitharness-transaction-recovery",
+    "stage": "warmup",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 1.746,
+    "usage": {
+      "input_tokens": 1084,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 131,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.00048239999999999996,
+    "native_cli_estimated_usd": 0.008695,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-kitharness-utc-boundaries",
+    "stage": "warmup",
+    "condition": "kitharness",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.226,
+    "usage": {
+      "input_tokens": 1087,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 159,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0005168999999999999,
+    "native_cli_estimated_usd": 0.00941,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "UserPromptSubmit",
+        "hook_name": "UserPromptSubmit",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-no_learning-merge-guard",
+    "stage": "warmup",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 1.775,
+    "usage": {
+      "input_tokens": 1079,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 158,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0005133,
+    "native_cli_estimated_usd": 0.009345,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "warmup-no_learning-nested-redaction",
+    "stage": "warmup",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 1.878,
+    "usage": {
+      "input_tokens": 1082,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 152,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.000507,
+    "native_cli_estimated_usd": 0.00921,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "warmup-no_learning-pagination",
+    "stage": "warmup",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 1.892,
+    "usage": {
+      "input_tokens": 1081,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 168,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0005258999999999999,
+    "native_cli_estimated_usd": 0.009604999999999999,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "warmup-no_learning-retry-plan",
+    "stage": "warmup",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.064,
+    "usage": {
+      "input_tokens": 1082,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 215,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0005826,
+    "native_cli_estimated_usd": 0.010785,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "warmup-no_learning-transaction-recovery",
+    "stage": "warmup",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 1.971,
+    "usage": {
+      "input_tokens": 1083,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 215,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0005829,
+    "native_cli_estimated_usd": 0.01079,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "warmup-no_learning-utc-boundaries",
+    "stage": "warmup",
+    "condition": "no_learning",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 1.822,
+    "usage": {
+      "input_tokens": 1086,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 218,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0005874,
+    "native_cli_estimated_usd": 0.01088,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": []
+  },
+  {
+    "call_id": "warmup-original-merge-guard",
+    "stage": "warmup",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.584,
+    "usage": {
+      "input_tokens": 1078,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 302,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0006858,
+    "native_cli_estimated_usd": 0.01294,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-original-nested-redaction",
+    "stage": "warmup",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 3.072,
+    "usage": {
+      "input_tokens": 1081,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 309,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0006951,
+    "native_cli_estimated_usd": 0.01313,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-original-pagination",
+    "stage": "warmup",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.105,
+    "usage": {
+      "input_tokens": 1080,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 178,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0005376000000000001,
+    "native_cli_estimated_usd": 0.009850000000000001,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-original-retry-plan",
+    "stage": "warmup",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 2.324,
+    "usage": {
+      "input_tokens": 1081,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 177,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0005367000000000001,
+    "native_cli_estimated_usd": 0.00983,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-original-transaction-recovery",
+    "stage": "warmup",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 1.807,
+    "usage": {
+      "input_tokens": 1082,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 103,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.00044819999999999994,
+    "native_cli_estimated_usd": 0.007984999999999999,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  },
+  {
+    "call_id": "warmup-original-utc-boundaries",
+    "stage": "warmup",
+    "condition": "original",
+    "model": "deepseek-flash",
+    "observed_model_ids": [
+      "deepseek-flash"
+    ],
+    "success": true,
+    "wall_seconds": 1.806,
+    "usage": {
+      "input_tokens": 1085,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "output_tokens": 142,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "server_tool_use": {
+        "web_search_requests": 0,
+        "web_fetch_requests": 0
+      },
+      "service_tier": "standard",
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "inference_geo": "",
+      "iterations": [],
+      "speed": "standard",
+      "fallback_credit": null
+    },
+    "estimated_usd": 0.0004959,
+    "native_cli_estimated_usd": 0.008975,
+    "cost_basis": "DeepSeek published peak rates",
+    "advertised_tools": [],
+    "used_tools": [],
+    "plugin_context_bytes": 0,
+    "hook_events": [
+      {
+        "subtype": "hook_started",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "SessionStart",
+        "hook_name": "SessionStart:startup",
+        "outcome": "success",
+        "exit_code": 0
+      },
+      {
+        "subtype": "hook_started",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": null,
+        "exit_code": null
+      },
+      {
+        "subtype": "hook_response",
+        "hook_event": "Stop",
+        "hook_name": "Stop",
+        "outcome": "success",
+        "exit_code": 0
+      }
+    ]
+  }
+]

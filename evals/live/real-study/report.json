@@ -1,0 +1,909 @@
+{
+  "version": 1,
+  "kind": "controlled_live_three_arm",
+  "model": "deepseek-flash",
+  "manifest_sha256": "a84baeb365e363464c261ddaa00736afce9cc4930e7f3a283c26845878c0b1ab",
+  "suite_sha256": "fedb7560d6a00a7f34e04a25a053ca463ed908b4c21eed1dd26b5cedf2e2d5c9",
+  "sources": {
+    "kitharness": {
+      "commit": "b232f74c5c7e6f0a02dcda688584cfb6dbf19c52",
+      "snapshot_sha256": "715a5d0aeb326a2c54f79eeddfe8554747db1267bccb1e53f3ad445dee67e000"
+    },
+    "no_learning": null,
+    "original": {
+      "commit": "f2de058720317025c4c18369b7227235141a218b",
+      "snapshot_sha256": "e3cbc40cd57eff4e8ee91813f1f1cb96023e23d7aa884c4f60642eaaa9c46598"
+    }
+  },
+  "source_verified": {
+    "no_learning": true,
+    "original": true,
+    "kitharness": true
+  },
+  "scope": "JSON artifact grading; fixture results are not model effectiveness measurements",
+  "telemetry_scope": "conditions contain solver telemetry; costs/all_phase_accounting cover pilot, warmup and maintenance separately",
+  "protocol_verification": "43 actual host receipts, source/plugin/model identities and frozen skill contents checked",
+  "conditions": {
+    "no_learning": {
+      "planned": 6,
+      "recorded": 6,
+      "successes": 6,
+      "success_rate": 1.0,
+      "mean_case_score": 1.0,
+      "statuses": {
+        "completed": 6
+      },
+      "provenance": {
+        "observed_model_count": 6,
+        "library_fingerprint_count": 6,
+        "library_consistent": true
+      },
+      "telemetry": {
+        "duration_ms": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 19504,
+          "known_mean": 3250.6666666666665
+        },
+        "input_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 19942,
+          "known_mean": 3323.6666666666665
+        },
+        "output_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 2998,
+          "known_mean": 499.6666666666667
+        },
+        "cache_read_input_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 6912,
+          "known_mean": 1152.0
+        },
+        "cache_creation_input_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 0,
+          "known_mean": 0.0
+        },
+        "total_cost_usd": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 0.009621672,
+          "known_mean": 0.001603612
+        }
+      }
+    },
+    "original": {
+      "planned": 6,
+      "recorded": 6,
+      "successes": 6,
+      "success_rate": 1.0,
+      "mean_case_score": 1.0,
+      "statuses": {
+        "completed": 6
+      },
+      "provenance": {
+        "observed_model_count": 6,
+        "library_fingerprint_count": 6,
+        "library_consistent": true
+      },
+      "telemetry": {
+        "duration_ms": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 34640,
+          "known_mean": 5773.333333333333
+        },
+        "input_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 25253,
+          "known_mean": 4208.833333333333
+        },
+        "output_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 4736,
+          "known_mean": 789.3333333333334
+        },
+        "cache_read_input_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 48384,
+          "known_mean": 8064.0
+        },
+        "cache_creation_input_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 0,
+          "known_mean": 0.0
+        },
+        "total_cost_usd": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 0.013549404,
+          "known_mean": 0.002258234
+        }
+      }
+    },
+    "kitharness": {
+      "planned": 6,
+      "recorded": 6,
+      "successes": 6,
+      "success_rate": 1.0,
+      "mean_case_score": 1.0,
+      "statuses": {
+        "completed": 6
+      },
+      "provenance": {
+        "observed_model_count": 6,
+        "library_fingerprint_count": 6,
+        "library_consistent": true
+      },
+      "telemetry": {
+        "duration_ms": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 23395,
+          "known_mean": 3899.1666666666665
+        },
+        "input_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 24167,
+          "known_mean": 4027.8333333333335
+        },
+        "output_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 3621,
+          "known_mean": 603.5
+        },
+        "cache_read_input_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 22912,
+          "known_mean": 3818.6666666666665
+        },
+        "cache_creation_input_tokens": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 0,
+          "known_mean": 0.0
+        },
+        "total_cost_usd": {
+          "known_count": 6,
+          "planned_count": 6,
+          "known_total": 0.011732771999999999,
+          "known_mean": 0.001955462
+        }
+      }
+    }
+  },
+  "paired": {
+    "no_learning": {
+      "planned_pairs": 6,
+      "comparable_pairs": 6,
+      "kit_only_success": 0,
+      "baseline_only_success": 0,
+      "ties": 6
+    },
+    "original": {
+      "planned_pairs": 6,
+      "comparable_pairs": 6,
+      "kit_only_success": 0,
+      "baseline_only_success": 0,
+      "ties": 6
+    }
+  },
+  "attempts": [
+    {
+      "attempt_id": "no_learning-r00-merge-guard",
+      "condition": "no_learning",
+      "task": "merge-guard",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "missing-target": true,
+        "failed-dependency": true,
+        "archive-chain": true,
+        "safe-merge": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "duration_ms": 2467,
+        "input_tokens": 3317,
+        "output_tokens": 329,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0013899
+      }
+    },
+    {
+      "attempt_id": "original-r00-merge-guard",
+      "condition": "original",
+      "task": "merge-guard",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "missing-target": true,
+        "failed-dependency": true,
+        "archive-chain": true,
+        "safe-merge": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "aaa465d250ff1edfe1ef68394be3597f205f314b46bfb39486ba5f32a4c62cbd",
+        "duration_ms": 5409,
+        "input_tokens": 4395,
+        "output_tokens": 767,
+        "cache_read_input_tokens": 12288,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.002312628
+      }
+    },
+    {
+      "attempt_id": "kitharness-r00-merge-guard",
+      "condition": "kitharness",
+      "task": "merge-guard",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "missing-target": true,
+        "failed-dependency": true,
+        "archive-chain": true,
+        "safe-merge": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "87c9d3b413e3812094550f6d8a2b16ccaa82cdc47b34ba2e2f7a5f2a6212ab69",
+        "duration_ms": 2307,
+        "input_tokens": 3466,
+        "output_tokens": 287,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0013841999999999997
+      }
+    },
+    {
+      "attempt_id": "original-r00-retry-plan",
+      "condition": "original",
+      "task": "retry-plan",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "exponential": true,
+        "after-seconds": true,
+        "not-retryable": true,
+        "exhaustion": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "aaa465d250ff1edfe1ef68394be3597f205f314b46bfb39486ba5f32a4c62cbd",
+        "duration_ms": 7730,
+        "input_tokens": 4148,
+        "output_tokens": 1236,
+        "cache_read_input_tokens": 8960,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0027813599999999996
+      }
+    },
+    {
+      "attempt_id": "kitharness-r00-retry-plan",
+      "condition": "kitharness",
+      "task": "retry-plan",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "exponential": true,
+        "after-seconds": true,
+        "not-retryable": true,
+        "exhaustion": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "87c9d3b413e3812094550f6d8a2b16ccaa82cdc47b34ba2e2f7a5f2a6212ab69",
+        "duration_ms": 6724,
+        "input_tokens": 5041,
+        "output_tokens": 1112,
+        "cache_read_input_tokens": 8704,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0028989239999999998
+      }
+    },
+    {
+      "attempt_id": "no_learning-r00-retry-plan",
+      "condition": "no_learning",
+      "task": "retry-plan",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "exponential": true,
+        "after-seconds": true,
+        "not-retryable": true,
+        "exhaustion": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "duration_ms": 3626,
+        "input_tokens": 3326,
+        "output_tokens": 547,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0016541999999999998
+      }
+    },
+    {
+      "attempt_id": "kitharness-r00-transaction-recovery",
+      "condition": "kitharness",
+      "task": "transaction-recovery",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "prepared": true,
+        "committed-no-receipt": true,
+        "committed-receipt": true,
+        "rolled-back": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "87c9d3b413e3812094550f6d8a2b16ccaa82cdc47b34ba2e2f7a5f2a6212ab69",
+        "duration_ms": 7204,
+        "input_tokens": 5519,
+        "output_tokens": 1043,
+        "cache_read_input_tokens": 14208,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.002992548
+      }
+    },
+    {
+      "attempt_id": "no_learning-r00-transaction-recovery",
+      "condition": "no_learning",
+      "task": "transaction-recovery",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "prepared": true,
+        "committed-no-receipt": true,
+        "committed-receipt": true,
+        "rolled-back": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "duration_ms": 4893,
+        "input_tokens": 3347,
+        "output_tokens": 744,
+        "cache_read_input_tokens": 3584,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0019184039999999999
+      }
+    },
+    {
+      "attempt_id": "original-r00-transaction-recovery",
+      "condition": "original",
+      "task": "transaction-recovery",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "prepared": true,
+        "committed-no-receipt": true,
+        "committed-receipt": true,
+        "rolled-back": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "aaa465d250ff1edfe1ef68394be3597f205f314b46bfb39486ba5f32a4c62cbd",
+        "duration_ms": 5654,
+        "input_tokens": 4752,
+        "output_tokens": 704,
+        "cache_read_input_tokens": 7808,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0023172479999999996
+      }
+    },
+    {
+      "attempt_id": "no_learning-r00-nested-redaction",
+      "condition": "no_learning",
+      "task": "nested-redaction",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "nested-array": true,
+        "case-insensitive": true,
+        "whole-value": true,
+        "preserve-content": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "duration_ms": 3300,
+        "input_tokens": 3483,
+        "output_tokens": 468,
+        "cache_read_input_tokens": 3328,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0016264679999999998
+      }
+    },
+    {
+      "attempt_id": "original-r00-nested-redaction",
+      "condition": "original",
+      "task": "nested-redaction",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "nested-array": true,
+        "case-insensitive": true,
+        "whole-value": true,
+        "preserve-content": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "aaa465d250ff1edfe1ef68394be3597f205f314b46bfb39486ba5f32a4c62cbd",
+        "duration_ms": 4419,
+        "input_tokens": 3506,
+        "output_tokens": 560,
+        "cache_read_input_tokens": 3712,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.001746072
+      }
+    },
+    {
+      "attempt_id": "kitharness-r00-nested-redaction",
+      "condition": "kitharness",
+      "task": "nested-redaction",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "nested-array": true,
+        "case-insensitive": true,
+        "whole-value": true,
+        "preserve-content": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "87c9d3b413e3812094550f6d8a2b16ccaa82cdc47b34ba2e2f7a5f2a6212ab69",
+        "duration_ms": 2973,
+        "input_tokens": 3374,
+        "output_tokens": 477,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0015845999999999998
+      }
+    },
+    {
+      "attempt_id": "original-r00-pagination",
+      "condition": "original",
+      "task": "pagination",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "stable-dedup": true,
+        "empty-page": true,
+        "cursor-cycle": true,
+        "early-end": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "aaa465d250ff1edfe1ef68394be3597f205f314b46bfb39486ba5f32a4c62cbd",
+        "duration_ms": 7482,
+        "input_tokens": 4411,
+        "output_tokens": 946,
+        "cache_read_input_tokens": 8320,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.00250842
+      }
+    },
+    {
+      "attempt_id": "kitharness-r00-pagination",
+      "condition": "kitharness",
+      "task": "pagination",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "stable-dedup": true,
+        "empty-page": true,
+        "cursor-cycle": true,
+        "early-end": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "87c9d3b413e3812094550f6d8a2b16ccaa82cdc47b34ba2e2f7a5f2a6212ab69",
+        "duration_ms": 1856,
+        "input_tokens": 3453,
+        "output_tokens": 285,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0013778999999999998
+      }
+    },
+    {
+      "attempt_id": "no_learning-r00-pagination",
+      "condition": "no_learning",
+      "task": "pagination",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "stable-dedup": true,
+        "empty-page": true,
+        "cursor-cycle": true,
+        "early-end": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "duration_ms": 3191,
+        "input_tokens": 3304,
+        "output_tokens": 547,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0016476
+      }
+    },
+    {
+      "attempt_id": "kitharness-r00-utc-boundaries",
+      "condition": "kitharness",
+      "task": "utc-boundaries",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "leap-back": true,
+        "year-forward": true,
+        "half-hour": true,
+        "already-utc": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "87c9d3b413e3812094550f6d8a2b16ccaa82cdc47b34ba2e2f7a5f2a6212ab69",
+        "duration_ms": 2331,
+        "input_tokens": 3314,
+        "output_tokens": 417,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0014946
+      }
+    },
+    {
+      "attempt_id": "no_learning-r00-utc-boundaries",
+      "condition": "no_learning",
+      "task": "utc-boundaries",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "leap-back": true,
+        "year-forward": true,
+        "half-hour": true,
+        "already-utc": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "duration_ms": 2027,
+        "input_tokens": 3165,
+        "output_tokens": 363,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.0013851
+      }
+    },
+    {
+      "attempt_id": "original-r00-utc-boundaries",
+      "condition": "original",
+      "task": "utc-boundaries",
+      "repetition": 0,
+      "recorded": true,
+      "status": "completed",
+      "valid": true,
+      "case_correct": {
+        "leap-back": true,
+        "year-forward": true,
+        "half-hour": true,
+        "already-utc": true
+      },
+      "case_score": 1.0,
+      "success": true,
+      "telemetry": {
+        "model": "deepseek-flash",
+        "source": "external-unverified",
+        "library_sha256": "aaa465d250ff1edfe1ef68394be3597f205f314b46bfb39486ba5f32a4c62cbd",
+        "duration_ms": 3946,
+        "input_tokens": 4041,
+        "output_tokens": 523,
+        "cache_read_input_tokens": 7296,
+        "cache_creation_input_tokens": 0,
+        "total_cost_usd": 0.001883676
+      }
+    }
+  ],
+  "host_protocol": {
+    "model_verified": true,
+    "same_model_all_roles": "deepseek-flash",
+    "batch_maintenance": true,
+    "warmup_sessions": 18,
+    "reflector_sessions": 2,
+    "curator_sessions": 2,
+    "frozen_libraries": {
+      "no_learning": {
+        "library_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original": {
+        "library_sha256": "aaa465d250ff1edfe1ef68394be3597f205f314b46bfb39486ba5f32a4c62cbd",
+        "content_sha256": "961ba5fc104b91920fc7772deda7a533f42e9c76388ff0023ae8496c24a3b6b9"
+      },
+      "kitharness": {
+        "library_sha256": "87c9d3b413e3812094550f6d8a2b16ccaa82cdc47b34ba2e2f7a5f2a6212ab69",
+        "content_sha256": "b096d883974b981072ebda1960c85ecc156f4e0116e679dc0621c2aaf7c4254c"
+      }
+    },
+    "no_feedback_between_evaluation_tasks": true
+  },
+  "all_phase_accounting": {
+    "model": "deepseek-flash",
+    "approved_budget_usd": 10.0,
+    "cli_sessions": 46,
+    "cli_estimated_usd": 2.1071429999999998,
+    "accounted_estimated_usd": 0.101828796,
+    "cost_receipt_coverage": 46,
+    "relay_normalized_units": 0.15000000000000036,
+    "relay_display_currency": "CNY",
+    "relay_attribution": "shared key; consumption includes any concurrent external usage",
+    "stages": {
+      "pilot": {
+        "sessions": 6,
+        "estimated_usd": 0.0024638999999999998
+      },
+      "warmup": {
+        "sessions": 18,
+        "estimated_usd": 0.0096849
+      },
+      "reflector": {
+        "sessions": 2,
+        "estimated_usd": 0.032389511999999995
+      },
+      "curator": {
+        "sessions": 2,
+        "estimated_usd": 0.022386636
+      },
+      "evaluation": {
+        "sessions": 18,
+        "estimated_usd": 0.034903847999999994
+      }
+    },
+    "halt_reason": null,
+    "limit_scope": "controller allocations, CLI estimated-cost guard and post-request relay counters; not a provider-side hard credit limit",
+    "successful_study_sessions": 43,
+    "previous_failed_sonnet_sessions": 3,
+    "native_cli_estimated_usd_this_study": 2.1071429999999998,
+    "native_cli_cost_coverage": 43,
+    "token_price_estimate_usd_this_study": 0.101828796,
+    "estimate_basis": "DeepSeek published peak rates, without assuming off-peak discounts",
+    "pricing_source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "account_balance_observation_note": "balance changes include shared-account concurrent use and endpoint rounding; not a per-request invoice",
+    "cli_estimate_coverage_sessions": 46,
+    "grant_status": "completed"
+  },
+  "summary": {
+    "version": 1,
+    "kind": "controlled_live_three_arm",
+    "date": "2026-11-02",
+    "model": "deepseek-flash",
+    "provider": {
+      "source": "deepseek_project",
+      "provider_name": "DeepSeek official",
+      "provider_identity_sha256": "39ae6cbcdccfc016eddd011ee894a607e422cb510e4fee63df703b10844b7be5",
+      "configuration_sha256": "80627d3157f9129040077a12b18290827848b61afe623c8cd88ff1199d772f98",
+      "credential_kind": "ANTHROPIC_AUTH_TOKEN",
+      "relay_port": 443,
+      "credentials_persisted": false
+    },
+    "conditions": {
+      "no_learning": {
+        "tasks_passed": 6,
+        "tasks": 6,
+        "cases_correct": 24,
+        "cases": 24,
+        "final_active_skills": 0,
+        "mean_plugin_context_bytes": 0.0,
+        "mean_wall_seconds": 3.3989999999999996,
+        "skill_file_reads": 0,
+        "solver_peak_estimate_usd": 0.009621672,
+        "maintenance": {}
+      },
+      "original": {
+        "tasks_passed": 6,
+        "tasks": 6,
+        "cases_correct": 24,
+        "cases": 24,
+        "final_active_skills": 3,
+        "mean_plugin_context_bytes": 582.0,
+        "mean_wall_seconds": 6.276833333333333,
+        "skill_file_reads": 7,
+        "solver_peak_estimate_usd": 0.013549404,
+        "maintenance": {
+          "reflector": {
+            "accepted": 5,
+            "rejected": 0,
+            "archival_intents_accepted": 0
+          },
+          "curator": {
+            "accepted": 6,
+            "rejected": 0,
+            "archival_intents_accepted": 4
+          }
+        }
+      },
+      "kitharness": {
+        "tasks_passed": 6,
+        "tasks": 6,
+        "cases_correct": 24,
+        "cases": 24,
+        "final_active_skills": 2,
+        "mean_plugin_context_bytes": 506.0,
+        "mean_wall_seconds": 4.417666666666666,
+        "skill_file_reads": 3,
+        "solver_peak_estimate_usd": 0.011732771999999999,
+        "maintenance": {
+          "reflector": {
+            "accepted": 2,
+            "rejected": 0,
+            "archival_intents_accepted": 0
+          },
+          "curator": {
+            "accepted": 0,
+            "rejected": 0,
+            "archival_intents_accepted": 0
+          }
+        }
+      }
+    },
+    "costs": {
+      "model": "deepseek-flash",
+      "approved_budget_usd": 10.0,
+      "cli_sessions": 46,
+      "cli_estimated_usd": 2.1071429999999998,
+      "accounted_estimated_usd": 0.101828796,
+      "cost_receipt_coverage": 46,
+      "relay_normalized_units": 0.15000000000000036,
+      "relay_display_currency": "CNY",
+      "relay_attribution": "shared key; consumption includes any concurrent external usage",
+      "stages": {
+        "pilot": {
+          "sessions": 6,
+          "estimated_usd": 0.0024638999999999998
+        },
+        "warmup": {
+          "sessions": 18,
+          "estimated_usd": 0.0096849
+        },
+        "reflector": {
+          "sessions": 2,
+          "estimated_usd": 0.032389511999999995
+        },
+        "curator": {
+          "sessions": 2,
+          "estimated_usd": 0.022386636
+        },
+        "evaluation": {
+          "sessions": 18,
+          "estimated_usd": 0.034903847999999994
+        }
+      },
+      "halt_reason": null,
+      "limit_scope": "controller allocations, CLI estimated-cost guard and post-request relay counters; not a provider-side hard credit limit",
+      "successful_study_sessions": 43,
+      "previous_failed_sonnet_sessions": 3,
+      "native_cli_estimated_usd_this_study": 2.1071429999999998,
+      "native_cli_cost_coverage": 43,
+      "token_price_estimate_usd_this_study": 0.101828796,
+      "estimate_basis": "DeepSeek published peak rates, without assuming off-peak discounts",
+      "pricing_source": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "account_balance_observation_note": "balance changes include shared-account concurrent use and endpoint rounding; not a per-request invoice",
+      "cli_estimate_coverage_sessions": 46,
+      "grant_status": "completed"
+    },
+    "observed_context_byte_reduction_vs_original": 0.13058419243986255,
+    "accuracy_improvement_demonstrated": false,
+    "limitations": [
+      "one repetition, six synthetic structured workflow tasks; no significance claim",
+      "same warmup lessons; one explicit batched reflection and curation per learning arm, not a native cadence comparison",
+      "different generated libraries confound retrieval/context comparisons",
+      "plugin context bytes include last-run summaries; native system prompt, skill body reads and other conversation tokens are separate",
+      "requested and reported model IDs match; provider model weights were not independently audited",
+      "curation archives are separate from lifecycle retirement; no forced retirement experiment",
+      "account balance and token-based peak estimate are different cost observations"
+    ]
+  },
+  "cost_basis": "DeepSeek published peak rates, without assuming off-peak discounts"
+}

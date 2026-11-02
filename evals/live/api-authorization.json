@@ -1,0 +1,28 @@
+{
+  "authorization": "Sonnet 4.6\uff0c\u603b\u9884\u7b97 10 \u7f8e\u5143",
+  "model": "claude-sonnet-4-6",
+  "approved_budget_usd": 10,
+  "max_cli_sessions": 48,
+  "planned_sessions": {
+    "warmup": 18,
+    "reflector": 2,
+    "curator": 2,
+    "evaluation": 18,
+    "pilot": 3
+  },
+  "planned_cli_allocations_usd": 7.8,
+  "relay_usage_verification": true,
+  "limit_scope": "controller reservations, per-session CLI estimated-cost guards and relay counter reconciliation; not a provider-side hard credit limit",
+  "grant_reset_allowed": false,
+  "models_called_before_this_phase": 0,
+  "status": "completed",
+  "initial_model": "claude-sonnet-4-6",
+  "execution_model": "deepseek-flash",
+  "fallback_authorization": "\u7528\u6237\u660e\u786e\u8981\u6c42 Sonnet \u4e0d\u597d\u4f7f\u5219\u4f7f\u7528\u672c\u673a\u9879\u76ee\u914d\u7f6e\u7684 DeepSeek",
+  "actual_cli_sessions": 46,
+  "successful_deepseek_sessions": 43,
+  "failed_sonnet_sessions": 3,
+  "grant_closed": true,
+  "initial_relay_key_is_server_unlimited": true,
+  "final_meter": "official DeepSeek account balance and published peak USD token rates"
+}

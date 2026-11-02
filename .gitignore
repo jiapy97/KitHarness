@@ -1,4 +1,5 @@
 .claude/
+.kitharness-private/
 
 __pycache__/
 *.py[cod]
@@ -7,6 +8,7 @@ venv/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+evals/live/*.lock
 *.egg-info/
 dist/
 build/

@@ -307,6 +307,10 @@ KitHarness), six structured workflow tasks, deterministic JSON grading, failure 
 and telemetry coverage. It prepares and scores artifacts without invoking models or executing
 candidate code. The bundled smoke report uses synthetic answers and is not evidence of model gains.
 See [task evaluation](docs/task-evaluation.md) for reproduction and the remaining live-host protocol.
+The [host preflight](docs/live-evaluation.md) preserves authentication checks and failed pilot attempts.
+Step 11 completed a [controlled live DeepSeek study](docs/live-study-results.md), including real MCP
+reflection/curation, frozen libraries, all-phase accounting, and an offline-verifiable evidence archive.
+All three arms passed the 24 synthetic cases; this small run does not demonstrate an accuracy gain.
 
 ## How it compares
 

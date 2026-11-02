@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "status": "step_11_controlled_study_completed",
+  "model_alias_candidate": "sonnet",
+  "resolved_model_id": "deepseek-flash",
+  "approved_api_usd_limit": 10,
+  "suggested_first_phase": {
+    "scope": "host/authentication/protocol pilot, not a learning-effect comparison",
+    "suggested_cli_sessions": 3,
+    "conditions": [
+      "no_learning",
+      "original",
+      "kitharness"
+    ],
+    "task": "utc-boundaries",
+    "warmup_enabled": false,
+    "curation_enabled": false
+  },
+  "full_protocol_one_repeat": {
+    "warmup_episodes_per_condition": 6,
+    "evaluation_tasks_per_condition": 6,
+    "condition_count": 3,
+    "direct_sessions_before_background_overhead": 36,
+    "background_session_limit": null,
+    "total_cost_limit_verified": false
+  },
+  "required_before_model_invocation": [
+    "separate authentication works in isolated config without copying personal settings",
+    "actual CLI isolation and provider transport pass checks",
+    "runner enforces global session limits including descendants",
+    "all solver and maintenance calls produce auditable receipts"
+  ],
+  "cli_sessions_reserved": 3,
+  "cli_selected_model_id": "deepseek-flash",
+  "server_model_identity_verified": true,
+  "actual_billing_mode": "official_deepseek_api",
+  "historical_authorization_billing_assumption": "subscription",
+  "relay_authentication_report": "relay-auth-check.json",
+  "relay_authentication_verified": true,
+  "execution_model": "deepseek-flash",
+  "successful_cli_model_sessions": 43,
+  "api_grant_cli_sessions": 46,
+  "model_identity_verification_scope": "requested and returned model IDs across all study sessions, not model weights",
+  "api_authorization_record": "api-authorization.json",
+  "final_report": "real-study/report.json",
+  "final_summary": "real-study/summary.json",
+  "api_grant_closed": true,
+  "historical_subscription_authorization": {
+    "text": "\u6cbf\u7528 Sonnet \u8ba2\u9605\uff0c\u5148\u9650 3 \u6b21 CLI \u4f1a\u8bdd\u9884\u68c0",
+    "approved_cli_sessions": 3,
+    "used_sessions": 3,
+    "ledger": "session-ledger.json"
+  },
+  "historical_cli_selected_model_id": "claude-sonnet-5-5",
+  "controller_cli_session_cap": 48,
+  "api_model_execution_authorized_for_completed_phase": true,
+  "additional_model_execution_enabled": false
+}

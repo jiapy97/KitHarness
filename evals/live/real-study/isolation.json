@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "scope": "fixed synthetic helper under actual evaluation profiles, with positive controls",
+  "model_requests": 0,
+  "passed": true,
+  "checks": [
+    {
+      "condition": "no_learning",
+      "passed": true,
+      "baseline": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": false,
+        "outside_write_denied": false,
+        "network_denied": false
+      },
+      "sandboxed": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": true,
+        "outside_write_denied": true,
+        "network_denied": true
+      },
+      "profile_sha256": "d67f5934de138191f3d534dce71f2eb993cb59ae19d9344525d774bdbfdada1b"
+    },
+    {
+      "condition": "original",
+      "passed": true,
+      "baseline": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": false,
+        "outside_write_denied": false,
+        "network_denied": false
+      },
+      "sandboxed": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": true,
+        "outside_write_denied": true,
+        "network_denied": true
+      },
+      "profile_sha256": "a6019f998e3ab2bc4e81dcc2ad2b93dc290073aa5c2a42eece861b1e53630799"
+    },
+    {
+      "condition": "kitharness",
+      "passed": true,
+      "baseline": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": false,
+        "outside_write_denied": false,
+        "network_denied": false
+      },
+      "sandboxed": {
+        "allowed_read": true,
+        "allowed_write": true,
+        "grading_read_denied": true,
+        "outside_write_denied": true,
+        "network_denied": true
+      },
+      "profile_sha256": "80f85acb45d506f0f9272c0cc5125b89b5f36963d3b1d412ac30439416ff56be"
+    }
+  ]
+}

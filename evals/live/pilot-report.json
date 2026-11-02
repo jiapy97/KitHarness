@@ -1,0 +1,390 @@
+{
+  "version": 1,
+  "kind": "host_protocol_pilot",
+  "status": "failed_no_model_answers",
+  "learning_effect_evidence": false,
+  "authorization_text": "沿用 Sonnet 订阅，先限 3 次 CLI 会话预检",
+  "approved_cli_sessions": 3,
+  "cli_sessions_reserved": 3,
+  "successful_model_responses": 0,
+  "actual_api_request_count": null,
+  "requested_model_alias": "sonnet",
+  "cli_selected_model_id": "claude-sonnet-5-5",
+  "server_model_identity_verified": false,
+  "cli_version": "2.1.312 (Claude Code)",
+  "sources": {
+    "kitharness": {
+      "commit": "b232f74c5c7e6f0a02dcda688584cfb6dbf19c52",
+      "snapshot_sha256": "715a5d0aeb326a2c54f79eeddfe8554747db1267bccb1e53f3ad445dee67e000"
+    },
+    "no_learning": null,
+    "original": {
+      "commit": "f2de058720317025c4c18369b7227235141a218b",
+      "snapshot_sha256": "e3cbc40cd57eff4e8ee91813f1f1cb96023e23d7aa884c4f60642eaaa9c46598"
+    }
+  },
+  "suite_sha256": "fedb7560d6a00a7f34e04a25a053ca463ed908b4c21eed1dd26b5cedf2e2d5c9",
+  "prompt_sha256": "de3eacbc2d6a0d57c3145ef76a94dd41b2700ae4e181182b87eca301fb5c0e57",
+  "warmup_sessions": 0,
+  "curation_sessions": 0,
+  "estimated_cost_usd_known_sum": 0,
+  "estimated_cost_coverage_sessions": 2,
+  "estimated_cost_usd_total": null,
+  "blocked_descendant_attempts": 0,
+  "boundaries": [
+    "policies changed between failed attempts; not a controlled effect comparison",
+    "auth status and unauthenticated HTTPS HEAD do not verify usable model authentication",
+    "first two failures lack complete raw error content; no invented error reconstruction",
+    "native auth refresh writes were allowed only in the third attempt; personal settings and skill libraries not granted",
+    "HTTPS port 443 and DNS are permitted; not a provider endpoint allowlist",
+    "pinned trusted plugin spawn paths are blocked; CLI-internal API requests are not counted as sessions"
+  ],
+  "attempts": [
+    {
+      "condition": "no_learning",
+      "session_reservation": 1,
+      "returncode": 1,
+      "timed_out": false,
+      "wall_seconds": 0.113,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 55,
+      "blocked_descendant_attempts": 0,
+      "init": {
+        "model": null,
+        "claude_code_version": null,
+        "tools": null,
+        "mcp_servers": null,
+        "plugins": null
+      },
+      "observed_model_ids": [],
+      "hook_events": [],
+      "tools_disabled_verified": false,
+      "result_type": null,
+      "is_error": null,
+      "duration_ms": null,
+      "usage": null,
+      "model_usage": null,
+      "estimated_cost_usd": null,
+      "answer": null,
+      "grade": {
+        "valid": false,
+        "case_correct": {
+          "already-utc": false,
+          "half-hour": false,
+          "leap-back": false,
+          "year-forward": false
+        },
+        "case_score": 0,
+        "success": false
+      },
+      "protocol_passed": false,
+      "model_identity_matches": null,
+      "run_id": "kitharness-pilot-20261102-b",
+      "host_check": {
+        "condition": "no_learning",
+        "authenticated": true,
+        "returncode": 0,
+        "timed_out": false,
+        "credentials_copied": false,
+        "isolation": "passed",
+        "isolation_baseline": {
+          "allowed_read": true,
+          "allowed_write": true,
+          "grading_read_denied": false,
+          "outside_write_denied": false,
+          "network_denied": false
+        },
+        "isolation_sandboxed": {
+          "allowed_read": true,
+          "allowed_write": true,
+          "grading_read_denied": true,
+          "outside_write_denied": true,
+          "network_denied": true
+        },
+        "descendant_cli_blocked": true,
+        "provider_tls": {
+          "tls_transport": true,
+          "http_status": 404
+        },
+        "profile_sha256": "200b5a2214ed9f02fa786a2a5ba2234c7de8942c62265310bc6ade300b73c2b1"
+      },
+      "policy_revision": "initial_readonly_auth",
+      "diagnostic_coverage": "stderr/content not retained; cause not fully recoverable",
+      "grade_applicable": false
+    },
+    {
+      "condition": "original",
+      "session_reservation": 2,
+      "returncode": 1,
+      "timed_out": false,
+      "wall_seconds": 3.094,
+      "stdout_sha256": "803b7a3b56c768ca5229fc7045e9fac4d3f61bde91a84351b7d2708690b842d4",
+      "stderr_bytes": 0,
+      "stderr_redacted": "",
+      "blocked_descendant_attempts": 0,
+      "init": {
+        "model": "claude-sonnet-5-5",
+        "claude_code_version": "2.1.312",
+        "tools": [],
+        "mcp_servers": [],
+        "plugins": [
+          {
+            "name": "autoharness",
+            "path": "/private/tmp/kitharness-pilot-20261102-c/sources/original",
+            "source": "autoharness@inline",
+            "version": "0.5.3"
+          },
+          {
+            "name": "cc-plugin-agents-md",
+            "path": "builtin",
+            "source": "cc-plugin-agents-md@builtin"
+          },
+          {
+            "name": "cc-plugin-plugin-authoring",
+            "path": "builtin",
+            "source": "cc-plugin-plugin-authoring@builtin"
+          }
+        ]
+      },
+      "observed_model_ids": [],
+      "hook_events": [
+        {
+          "subtype": "hook_started",
+          "hook_event": "SessionStart",
+          "hook_name": "SessionStart:startup",
+          "outcome": null,
+          "exit_code": null
+        },
+        {
+          "subtype": "hook_response",
+          "hook_event": "SessionStart",
+          "hook_name": "SessionStart:startup",
+          "outcome": "success",
+          "exit_code": 0
+        }
+      ],
+      "tools_disabled_verified": true,
+      "result_type": "success",
+      "is_error": true,
+      "duration_ms": 2473,
+      "usage": {
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0,
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "model_usage": {},
+      "estimated_cost_usd": 0,
+      "answer": null,
+      "grade": {
+        "valid": false,
+        "case_correct": {
+          "already-utc": false,
+          "half-hour": false,
+          "leap-back": false,
+          "year-forward": false
+        },
+        "case_score": 0,
+        "success": false
+      },
+      "protocol_passed": false,
+      "model_identity_matches": null,
+      "run_id": "kitharness-pilot-20261102-c",
+      "host_check": {
+        "condition": "original",
+        "authenticated": true,
+        "returncode": 0,
+        "timed_out": false,
+        "credentials_copied": false,
+        "isolation": "passed",
+        "isolation_baseline": {
+          "allowed_read": true,
+          "allowed_write": true,
+          "grading_read_denied": false,
+          "outside_write_denied": false,
+          "network_denied": false
+        },
+        "isolation_sandboxed": {
+          "allowed_read": true,
+          "allowed_write": true,
+          "grading_read_denied": true,
+          "outside_write_denied": true,
+          "network_denied": true
+        },
+        "descendant_cli_blocked": true,
+        "provider_tls": {
+          "tls_transport": true,
+          "http_status": 404
+        },
+        "profile_sha256": "43ef4d2c9716fa45d84b75381451479ba0beacc8ef954b8ec30b7b7dabf01c44"
+      },
+      "policy_revision": "redirected_cli_tmp_readonly_auth",
+      "diagnostic_coverage": "stderr/content not retained; cause not fully recoverable",
+      "system_log_observation": "native CLI OAuth refresh lock writes were denied; causal diagnosis is incomplete",
+      "grade_applicable": false
+    },
+    {
+      "condition": "kitharness",
+      "session_reservation": 3,
+      "returncode": 1,
+      "timed_out": false,
+      "wall_seconds": 12.741,
+      "stdout_sha256": "3238b3138e19dd3bdfd1a96c581e090da77ae8c3fcf5ce1a791575f1b3b477cb",
+      "stderr_bytes": 0,
+      "stderr_redacted": "",
+      "blocked_descendant_attempts": 0,
+      "init": {
+        "model": "claude-sonnet-5-5",
+        "claude_code_version": "2.1.312",
+        "tools": [],
+        "mcp_servers": [],
+        "plugins": [
+          {
+            "name": "autoharness",
+            "path": "/private/tmp/kitharness-pilot-20261102-d/sources/kitharness",
+            "source": "autoharness@inline",
+            "version": "0.5.3"
+          },
+          {
+            "name": "cc-plugin-agents-md",
+            "path": "builtin",
+            "source": "cc-plugin-agents-md@builtin"
+          },
+          {
+            "name": "cc-plugin-plugin-authoring",
+            "path": "builtin",
+            "source": "cc-plugin-plugin-authoring@builtin"
+          }
+        ]
+      },
+      "observed_model_ids": [],
+      "hook_events": [
+        {
+          "subtype": "hook_started",
+          "hook_event": "SessionStart",
+          "hook_name": "SessionStart:startup",
+          "outcome": null,
+          "exit_code": null
+        },
+        {
+          "subtype": "hook_response",
+          "hook_event": "SessionStart",
+          "hook_name": "SessionStart:startup",
+          "outcome": "success",
+          "exit_code": 0
+        },
+        {
+          "subtype": "hook_started",
+          "hook_event": "UserPromptSubmit",
+          "hook_name": "UserPromptSubmit",
+          "outcome": null,
+          "exit_code": null
+        },
+        {
+          "subtype": "hook_response",
+          "hook_event": "UserPromptSubmit",
+          "hook_name": "UserPromptSubmit",
+          "outcome": "success",
+          "exit_code": 0
+        }
+      ],
+      "tools_disabled_verified": true,
+      "result_type": "success",
+      "is_error": true,
+      "error_result_redacted": "Not logged in · Please run /login",
+      "errors_redacted": null,
+      "duration_ms": 12249,
+      "usage": {
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 0,
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "",
+        "iterations": [],
+        "speed": "standard",
+        "fallback_credit": null
+      },
+      "model_usage": {},
+      "estimated_cost_usd": 0,
+      "answer": null,
+      "grade": {
+        "valid": false,
+        "case_correct": {
+          "already-utc": false,
+          "half-hour": false,
+          "leap-back": false,
+          "year-forward": false
+        },
+        "case_score": 0,
+        "success": false
+      },
+      "protocol_passed": false,
+      "model_identity_matches": null,
+      "run_id": "kitharness-pilot-20261102-d",
+      "host_check": {
+        "condition": "kitharness",
+        "authenticated": true,
+        "returncode": 0,
+        "timed_out": false,
+        "credentials_copied": false,
+        "isolation": "passed",
+        "isolation_baseline": {
+          "allowed_read": true,
+          "allowed_write": true,
+          "grading_read_denied": false,
+          "outside_write_denied": false,
+          "network_denied": false
+        },
+        "isolation_sandboxed": {
+          "allowed_read": true,
+          "allowed_write": true,
+          "grading_read_denied": true,
+          "outside_write_denied": true,
+          "network_denied": true
+        },
+        "descendant_cli_blocked": true,
+        "provider_tls": {
+          "tls_transport": true,
+          "http_status": 404
+        },
+        "profile_sha256": "b5effcbdecedf957a5187e7a88ea85f15ca60f27532366215ac0dc51015083a6"
+      },
+      "policy_revision": "redirected_cli_tmp_native_auth_refresh_allowed",
+      "diagnostic_coverage": "complete_redacted_error_result",
+      "grade_applicable": false
+    }
+  ],
+  "next_required": [
+    "isolate and verify actual subscription authentication",
+    "new explicit session authorization before further --print launches",
+    "full warmup/library-freezing/maintenance protocol remains unfinished"
+  ]
+}
