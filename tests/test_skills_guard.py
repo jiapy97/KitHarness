@@ -1,6 +1,6 @@
 import pytest
 
-from autoharness.lib import skills_guard
+from kitharness.lib import skills_guard
 
 
 def test_benign_skill_clean():

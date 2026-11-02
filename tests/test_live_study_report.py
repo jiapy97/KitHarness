@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from autoharness.lib.live_study_report import checked_files, contexts, verify_archive
+from kitharness.lib.live_study_report import checked_files, contexts, verify_archive
 
 
 def test_only_actual_stdout_context_is_counted_not_stderr_intentions():

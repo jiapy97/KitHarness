@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from kitharness._compat import LEGACY_PACKAGE
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -21,7 +23,7 @@ def test_install_entry_matches_the_two_manifest_names():
     assert "/plugin install kitharness@kitharness" in readme
     for surface in (readme, project):
         lowered = surface.lower()
-        assert "autoharness" not in lowered.replace("autoharness_", "")
+        assert LEGACY_PACKAGE not in lowered
         assert "tigerless" not in lowered
 
 

@@ -4,9 +4,9 @@ import subprocess
 import sys
 import time
 
-from autoharness import config
-from autoharness.hook import promoter
-from autoharness.lib import intent_queue, layer, notify
+from kitharness import config
+from kitharness.hook import promoter
+from kitharness.lib import intent_queue, layer, notify
 
 ROWS = [{"action": "create", "name": "ok1", "ok": True},
         {"action": "patch", "name": "ok2", "ok": True},
@@ -31,13 +31,13 @@ def _hook_script(tmp_path):
     script = tmp_path / "hook.py"
     script.write_text("import json, os, sys\n"
                       f"open({str(out)!r}, 'w').write(json.dumps({{'record': json.load(sys.stdin), "
-                      "'summary': os.environ['AUTOHARNESS_NOTIFY_SUMMARY'], "
+                      "'summary': os.environ['KITHARNESS_NOTIFY_SUMMARY'], "
                       f"'guard': os.environ.get({config.CHILD_SESSION_ENV!r})}}))\n")
     return f"{sys.executable} {script}", out
 
 
 def test_knobs_default_off(monkeypatch):
-    for var in ("AUTOHARNESS_NOTIFY", "AUTOHARNESS_NOTIFY_CMD", "AUTOHARNESS_NOTIFY_TIMEOUT_S"):
+    for var in ("KITHARNESS_NOTIFY", "KITHARNESS_NOTIFY_CMD", "KITHARNESS_NOTIFY_TIMEOUT_S"):
         monkeypatch.delenv(var, raising=False)
     importlib.reload(config)
     try:
@@ -48,8 +48,8 @@ def test_knobs_default_off(monkeypatch):
 
 
 def test_knobs_normalize_mode_and_floor_timeout(monkeypatch):
-    monkeypatch.setenv("AUTOHARNESS_NOTIFY", " Desktop ")
-    monkeypatch.setenv("AUTOHARNESS_NOTIFY_TIMEOUT_S", "0")
+    monkeypatch.setenv("KITHARNESS_NOTIFY", " Desktop ")
+    monkeypatch.setenv("KITHARNESS_NOTIFY_TIMEOUT_S", "0")
     importlib.reload(config)
     try:
         assert config.NOTIFY == "desktop" and config.NOTIFY_TIMEOUT_S == 1

@@ -3,9 +3,9 @@ import threading
 from contextlib import contextmanager
 from pathlib import Path
 
-from autoharness import config
-from autoharness.hook import promoter
-from autoharness.lib import intent_queue, lock, sidecar, skill_store
+from kitharness import config
+from kitharness.hook import promoter
+from kitharness.lib import intent_queue, lock, sidecar, skill_store
 
 BODY = ("---\nname: shared\ndescription: Use when formatting a date as ISO.\n---\n"
         "# Shared\nFirst setting: alpha.\nSecond setting: beta.\n")

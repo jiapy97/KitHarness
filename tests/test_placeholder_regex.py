@@ -1,5 +1,5 @@
 """Regression: _PLACEHOLDER must not match legitimate markdown callout tags."""
-from autoharness.lib.validate import _PLACEHOLDER
+from kitharness.lib.validate import _PLACEHOLDER
 
 
 def test_placeholder_still_catches_real_placeholders():

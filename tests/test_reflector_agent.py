@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 
-from autoharness.lib import validate
+from kitharness.lib import validate
 
 AGENT = Path(__file__).resolve().parents[1] / "agents" / "reflector.md"
 

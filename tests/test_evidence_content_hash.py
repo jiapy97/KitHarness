@@ -1,7 +1,7 @@
 import hashlib
 
-from autoharness.hook import promoter
-from autoharness.lib import layer
+from kitharness.hook import promoter
+from kitharness.lib import layer
 
 
 def test_distinct_evidence_with_equal_short_hashes_stays_distinct(tmp_path):

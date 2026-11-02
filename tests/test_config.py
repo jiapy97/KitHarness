@@ -2,8 +2,8 @@ import importlib
 
 import pytest
 
-from autoharness import config
-from autoharness.lib import layer
+from kitharness import config
+from kitharness.lib import layer
 
 
 def test_cadence_positive():
@@ -22,7 +22,7 @@ def test_curator_agent_named_and_distinct():
 
 
 def test_env_overrides_consolidate_cadence(monkeypatch):
-    monkeypatch.setenv("AUTOHARNESS_CONSOLIDATE_EVERY_N", "7")
+    monkeypatch.setenv("KITHARNESS_CONSOLIDATE_EVERY_N", "7")
     importlib.reload(config)
     try:
         assert config.CONSOLIDATE_EVERY_N == 7
@@ -51,9 +51,9 @@ def test_spawn_pointers_present_and_distinct():
 
 
 def test_env_overrides_knobs_else_defaults(monkeypatch):
-    monkeypatch.setenv("AUTOHARNESS_REFLECT_EVERY_N", "2")
-    monkeypatch.setenv("AUTOHARNESS_MATURITY_PROJECT", "3")
-    monkeypatch.setenv("AUTOHARNESS_CAPACITY_PROJECT", "1")
+    monkeypatch.setenv("KITHARNESS_REFLECT_EVERY_N", "2")
+    monkeypatch.setenv("KITHARNESS_MATURITY_PROJECT", "3")
+    monkeypatch.setenv("KITHARNESS_CAPACITY_PROJECT", "1")
     importlib.reload(config)
     try:
         assert config.REFLECT_EVERY_N == 2
@@ -73,10 +73,10 @@ def test_env_overrides_knobs_else_defaults(monkeypatch):
     ("env_var", "attribute", "raw", "expected"),
     [
         # the module attribute is GRADUATION_REVIEW_SUSPENDED; the env var is not.
-        ("AUTOHARNESS_GRADUATION_SUSPENDED", "GRADUATION_REVIEW_SUSPENDED", "1", True),
-        ("AUTOHARNESS_INDEX_SUSPENDED", "INDEX_SUSPENDED", "1", True),
-        ("AUTOHARNESS_SNAPSHOT_KEEP", "SNAPSHOT_KEEP", "11", 11),
-        ("AUTOHARNESS_CARRIER", "REFLECTOR_CARRIER", "fork", "fork"),
+        ("KITHARNESS_GRADUATION_SUSPENDED", "GRADUATION_REVIEW_SUSPENDED", "1", True),
+        ("KITHARNESS_INDEX_SUSPENDED", "INDEX_SUSPENDED", "1", True),
+        ("KITHARNESS_SNAPSHOT_KEEP", "SNAPSHOT_KEEP", "11", 11),
+        ("KITHARNESS_CARRIER", "REFLECTOR_CARRIER", "fork", "fork"),
     ],
 )
 def test_documented_knob_reads_its_env_var(
@@ -101,7 +101,7 @@ def test_int_knob_falls_back_to_default_on_non_numeric(monkeypatch):
     # _int_env swallows ValueError and hands back the default, so a typo'd value
     # is indistinguishable from an unset one. Pin that, so the fallback is a
     # decision on record rather than an accident nobody looked for.
-    monkeypatch.setenv("AUTOHARNESS_SNAPSHOT_KEEP", "five")
+    monkeypatch.setenv("KITHARNESS_SNAPSHOT_KEEP", "five")
     with pytest.warns(UserWarning, match="not a valid integer"):
         importlib.reload(config)
     try:

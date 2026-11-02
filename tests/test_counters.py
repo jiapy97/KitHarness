@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from autoharness.lib import counters
+from kitharness.lib import counters
 
 
 def test_request_counter_per_layer_independent(tmp_path):
@@ -20,7 +20,7 @@ def test_request_counter_per_layer_independent(tmp_path):
 def test_bump_serialized_across_processes(tmp_path):
     code = (
         "import sys, pathlib\n"
-        "from autoharness.lib import counters\n"
+        "from kitharness.lib import counters\n"
         "for _ in range(25):\n"
         "    counters.bump_request('project', pathlib.Path(sys.argv[1]))\n"
     )

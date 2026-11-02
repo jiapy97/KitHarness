@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from autoharness.lib import live_pilot as pilot
+from kitharness.lib import live_pilot as pilot
 
 
 def grant(tmp_path):
@@ -62,7 +62,7 @@ def test_environment_drops_inherited_credentials_and_provider_overrides(tmp_path
     assert not {"ANTHROPIC_API_KEY", "ANTHROPIC_BASE_URL", "PYTHONPATH"} & env.keys()
     assert "CLAUDE_SECURESTORAGE_CONFIG_DIR" not in env
     assert env["HOME"] == str(Path.home())
-    assert env["AUTOHARNESS_CLAUDE_BIN"] == str(tmp_path / "shim/claude")
+    assert env["KITHARNESS_CLAUDE_BIN"] == str(tmp_path / "shim/claude")
     assert env["CLAUDE_CODE_TMPDIR"] == str(tmp_path / "tmp")
     assert env["XDG_STATE_HOME"] == str(tmp_path / "state")
 

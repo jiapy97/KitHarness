@@ -9,9 +9,9 @@ from pathlib import Path
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import jobs, promoter, recovery, spawn
-from autoharness.lib import counters, intent_queue, layer, run_owners
+from kitharness import config
+from kitharness.hook import jobs, promoter, recovery, spawn
+from kitharness.lib import counters, intent_queue, layer, run_owners
 
 SRC = str(Path(__file__).resolve().parents[1] / "src")
 BODY = "---\nname: dates\ndescription: Use when formatting dates.\n---\nUse ISO dates.\n"
@@ -40,7 +40,7 @@ def test_both_carriers_pass_budget_and_request_machine_readable_usage(carrier):
 _SLOTS = '''
 import json, sys
 from pathlib import Path
-from autoharness.hook import jobs
+from kitharness.hook import jobs
 roots = {key: Path(value) for key, value in json.loads(sys.argv[1]).items()}
 with jobs.slots(roots) as acquired:
     print(acquired, flush=True)
@@ -50,8 +50,8 @@ with jobs.slots(roots) as acquired:
 
 @pytest.mark.parametrize("shared", ["project", "global"])
 def test_slots_exclude_other_process_and_release_on_process_exit(roots, tmp_path, shared):
-    env = {**os.environ, "PYTHONPATH": SRC, "AUTOHARNESS_JOB_PROJECT_LIMIT": "1",
-           "AUTOHARNESS_JOB_GLOBAL_LIMIT": "1", "AUTOHARNESS_DISABLE_GLOBAL": "0"}
+    env = {**os.environ, "PYTHONPATH": SRC, "KITHARNESS_JOB_PROJECT_LIMIT": "1",
+           "KITHARNESS_JOB_GLOBAL_LIMIT": "1", "KITHARNESS_DISABLE_GLOBAL": "0"}
     args = json.dumps({key: str(value) for key, value in roots.items()})
     with subprocess.Popen([sys.executable, "-c", _SLOTS, args], env=env, stdin=subprocess.PIPE,
                           stdout=subprocess.PIPE, text=True, encoding="utf-8") as child:
@@ -189,8 +189,8 @@ def test_real_timeout_quarantines_registered_writer_before_recovery(roots, monke
     monkeypatch.setattr(config, "JOB_TIMEOUT_S", .5)
     target = run_owners.path("timeout", roots["project"])
     run_owners.write(target, {"version": 1, "status": "active", "process_groups": [os.getpgrp()]})
-    script = ("import os,time,json; from pathlib import Path; from autoharness.lib import intent_queue; "
-              "intent_queue.append('timeout',json.loads(os.environ['PROPOSAL']),Path(os.environ['AUTOHARNESS_PROJECT_ROOT'])); "
+    script = ("import os,time,json; from pathlib import Path; from kitharness.lib import intent_queue; "
+              "intent_queue.append('timeout',json.loads(os.environ['PROPOSAL']),Path(os.environ['KITHARNESS_PROJECT_ROOT'])); "
               "time.sleep(30)")
     proposal = {"action": "create", "name": "dates", "body": BODY, "level": "project", "reason": "r", "evidence": "e"}
 
@@ -213,16 +213,16 @@ def test_live_child_holds_slot_after_supervisor_crash(roots):
     script = '''
 import json, os, sys
 from pathlib import Path
-from autoharness.hook import jobs
+from kitharness.hook import jobs
 roots = {key: Path(value) for key, value in json.loads(sys.argv[1]).items()}
 jobs._register_child = lambda env, pid: print(pid, flush=True)
 with jobs.slots(roots) as acquired:
     print(acquired, flush=True)
     jobs.execute([sys.executable, '-c', 'import time; time.sleep(30)'],
-                 {**os.environ, 'AUTOHARNESS_RUN_ID': 'crash'}, '')
+                 {**os.environ, 'KITHARNESS_RUN_ID': 'crash'}, '')
 '''
-    env = {**os.environ, "PYTHONPATH": SRC, "AUTOHARNESS_JOB_PROJECT_LIMIT": "1",
-           "AUTOHARNESS_JOB_GLOBAL_LIMIT": "1", "AUTOHARNESS_DISABLE_GLOBAL": "0"}
+    env = {**os.environ, "PYTHONPATH": SRC, "KITHARNESS_JOB_PROJECT_LIMIT": "1",
+           "KITHARNESS_JOB_GLOBAL_LIMIT": "1", "KITHARNESS_DISABLE_GLOBAL": "0"}
     pid = None
     with subprocess.Popen([sys.executable, "-c", script, json.dumps({k: str(v) for k, v in roots.items()})],
                           stdout=subprocess.PIPE, text=True, encoding="utf-8", env=env) as supervisor:
@@ -248,10 +248,10 @@ with jobs.slots(roots) as acquired:
 
 @pytest.mark.parametrize("value", ["0", "-2", "nan", "inf", "bad"])
 def test_invalid_budget_and_nonpositive_limits_fall_back_to_safe_defaults(value):
-    env = {**os.environ, "PYTHONPATH": SRC, "AUTOHARNESS_JOB_MAX_BUDGET_USD": value,
-           "AUTOHARNESS_JOB_TIMEOUT_S": "0", "AUTOHARNESS_JOB_PROJECT_LIMIT": "0",
-           "AUTOHARNESS_JOB_GLOBAL_LIMIT": "-1", "AUTOHARNESS_VERSION_KEEP": "0"}
-    result = subprocess.run([sys.executable, "-c", "from autoharness import config as c; "
+    env = {**os.environ, "PYTHONPATH": SRC, "KITHARNESS_JOB_MAX_BUDGET_USD": value,
+           "KITHARNESS_JOB_TIMEOUT_S": "0", "KITHARNESS_JOB_PROJECT_LIMIT": "0",
+           "KITHARNESS_JOB_GLOBAL_LIMIT": "-1", "KITHARNESS_VERSION_KEEP": "0"}
+    result = subprocess.run([sys.executable, "-c", "from kitharness import config as c; "
                              "print(c.JOB_MAX_BUDGET_USD,c.JOB_TIMEOUT_S,c.JOB_PROJECT_LIMIT,c.JOB_GLOBAL_LIMIT,c.VERSION_KEEP)"],
                             env=env, capture_output=True, text=True, encoding="utf-8", timeout=5)
     assert result.returncode == 0

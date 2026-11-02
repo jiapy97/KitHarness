@@ -385,7 +385,7 @@ uv --cache-dir /private/tmp/kitharness-review-uv run --no-project --python 3.12 
 - 当前状态：已完成，2026-11-02。
 - 说明：[项目说明](project.md)；[本地演示](demo.md)。插件 id 和市场 id 都是 `kitharness`，安装 id 是 `kitharness@kitharness`。状态目录是 `.claude/kitharness`。
 - [x] 对外页面、安装命令和桌面通知使用 KitHarness，不再出现其他项目名。
-- [x] Python 包路径仍是 `autoharness`，环境变量前缀仍是 `AUTOHARNESS_`。这是代码入口，不是对外产品名。已归档实验记录保持原样，避免证据摘要失配。
+- [x] Python 主包统一为 `kitharness`，环境变量前缀统一为 `KITHARNESS_`。旧入口与配置保留兼容层，技能和状态目录不变。已归档实验记录保持原样，避免证据摘要失配。
 - [x] [LICENSE](../LICENSE) 仍是 MIT。
 - [x] 对外文字只展示已测量的召回对照和一轮真实实验，并写明没有证明正确率提升。
 - [x] 演示是三条不调用模型的本地命令：召回对照、评分夹具、证据重评分。旧的录屏稿已删除。

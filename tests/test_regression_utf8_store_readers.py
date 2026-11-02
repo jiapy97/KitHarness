@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from autoharness.lib import intent_queue, ledger, sidecar, skill_store
+from kitharness.lib import intent_queue, ledger, sidecar, skill_store
 
 
 def test_storage_readers_ignore_legacy_platform_default_encoding(tmp_path, monkeypatch):

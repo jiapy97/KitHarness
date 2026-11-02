@@ -1,6 +1,6 @@
 import json
 
-from autoharness.hook import capture
+from kitharness.hook import capture
 
 
 def test_review_window_preserves_whole_records_and_marker_separator(tmp_path):

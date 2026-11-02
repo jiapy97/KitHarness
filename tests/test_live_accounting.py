@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
-from autoharness.lib import live_accounting as book
+from kitharness.lib import live_accounting as book
 
 
 def state(used=100):

@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pytest
 
-from autoharness.lib import live_auth
-from autoharness.lib import live_study as study
+from kitharness.lib import live_auth
+from kitharness.lib import live_study as study
 
 
 def provider():
@@ -34,16 +34,16 @@ def test_mcp_server_receives_no_relay_key_and_cannot_spawn_models(tmp_path):
     mcp_env = config["mcpServers"]["plugin_kitharness_stage_skill"]["env"]
     assert mcp_env["ANTHROPIC_AUTH_TOKEN"] == "" and mcp_env["ANTHROPIC_API_KEY"] == ""
     assert "private-real-key" not in path.read_text()
-    assert env["AUTOHARNESS_CHILD_SESSION"] == "1"
-    assert env["AUTOHARNESS_CLAUDE_BIN"].endswith("shim/claude")
+    assert env["KITHARNESS_CHILD_SESSION"] == "1"
+    assert env["KITHARNESS_CLAUDE_BIN"].endswith("shim/claude")
 
 
 def test_solver_contexts_have_distinct_cli_configs_but_same_arm_library(tmp_path):
     first = study.context_env(tmp_path, "first", provider())
     second = study.context_env(tmp_path, "second", provider())
     assert first["CLAUDE_CONFIG_DIR"] != second["CLAUDE_CONFIG_DIR"]
-    assert first["AUTOHARNESS_PROJECT_ROOT"] == second["AUTOHARNESS_PROJECT_ROOT"]
-    assert "AUTOHARNESS_CHILD_SESSION" not in first
+    assert first["KITHARNESS_PROJECT_ROOT"] == second["KITHARNESS_PROJECT_ROOT"]
+    assert "KITHARNESS_CHILD_SESSION" not in first
 
 
 def test_documented_api_key_mode_is_explicit_and_does_not_modify_source(tmp_path):

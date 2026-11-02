@@ -1,6 +1,6 @@
 {
   "name": "kitharness",
-  "version": "0.5.3",
+  "version": "0.6.1",
   "description": "KitHarness learns skills from real sessions, keeps durable edits, and recalls them for the current task.",
   "author": {
     "name": "KitHarness"
@@ -12,8 +12,8 @@
       "command": "python3",
       "args": [
         "-m",
-        "autoharness.runtime",
-        "autoharness.stage_skill.server"
+        "kitharness.runtime",
+        "kitharness.stage_skill.server"
       ],
       "env": {
         "PYTHONPATH": "${CLAUDE_PLUGIN_ROOT}/src"

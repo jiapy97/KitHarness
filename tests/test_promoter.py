@@ -7,8 +7,8 @@ import time
 
 import pytest
 
-from autoharness.hook import promoter
-from autoharness.lib import counters, intent_queue, layer, ledger, sidecar, skill_store
+from kitharness.hook import promoter
+from kitharness.lib import counters, intent_queue, layer, ledger, sidecar, skill_store
 
 GOOD_BODY = "---\nname: foo\ndescription: Use when formatting a date as ISO.\n---\n# Foo\nUse strftime.\n"
 
@@ -59,7 +59,7 @@ def test_reject_poison_zero_disk(tmp_path):
 
 
 def test_altitude_long_create_rejected_zero_disk(tmp_path):
-    from autoharness import config
+    from kitharness import config
     roots = _roots(tmp_path)
     long_body = "---\nname: foo\ndescription: d\n---\n" + "".join(
         f"line {i}\n" for i in range(config.SKILL_BODY_MAX_LINES + 1))
@@ -87,7 +87,7 @@ def test_missing_led_rejected(tmp_path):
 
 def test_global_repo_local_rejected(tmp_path):
     roots = _roots(tmp_path)
-    body = "---\nname: foo\ndescription: d\n---\nRun /home/ryan/tigerless_ai/x.py\n"
+    body = "---\nname: foo\ndescription: d\n---\nRun /home/example/private-project/x.py\n"
     v = promoter.promote(_create(level="global", body=body), roots=roots)
     assert not v["ok"] and "global_repo_agnostic" in _families(v)
     assert not skill_store.exists("global", "foo", roots["global"])
@@ -155,7 +155,7 @@ def test_create_that_died_midway_replays_as_ours(tmp_path, monkeypatch, target, 
 def test_create_that_died_inside_its_sidecar_write_replays_as_ours(tmp_path, monkeypatch):
     # atomic.write_bytes makes the skill dir before it publishes .sidecar.json: dying in between
     # leaves an unmarked dir (plus a .tmp after a hard kill) that must not read as hand-written
-    from autoharness.lib import atomic
+    from kitharness.lib import atomic
     roots = _roots(tmp_path)
     real_replace = atomic.os.replace
 

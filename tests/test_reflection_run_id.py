@@ -1,6 +1,6 @@
 import re
 
-from autoharness.hook import dispatch
+from kitharness.hook import dispatch
 
 
 def test_repeated_cadence_has_distinct_queue_and_account_names(tmp_path):

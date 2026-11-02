@@ -4,10 +4,10 @@ import json
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import promoter
-from autoharness.lib import intent_queue, layer, skill_store
-from autoharness.stage_skill import server
+from kitharness import config
+from kitharness.hook import promoter
+from kitharness.lib import intent_queue, layer, skill_store
+from kitharness.stage_skill import server
 
 
 def _create(name):

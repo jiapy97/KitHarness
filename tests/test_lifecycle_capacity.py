@@ -3,9 +3,9 @@ import itertools
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import on_session_start
-from autoharness.lib import counters, layer, lifecycle, sidecar, skill_store
+from kitharness import config
+from kitharness.hook import on_session_start
+from kitharness.lib import counters, layer, lifecycle, sidecar, skill_store
 
 
 def member(name, use=0, view=0, anchor=0):

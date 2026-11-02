@@ -1,6 +1,6 @@
 import pytest
 
-from autoharness.lib import validate
+from kitharness.lib import validate
 
 BODY = '---\nname: foo\ndescription: Use when formatting dates.\n---\nUse strftime.\n'
 INTENT = {'action': 'create', 'name': 'foo', 'level': 'project', 'reason': 'observed reuse', 'evidence': 'fixture evidence', 'files': {'scripts/run.sh': 'echo fixture\n'}}

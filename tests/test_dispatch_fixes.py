@@ -1,7 +1,7 @@
 """Regression tests for dispatch: _detached_launch error handling + _run_id collision avoidance."""
 from unittest.mock import patch
 
-from autoharness.hook import dispatch
+from kitharness.hook import dispatch
 
 
 def test_run_id_empty_session_gets_hash():
@@ -32,7 +32,7 @@ def test_curate_run_id_empty_session_gets_hash():
 
 def test_detached_launch_oserror_returns_error():
     """If Popen raises OSError, _detached_launch returns an error dict instead of propagating."""
-    with patch("autoharness.hook.dispatch.subprocess.Popen", side_effect=OSError("no interpreter")):
+    with patch("kitharness.hook.dispatch.subprocess.Popen", side_effect=OSError("no interpreter")):
         result = dispatch._detached_launch("/tmp/t", "sid", "run-0", {"project": "/p", "global": "/g"})
     assert result is not None
     assert "error" in result
@@ -41,6 +41,6 @@ def test_detached_launch_oserror_returns_error():
 
 def test_detached_launch_success_returns_none():
     """Normal Popen succeeds; _detached_launch returns None."""
-    with patch("autoharness.hook.dispatch.subprocess.Popen"):
+    with patch("kitharness.hook.dispatch.subprocess.Popen"):
         result = dispatch._detached_launch("/tmp/t", "sid", "run-0", {"project": "/p", "global": "/g"})
     assert result is None

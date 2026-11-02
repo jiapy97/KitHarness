@@ -2,7 +2,7 @@
 from pathlib import Path
 from unittest.mock import patch
 
-from autoharness.lib import skill_store
+from kitharness.lib import skill_store
 
 
 def _make_tree(root, lyr, name, marker="live"):
@@ -23,7 +23,7 @@ def test_archive_collision_preserves_old(tmp_path):
     (archive_dest / "SKILL.md").write_text("# foo\nmarker=old-archive")
 
     # Patch layer helpers to use our tmp layout
-    with patch("autoharness.lib.skill_store.layer") as lyr_mod:
+    with patch("kitharness.lib.skill_store.layer") as lyr_mod:
         lyr_mod.symbol_dir.return_value = Path(root) / "global" / "skills" / "foo"
         lyr_mod.archive_dir.return_value = Path(root) / "global" / ".archive"
         lyr_mod.symbol_lock_path.return_value = Path(root) / "locks" / "foo.lock"
@@ -45,7 +45,7 @@ def test_restore_collision_preserves_live(tmp_path):
     archive_src.mkdir(parents=True, exist_ok=True)
     (archive_src / "SKILL.md").write_text("# foo\nmarker=from-archive")
 
-    with patch("autoharness.lib.skill_store.layer") as lyr_mod:
+    with patch("kitharness.lib.skill_store.layer") as lyr_mod:
         lyr_mod.symbol_dir.return_value = Path(root) / "global" / "skills" / "foo"
         lyr_mod.archive_dir.return_value = Path(root) / "global" / ".archive"
         result = skill_store.restore("global", "foo", root)
@@ -65,8 +65,8 @@ def test_archive_repeated_timestamp_collision_gets_unique_suffix(tmp_path):
     (archive_dest / "SKILL.md").write_text("# foo\nmarker=old-archive")
 
     with (
-        patch("autoharness.lib.skill_store.layer") as lyr_mod,
-        patch("autoharness.lib.skill_store.time.strftime", return_value="20260929T120000"),
+        patch("kitharness.lib.skill_store.layer") as lyr_mod,
+        patch("kitharness.lib.skill_store.time.strftime", return_value="20260929T120000"),
     ):
         live = Path(root) / "global" / "skills" / "foo"
         lyr_mod.symbol_dir.return_value = live

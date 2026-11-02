@@ -1,4 +1,4 @@
-from autoharness.lib import redact
+from kitharness.lib import redact
 
 
 def test_relative_rule_paths_are_resolved_in_the_current_directory(

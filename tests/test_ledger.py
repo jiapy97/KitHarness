@@ -1,4 +1,4 @@
-from autoharness.lib import ledger
+from kitharness.lib import ledger
 
 
 def test_append_only_grows_and_never_mutates(tmp_path):

@@ -2,7 +2,7 @@ import time
 
 import pytest
 
-from autoharness.lib import redact
+from kitharness.lib import redact
 
 
 def test_redacts_secrets_and_pii():
@@ -248,7 +248,7 @@ def test_a_window_that_passes_luhn_by_chance_does_not_hide_the_rest_of_a_card():
 def test_unknown_validator_name_fails_loud_at_rule_load():
     import tempfile
 
-    from autoharness.lib import redact as redact_mod
+    from kitharness.lib import redact as redact_mod
 
     bad = tempfile.NamedTemporaryFile("w", suffix=".toml", delete=False)
     bad.write(

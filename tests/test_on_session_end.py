@@ -1,6 +1,6 @@
-from autoharness import config
-from autoharness.hook import on_session_end
-from autoharness.lib import counters
+from kitharness import config
+from kitharness.hook import on_session_end
+from kitharness.lib import counters
 
 EV = {"session_id": "sess-1"}
 

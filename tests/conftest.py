@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from autoharness import config
+from kitharness import config
 
 
 @pytest.fixture
@@ -30,7 +30,7 @@ def _no_host_project_dir(monkeypatch):
 
 @pytest.fixture(autouse=True)
 def _no_real_notifier(monkeypatch):
-    # config reads AUTOHARNESS_NOTIFY* at import: without this, a contributor's own notifier (a team
+    # config reads KITHARNESS_NOTIFY* at import: without this, a contributor's own notifier (a team
     # Slack hook, desktop popups) would fire for every drain the suite runs
     monkeypatch.setattr(config, "NOTIFY", "")
     monkeypatch.setattr(config, "NOTIFY_CMD", "")

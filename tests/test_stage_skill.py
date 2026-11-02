@@ -1,8 +1,10 @@
 import json
 
-from autoharness import config
-from autoharness.lib import intent_queue, layer
-from autoharness.stage_skill import server
+import pytest
+
+from kitharness import config
+from kitharness.lib import intent_queue, layer
+from kitharness.stage_skill import server
 
 GOOD_BODY = "---\nname: foo\ndescription: Use when formatting a date as ISO.\n---\n# Foo\nUse strftime.\n"
 RUN = "run1"
@@ -264,6 +266,100 @@ def test_handle_tools_call_bad_schema_is_error_not_crash(tmp_path):
                                                    "arguments": {"action": "frobnicate"}}),
                         run_id=RUN, root=tmp_path)
     assert out["result"]["isError"] is True
+
+
+def test_missing_frontmatter_returns_actionable_repair_in_mcp_response_without_queueing(tmp_path):
+    params = _params(body="# 打印文档字体规范\n生成用于打印的文档时，使用思源字体系列。\n")
+    response = server.handle(_req("tools/call", params={"name": server.TOOL_NAME, "arguments": params}),
+                             run_id=RUN, root=tmp_path)["result"]
+    rejected = json.loads(response["content"][0]["text"])
+    assert response["isError"] is True
+    assert ["structure", "missing/invalid frontmatter"] in rejected["errors"]
+    assert "YAML frontmatter" in rejected["repair_hint"]
+    assert "retry stage_skill" in rejected["repair_hint"]
+    assert "Project-specific rules and durable user preferences are supported" in rejected["repair_hint"]
+    assert intent_queue.read(RUN, tmp_path) == []
+    assert not layer.skills_dir(layer.PROJECT, tmp_path).exists()
+
+
+def test_corrected_project_preference_lands_on_stop_after_format_rejection(tmp_path, monkeypatch):
+    from kitharness.hook import dispatch
+
+    root, global_root = tmp_path / ".claude", tmp_path / "global"
+    (tmp_path / "AGENTS.md").write_text("生成打印文档时使用思源字体。", encoding="utf-8")
+    rule = "生成用于打印的文档时，使用用户明确确认的思源字体系列。\n"
+    params = _params(name="print-siyuan-fonts", body="# 打印字体\n" + rule,
+                     reason="用户要求将已确认的字体偏好保存为项目技能", evidence="生成后打印时使用思源字体")
+    assert not server.stage(params, run_id=config.INTERACTIVE_RUN_ID, root=root)["ok"]
+    params["body"] = ("---\nname: print-siyuan-fonts\n"
+                      "description: 当在本项目中生成用于打印的文档时使用。\n"
+                      "category: document-generation\n---\n" + rule)
+    accepted = server.stage(params, run_id=config.INTERACTIVE_RUN_ID, root=root)
+    assert accepted["ok"]
+    assert accepted["intent"]["level"] == layer.PROJECT
+    assert not layer.skills_dir(layer.PROJECT, root).exists()
+    monkeypatch.setattr(config, "DISABLE_GLOBAL", True)
+    result = dispatch.dispatch({"hook_event_name": "Stop", "session_id": "preference-repair"},
+                               roots={layer.PROJECT: root, layer.GLOBAL: global_root})
+    assert "error" not in result
+    assert "drain_error" not in result["result"]
+    skill = root / "skills/print-siyuan-fonts"
+    assert (skill / "SKILL.md").read_text(encoding="utf-8") == params["body"]
+    assert (skill / ".ledger.jsonl").is_file()
+    assert intent_queue.read(config.INTERACTIVE_RUN_ID, root) == []
+    assert not global_root.exists()
+
+
+@pytest.mark.parametrize("action", ["create", "update"])
+@pytest.mark.parametrize("newline", ["\n", "\r\n"])
+def test_overlong_body_is_rejected_inside_mcp_before_acceptance(tmp_path, monkeypatch, action, newline):
+    monkeypatch.setattr(config, "SKILL_BODY_MAX_LINES", 25)
+    header = "---\nname: foo\ndescription: 用于生成打印文档时遵循字体偏好。\n---\n"
+    body = (header + "\n".join(f"Rule {n}." for n in range(36))).replace("\n", newline)
+    params = _params(action=action, body=body)
+    response = server.handle(_req("tools/call", params={"name": server.TOOL_NAME, "arguments": params}),
+                             run_id=RUN, root=tmp_path)["result"]
+    result = json.loads(response["content"][0]["text"])
+    assert response["isError"] is True
+    assert ["altitude", "body is 36 non-blank lines (> 25); state the rule, move detail to references/"] in result["errors"]
+    assert "25 non-blank lines" in result["repair_hint"]
+    assert "not queued" in result["repair_hint"]
+    assert intent_queue.read(RUN, tmp_path) == []
+    assert not layer.skills_dir(layer.PROJECT, tmp_path).exists()
+
+
+def test_body_line_boundary_counts_neither_frontmatter_nor_blank_lines(tmp_path, monkeypatch):
+    monkeypatch.setattr(config, "SKILL_BODY_MAX_LINES", 3)
+    header = "---\nname: foo\ndescription: Use when preparing a document.\ncategory: printing\n---\n"
+    accepted = server.stage(_params(body=header + "One.\n\nTwo.\n \nThree.\n"), run_id=RUN, root=tmp_path)
+    assert accepted["ok"] and accepted["status"] == "queued"
+    assert "does not mean the skill has been saved" in accepted["next_step"]
+    rejected = server.stage(_params(body=header + "One.\nTwo.\nThree.\nFour.\n"), run_id=RUN, root=tmp_path)
+    assert not rejected["ok"] and "altitude" in _errs(rejected)
+    assert len(intent_queue.read(RUN, tmp_path)) == 1
+
+
+def test_overlong_example_can_be_moved_to_reference_and_landed(tmp_path, monkeypatch):
+    from kitharness.hook import dispatch
+
+    root, global_root = tmp_path / ".claude", tmp_path / "global"
+    detail = "\n".join(f"Formatting example {n}." for n in range(36))
+    header = "---\nname: foo\ndescription: Use when preparing a document.\n---\n"
+    bad = server.stage(_params(body=header + detail), run_id=config.INTERACTIVE_RUN_ID, root=root)
+    assert not bad["ok"] and "altitude" in _errs(bad)
+    body = header + "Use the user's confirmed font.\nSee references/formatting.md for examples.\n"
+    good = server.stage(_params(body=body, files={"references/formatting.md": detail}),
+                        run_id=config.INTERACTIVE_RUN_ID, root=root)
+    assert good["ok"]
+    monkeypatch.setattr(config, "DISABLE_GLOBAL", True)
+    result = dispatch.dispatch({"hook_event_name": "Stop", "session_id": "body-limit-repair"},
+                               roots={layer.PROJECT: root, layer.GLOBAL: global_root})
+    assert "error" not in result and "drain_error" not in result["result"]
+    assert (root / "skills/foo/SKILL.md").read_text() == body
+    assert (root / "skills/foo/references/formatting.md").read_text() == detail
+    verdicts = json.loads((root / "kitharness/runs/interactive.json").read_text())["verdicts"]
+    assert len(verdicts) == 1 and verdicts[0]["ok"]
+    assert not global_root.exists()
 
 
 def test_handle_unknown_tool_rejected(tmp_path):

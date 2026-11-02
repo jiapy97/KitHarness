@@ -1,8 +1,8 @@
 import pytest
 
-from autoharness import config
-from autoharness.hook import on_skill_call
-from autoharness.lib import sidecar, skill_store
+from kitharness import config
+from kitharness.hook import on_skill_call
+from kitharness.lib import sidecar, skill_store
 
 
 @pytest.fixture(autouse=True)

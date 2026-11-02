@@ -8,9 +8,9 @@ from pathlib import Path
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import dispatch, on_session_start, on_user_prompt
-from autoharness.lib import counters, layer, recall, sidecar, skill_store
+from kitharness import config
+from kitharness.hook import dispatch, on_session_start, on_user_prompt
+from kitharness.lib import counters, layer, recall, sidecar, skill_store
 
 
 def doc(name, description, category="general", level="project"):
@@ -276,7 +276,7 @@ def test_cli_explanation_is_read_only_and_does_not_echo_stdin_query(roots):
     seed(roots, "dates", "Use when testing dates.")
     before = snapshot(roots)
     env = {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")}
-    result = subprocess.run([sys.executable, "-m", "autoharness.lib.recall", "--stdin", "--root", str(roots["project"]),
+    result = subprocess.run([sys.executable, "-m", "kitharness.lib.recall", "--stdin", "--root", str(roots["project"]),
                              "--global-root", str(roots["global"])], input="private-request dates",
                             env=env, capture_output=True, text=True, encoding="utf-8", timeout=5)
     assert result.returncode == 0, result.stderr
@@ -291,12 +291,12 @@ def test_real_bootstrap_hook_process_injects_matches_without_changing_state(root
     seed(roots, "dates", "Use when testing dates.")
     before = snapshot(roots)
     env = {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src"),
-           "AUTOHARNESS_PYTHON": sys.executable, config.PROJECT_ROOT_ENV: str(roots["project"]),
-           layer.GLOBAL_ROOT_ENV: str(roots["global"]), "AUTOHARNESS_RECALL_MODE": "task",
-           "AUTOHARNESS_INDEX_SUSPENDED": "0", "AUTOHARNESS_RECALL_MAX_BYTES": "256"}
+           "KITHARNESS_PYTHON": sys.executable, config.PROJECT_ROOT_ENV: str(roots["project"]),
+           layer.GLOBAL_ROOT_ENV: str(roots["global"]), "KITHARNESS_RECALL_MODE": "task",
+           "KITHARNESS_INDEX_SUSPENDED": "0", "KITHARNESS_RECALL_MAX_BYTES": "256"}
     env.pop(config.CHILD_SESSION_ENV, None)
     event = {"hook_event_name": "UserPromptSubmit", "prompt": "private-request dates", "cwd": str(roots["project"].parent)}
-    result = subprocess.run([sys.executable, "-m", "autoharness.runtime", "autoharness.hook.dispatch"],
+    result = subprocess.run([sys.executable, "-m", "kitharness.runtime", "kitharness.hook.dispatch"],
                             env=env, input=json.dumps(event), capture_output=True, text=True, encoding="utf-8", timeout=5)
     assert result.returncode == 0, result.stderr
     output = json.loads(result.stdout)["hookSpecificOutput"]
@@ -312,7 +312,7 @@ def test_real_bootstrap_hook_process_injects_matches_without_changing_state(root
     ("RECALL_MAX_BYTES", "0", "0"), ("RECALL_TOP_K", "0", "5"),
 ])
 def test_recall_config_defaults_and_zero_budget(variable, raw, expected):
-    env = {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src"), "AUTOHARNESS_" + variable: raw}
-    result = subprocess.run([sys.executable, "-c", f"from autoharness import config; print(config.{variable})"],
+    env = {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src"), "KITHARNESS_" + variable: raw}
+    result = subprocess.run([sys.executable, "-c", f"from kitharness import config; print(config.{variable})"],
                             env=env, capture_output=True, text=True, encoding="utf-8", timeout=5)
     assert result.returncode == 0 and result.stdout.strip() == expected

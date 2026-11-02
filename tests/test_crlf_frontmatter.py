@@ -1,4 +1,4 @@
-from autoharness.lib import validate
+from kitharness.lib import validate
 
 BODY = "---\nname: foo\ndescription: Use when formatting dates.\n---\nUse strftime.\n"
 INTENT = {

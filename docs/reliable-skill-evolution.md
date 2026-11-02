@@ -34,8 +34,8 @@ SessionStart 会在生命周期管理和召回前恢复未完成的技能事务�
 在仓库根目录使用 Python 3.11+。以下路径指向项目的配置根目录（包含 `skills/` 的 `.claude`），不是项目源码目录。
 
 ```sh
-PYTHONPATH=src python3.12 -m autoharness.lib.versions list dates --root /path/to/project/.claude
-PYTHONPATH=src python3.12 -m autoharness.lib.versions rollback dates --root /path/to/project/.claude --version VERSION_ID
+PYTHONPATH=src python3.12 -m kitharness.lib.versions list dates --root /path/to/project/.claude
+PYTHONPATH=src python3.12 -m kitharness.lib.versions rollback dates --root /path/to/project/.claude --version VERSION_ID
 ```
 
 全局层可显式增加 `--level global --root /path/to/global-config`。禁用全局层时，不能执行全局回滚。

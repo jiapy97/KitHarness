@@ -1,4 +1,4 @@
-from autoharness.lib import validate
+from kitharness.lib import validate
 
 GOOD_BODY = "---\nname: foo\ndescription: Use when formatting a date as ISO.\n---\n# Foo\nUse strftime.\n"
 GOOD_INTENT = {"action": "create", "name": "foo", "level": "project", "reason": "r", "evidence": "e"}
@@ -41,7 +41,7 @@ def test_placeholder_mention_without_colon_passes():
 
 
 def test_global_repo_agnostic_rejected_but_project_ok():
-    body = "---\nname: foo\ndescription: d\n---\nRun /home/ryan/tigerless_ai/x.py\n"
+    body = "---\nname: foo\ndescription: d\n---\nRun /home/example/private-project/x.py\n"
     assert "global_repo_agnostic" in _families(validate.validate({**GOOD_INTENT, "level": "global"}, body))
     assert "global_repo_agnostic" not in _families(validate.validate({**GOOD_INTENT, "level": "project"}, body))
 
@@ -73,26 +73,26 @@ def _body(n):  # n non-blank content lines under the frontmatter
 
 
 def test_altitude_long_create_rejected():
-    from autoharness import config
+    from kitharness import config
     v = validate.validate(GOOD_INTENT, _body(config.SKILL_BODY_MAX_LINES + 1))
     assert not v["ok"] and "altitude" in _families(v)
 
 
 def test_altitude_tight_create_passes():
-    from autoharness import config
+    from kitharness import config
     v = validate.validate(GOOD_INTENT, _body(config.SKILL_BODY_MAX_LINES))
     assert "altitude" not in _families(v)
 
 
 def test_altitude_ignores_blank_lines():
-    from autoharness import config
+    from kitharness import config
     padded = _body(5).rstrip("\n") + "\n\n\n" * config.SKILL_BODY_MAX_LINES  # many blanks, few real lines
     assert "altitude" not in _families(validate.validate(GOOD_INTENT, padded))
 
 
 def test_altitude_patch_exempt():
     # patch to a live skill is a delta; a long post-patch body must not be blocked (else long skills strand)
-    from autoharness import config
+    from kitharness import config
     intent = {"action": "patch", "name": "foo", "reason": "r", "evidence": "e"}
     v = validate.validate(intent, _body(config.SKILL_BODY_MAX_LINES + 20), target_is_agent_created=True)
     assert "altitude" not in _families(v)
@@ -125,7 +125,7 @@ def test_trigger_patch_exempt():
 
 def test_description_over_the_index_budget_accepted_within_full_limit():
     # Index display and full authoring text have independent limits.
-    from autoharness import config
+    from kitharness import config
     long = "Diagnoses responsive CSS bugs in embedded iframe widgets on mobile. Use when a widget clips."
     assert len(long) > config.INDEX_DESC_MAX_CHARS
     assert len(long) < config.SKILL_DESC_MAX_CHARS
@@ -134,7 +134,7 @@ def test_description_over_the_index_budget_accepted_within_full_limit():
 
 
 def test_description_inside_the_budget_passes():
-    from autoharness import config
+    from kitharness import config
     short = "Use when an iframe widget clips on mobile."
     assert len(short) <= config.INDEX_DESC_MAX_CHARS
     assert validate.validate(GOOD_INTENT, _desc_body(short))["ok"]
@@ -142,7 +142,7 @@ def test_description_inside_the_budget_passes():
 
 def test_description_budget_exempts_patch():
     # A legacy description beyond the full limit must remain repairable by patch.
-    from autoharness import config
+    from kitharness import config
     long = "x" * config.SKILL_DESC_MAX_CHARS + " use when auditing."
     intent = {"action": "patch", "name": "foo", "reason": "r", "evidence": "e"}
     v = validate.validate(intent, _desc_body(long), target_is_agent_created=True)
@@ -156,7 +156,7 @@ def test_cue_check_still_applies_inside_the_budget():
 
 
 def test_description_over_length_rejected():
-    from autoharness import config
+    from kitharness import config
     v = validate.validate(GOOD_INTENT, _desc_body("use when " + "x" * (config.SKILL_DESC_MAX_CHARS + 1)))
     assert not v["ok"] and "description" in _families(v)
 
@@ -253,7 +253,7 @@ def test_subfile_content_scanned_for_injection():
 
 def test_global_subfile_repo_local_rejected():
     intent = {**GOOD_INTENT, "level": "global",
-              "files": {"references/notes.md": "Run /home/ryan/tigerless_ai/x.py\n"}}
+              "files": {"references/notes.md": "Run /home/example/private-project/x.py\n"}}
     body = GOOD_BODY + "\nSee references/notes.md\n"
     assert "global_repo_agnostic" in _families(validate.validate(intent, body))
 
@@ -325,7 +325,7 @@ def test_category_rejects_path_and_unsafe_segments():
 def test_frontmatter_mixed_quotes():
     # Single quote wrapping double quote should not be stripped
     body = "---\nname: foo\ndescription: 'he said \"hello\"'\n---\n# Foo\n"
-    from autoharness.lib.validate import _frontmatter
+    from kitharness.lib.validate import _frontmatter
     fm = _frontmatter(body)
     assert fm["description"] == 'he said "hello"'
     

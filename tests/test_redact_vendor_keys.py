@@ -7,7 +7,7 @@ import string
 
 import pytest
 
-from autoharness.lib import redact
+from kitharness.lib import redact
 
 _AL = string.ascii_letters + string.digits
 _B64U = _AL + "-_"

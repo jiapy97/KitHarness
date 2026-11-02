@@ -1,4 +1,4 @@
-from autoharness.lib import atomic
+from kitharness.lib import atomic
 
 
 def test_write_replaces_and_leaves_no_tmp(tmp_path):

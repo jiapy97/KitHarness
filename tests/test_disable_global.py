@@ -4,10 +4,10 @@ import importlib
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import dispatch, on_session_start, on_skill_call, promoter, spawn
-from autoharness.lib import counters, intent_queue, layer, metrics, sidecar, skill_store
-from autoharness.stage_skill import server
+from kitharness import config
+from kitharness.hook import dispatch, on_session_start, on_skill_call, promoter, spawn
+from kitharness.lib import counters, intent_queue, layer, metrics, sidecar, skill_store
+from kitharness.stage_skill import server
 
 BODY = "---\nname: foo\ndescription: Use when formatting a date.\n---\nUse strftime.\n"
 
@@ -33,7 +33,7 @@ def project_only(monkeypatch):
 
 
 def test_disable_global_reads_environment(monkeypatch):
-    monkeypatch.setenv("AUTOHARNESS_DISABLE_GLOBAL", "1")
+    monkeypatch.setenv("KITHARNESS_DISABLE_GLOBAL", "1")
     importlib.reload(config)
     try:
         assert getattr(config, "DISABLE_GLOBAL", False) is True

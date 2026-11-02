@@ -4,8 +4,8 @@ import time
 
 import pytest
 
-from autoharness.lib import intent_queue, ledger, redact
-from autoharness.stage_skill import server
+from kitharness.lib import intent_queue, ledger, redact
+from kitharness.stage_skill import server
 
 SECRET = "abcd1234efgh5678ijkl"
 BODY = "---\nname: dates\ndescription: Use when formatting dates.\n---\nUse ISO dates.\n"

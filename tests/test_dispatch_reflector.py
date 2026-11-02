@@ -1,6 +1,6 @@
 """Verify _is_reflector uses namespace-qualified match."""
 
-from autoharness.hook.dispatch import _is_reflector
+from kitharness.hook.dispatch import _is_reflector
 
 
 def test_canonical_reflector():

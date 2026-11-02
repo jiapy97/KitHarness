@@ -1,7 +1,7 @@
 import io
 import json
 
-from autoharness.stage_skill import server
+from kitharness.stage_skill import server
 
 
 def test_malformed_line_does_not_drop_next_request():

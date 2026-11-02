@@ -1,6 +1,6 @@
 """Verify _rules lru_cache key is normalized so None and the default path share one entry."""
-from autoharness import config
-from autoharness.lib import redact
+from kitharness import config
+from kitharness.lib import redact
 
 
 def test_cache_key_normalized():

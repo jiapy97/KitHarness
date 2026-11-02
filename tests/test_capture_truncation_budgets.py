@@ -1,6 +1,6 @@
 import pytest
 
-from autoharness.hook import capture
+from kitharness.hook import capture
 
 
 @pytest.mark.parametrize("cap", [1, 4, 13, 20, 100])

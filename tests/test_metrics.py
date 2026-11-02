@@ -6,7 +6,7 @@ hardcoded magic numbers: the knobs are placeholders under calibration.
 """
 import json
 
-from autoharness.lib import layer, ledger, metrics, sidecar, skill_store
+from kitharness.lib import layer, ledger, metrics, sidecar, skill_store
 
 
 def _roots(tmp_path):
@@ -142,6 +142,6 @@ def test_category_dimension_does_not_reach_lifecycle(tmp_path):
     # observation only: lifecycle.evaluate has no category input, so no metric can become a quota
     import inspect
 
-    from autoharness.lib import lifecycle
+    from kitharness.lib import lifecycle
     assert "category" not in inspect.signature(lifecycle.evaluate).parameters
     assert "category" not in inspect.getsource(lifecycle)

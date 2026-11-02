@@ -3,9 +3,9 @@ import subprocess
 
 import pytest
 
-from autoharness.hook import promoter
-from autoharness.lib import sidecar, skill_store
-from autoharness.stage_skill import server
+from kitharness.hook import promoter
+from kitharness.lib import sidecar, skill_store
+from kitharness.stage_skill import server
 
 BODY = "---\nname: run\ndescription: Use when formatting a date as ISO.\n---\n# Run\nRun {pointer}\n"
 SCRIPT = "printf 'ok\\n'\n"

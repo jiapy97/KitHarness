@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import jobs, spawn
-from autoharness.lib import (
+from kitharness import config
+from kitharness.hook import jobs, spawn
+from kitharness.lib import (
     counters,
     intent_queue,
     layer,
@@ -117,7 +117,7 @@ def test_run_feeds_bundle_and_drains_no_handoff_persisted(tmp_path):
         seen["env"] = env
         seen["bundle"] = bundle
         # stand in for the reflector: emit one canned intent into the run's queue
-        from autoharness.lib import intent_queue
+        from kitharness.lib import intent_queue
         intent_queue.append(env[config.RUN_ID_ENV],
                             {"action": "create", "name": "learned", "level": "project",
                              "body": GOOD.format(n="learned", d="use when doing a specific thing"),
@@ -169,7 +169,7 @@ def test_run_curator_lands_merge_and_archives_narrow(tmp_path):
     sidecar.create("project", "widget-delta", 0, root)
 
     def fake_curator(argv, env, bundle):
-        from autoharness.lib import intent_queue
+        from kitharness.lib import intent_queue
         rid = env[config.RUN_ID_ENV]
         intent_queue.append(rid, {"action": "patch", "name": "widgets",
                                   "old_string": "body", "new_string": "body\n## delta\nabsorbed",
@@ -197,7 +197,7 @@ def test_run_curator_cannot_touch_native_skill(tmp_path):
     sidecar.create("project", "umbrella", 0, root)
 
     def fake_curator(argv, env, bundle):
-        from autoharness.lib import intent_queue
+        from kitharness.lib import intent_queue
         intent_queue.append(env[config.RUN_ID_ENV],
                             {"action": "delete", "name": "native",
                              "absorbed_into": "umbrella",
@@ -225,8 +225,8 @@ def _fake_reflector_script(tmp_path):
         "#!/usr/bin/env python3\n"
         "import os, sys\n"
         "from pathlib import Path\n"
-        "from autoharness import config\n"
-        "from autoharness.stage_skill import server\n"
+        "from kitharness import config\n"
+        "from kitharness.stage_skill import server\n"
         "sys.stdin.read()\n"  # consume the handoff bundle (proves it arrived on stdin)
         "run_id = os.environ[config.RUN_ID_ENV]\n"
         "root = Path(os.environ[config.PROJECT_ROOT_ENV])\n"
@@ -240,7 +240,7 @@ def _fake_reflector_script(tmp_path):
 
 
 def test_system_fake_reflector_cross_process_lands(tmp_path, monkeypatch):
-    monkeypatch.setenv("PYTHONPATH", _SRC)  # child subprocess must import autoharness
+    monkeypatch.setenv("PYTHONPATH", _SRC)  # child subprocess must import kitharness
     roots = _roots(tmp_path)
     script = _fake_reflector_script(tmp_path)
 
@@ -261,8 +261,8 @@ def _fake_curator_script(tmp_path):
         "#!/usr/bin/env python3\n"
         "import os, sys\n"
         "from pathlib import Path\n"
-        "from autoharness import config\n"
-        "from autoharness.stage_skill import server\n"
+        "from kitharness import config\n"
+        "from kitharness.stage_skill import server\n"
         "sys.stdin.read()\n"  # consume the curator bundle (proves it arrived on stdin)
         "run_id = os.environ[config.RUN_ID_ENV]\n"
         "root = Path(os.environ[config.PROJECT_ROOT_ENV])\n"
@@ -279,7 +279,7 @@ def _fake_curator_script(tmp_path):
 
 
 def test_system_fake_curator_cross_process_merges(tmp_path, monkeypatch):
-    monkeypatch.setenv("PYTHONPATH", _SRC)  # child subprocess must import autoharness
+    monkeypatch.setenv("PYTHONPATH", _SRC)  # child subprocess must import kitharness
     roots = _roots(tmp_path)
     root = roots["project"]
     for n, d in (("widgets", "widget umbrella"), ("widget-delta", "narrow delta")):
@@ -427,7 +427,7 @@ def test_crashed_child_quarantines_staged_proposals(tmp_path):
     roots = _roots(tmp_path)
 
     def crashed_after_staging(argv, env, bundle):
-        from autoharness.lib import intent_queue
+        from kitharness.lib import intent_queue
         intent_queue.append(env[config.RUN_ID_ENV],
                             {"action": "create", "name": "learned", "level": "project",
                              "body": GOOD.format(n="learned", d="use when doing a specific thing"),

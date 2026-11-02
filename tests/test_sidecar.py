@@ -3,7 +3,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from autoharness.lib import sidecar
+from kitharness.lib import sidecar
 
 
 def test_create_and_read_roundtrip(tmp_path):
@@ -78,7 +78,7 @@ def test_bumps_preserve_all_counters_across_processes(tmp_path):
     sidecar.create("project", "shared", anchor=42, root=tmp_path)
     code = (
         "import pathlib, sys, time\n"
-        "from autoharness.lib import sidecar\n"
+        "from kitharness.lib import sidecar\n"
         "root = pathlib.Path(sys.argv[1])\n"
         "original_read = sidecar.read\n"
         "def delayed_read(*args, **kwargs):\n"
@@ -113,7 +113,7 @@ def test_bumps_preserve_all_counters_across_processes(tmp_path):
 def test_archive_and_counter_bump_share_a_stable_lock(tmp_path, monkeypatch):
     import threading
 
-    from autoharness.lib import skill_store
+    from kitharness.lib import skill_store
 
     skill_store.write_body("project", "foo", "owned body", tmp_path)
     sidecar.create("project", "foo", 0, tmp_path)
@@ -168,7 +168,7 @@ def test_archive_and_counter_bump_share_a_stable_lock(tmp_path, monkeypatch):
 def test_bump_after_archive_does_not_recreate_live_metadata(tmp_path):
     import pytest
 
-    from autoharness.lib import skill_store
+    from kitharness.lib import skill_store
 
     skill_store.write_body("project", "foo", "owned body", tmp_path)
     sidecar.create("project", "foo", 0, tmp_path)
@@ -179,7 +179,7 @@ def test_bump_after_archive_does_not_recreate_live_metadata(tmp_path):
 
 
 def test_stable_lock_preserves_legacy_long_name_usage(tmp_path):
-    from autoharness.lib import skill_store
+    from kitharness.lib import skill_store
 
     name = "x" * 250
     skill_store.write_body("project", name, "owned body", tmp_path)

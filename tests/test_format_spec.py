@@ -1,4 +1,4 @@
-from autoharness import config
+from kitharness import config
 
 
 def test_format_spec_exists_and_states_required_fields():

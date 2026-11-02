@@ -2,7 +2,7 @@
 agent distills on demand through the SAME proposal chain (stage_skill -> promoter), guards undropped."""
 from pathlib import Path
 
-from autoharness.lib import validate
+from kitharness.lib import validate
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills" / "learn" / "SKILL.md"

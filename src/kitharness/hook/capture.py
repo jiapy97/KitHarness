@@ -1,0 +1,135 @@
+"""CAP handoff window: a raw byte slice of the host transcript since the last reflection — zero parsing.
+
+cap.md + docs/plans/raw-capture.md: the transcript is the host's internal event log, not a chat log;
+any role/text extraction here is a format assumption that live windows proved wrong (meta records as
+empty roles, tool results as pseudo-user turns). So capture does not interpret the format at all —
+the reflector (an LLM) reads raw JSONL fine. capture only moves bytes: slice from the session's byte
+watermark to EOF, clip oversized records and the window total (tool dumps / base64 must not blow the
+child context), pass the egress red line (redact), and hand the text plus the new watermark back to
+the caller. **Never write back to the host raw log** (it is not ours). A missing / stale / negative
+watermark (compaction rewrote the file) fails safe to a full re-read bounded by the window cap.
+"""
+import json
+from pathlib import Path
+
+from kitharness import config
+from kitharness.lib import redact
+
+TRUNCATION_MARK = "...[truncated]"
+
+
+def _clip(line, cap):
+    """Clip *line* so its UTF-8 encoding stays within *cap* bytes."""
+    encoded = line.encode("utf-8")
+    if len(encoded) <= cap:
+        return line
+    marker = TRUNCATION_MARK.encode("utf-8")[:max(0, cap)]
+    truncated = encoded[:max(0, cap - len(marker))].decode("utf-8", errors="ignore")
+    return truncated + marker.decode("utf-8")
+
+
+def _bounded_records(lines, cap):
+    """Fit a newest-first tail without cutting into its first retained record."""
+    if len("\n".join(lines).encode("utf-8")) <= cap:
+        return "\n".join(lines)
+    marker = TRUNCATION_MARK.encode("utf-8")[:cap].decode("utf-8")
+    remaining = cap - len(marker.encode("utf-8"))
+    kept = []
+    for line in reversed(lines):
+        cost = len(line.encode("utf-8")) + 1
+        if cost > remaining:
+            break
+        kept.append(line)
+        remaining -= cost
+    return "\n".join([marker, *reversed(kept)])
+
+
+def window(transcript_path, offset=0, *, max_record_bytes=None, max_window_bytes=None,
+           rules_path=None):
+    record_cap = max_record_bytes or config.CAPTURE_MAX_RECORD_BYTES
+    window_cap = max_window_bytes or config.CAPTURE_MAX_WINDOW_BYTES
+    path = Path(transcript_path)
+    if not path.exists():
+        return "", 0
+    # Seek past the offset rather than reading the file to slice it away: a hook
+    # runs per turn, and a long session's transcript is megabytes of history this
+    # call already knows it does not need.
+    with open(path, "rb") as f:
+        new_offset = f.seek(0, 2)
+        if not 0 <= offset <= new_offset:
+            offset = 0
+        f.seek(offset)
+        tail = f.read(new_offset - offset)
+    lines = [_clip(line, record_cap)
+             for line in tail.decode("utf-8", errors="replace").splitlines()]
+    kept, total = [], 0
+    for line in reversed(lines):
+        total += len(line.encode("utf-8")) + 1
+        if total > window_cap:
+            kept.append(TRUNCATION_MARK)
+            break
+        kept.append(line)
+    text = redact.redact(_bounded_records(list(reversed(kept)), window_cap), rules_path)
+    encoded = text.encode("utf-8")
+    if len(encoded) > window_cap:
+        marker = TRUNCATION_MARK.encode("utf-8")[:window_cap]
+        budget = window_cap - len(marker)
+        tail = encoded[-budget:].decode("utf-8", errors="ignore") if budget else ""
+        text = marker.decode("utf-8") + tail
+    return text, new_offset
+
+
+def _digest_record(line, max_chars):
+    record = json.loads(line)
+    if record.get("type") not in ("user", "assistant"):
+        return None
+    role = record["type"]
+    content = record["message"]["content"]
+    if isinstance(content, str):
+        parts = [content]
+    else:
+        parts = []
+        for block in content:
+            kind = block.get("type")
+            if kind == "text" and block.get("text"):
+                parts.append(block["text"])
+            elif kind == "tool_use":
+                parts.append(f"[tool: {block.get('name', '?')}]")
+    if not parts:
+        return None
+    text = " ".join(p.strip() for p in parts if p.strip())
+    if len(text) > max_chars:
+        text = text[:max_chars] + TRUNCATION_MARK
+    return role, text
+
+
+def digest(transcript_path, end_offset, *, max_exchanges=None, max_record_chars=None,
+           max_digest_bytes=None, rules_path=None):
+    exchanges = max_exchanges or config.DIGEST_EXCHANGES
+    record_chars = max_record_chars or config.DIGEST_MAX_RECORD_CHARS
+    digest_cap = max_digest_bytes or config.DIGEST_MAX_BYTES
+    path = Path(transcript_path)
+    if not path.exists() or end_offset <= 0:
+        return ""
+    with open(path, "rb") as f:
+        data = f.read(end_offset)
+    kept, total, users_seen = [], 0, 0
+    for line in reversed(data.decode("utf-8", errors="replace").splitlines()):
+        try:
+            entry = _digest_record(line, record_chars)
+        except (json.JSONDecodeError, KeyError, TypeError, AttributeError):
+            continue
+        if entry is None:
+            continue
+        role, text = entry
+        rendered = f"{role}: {text}"
+        total += len(rendered) + 1
+        if total > digest_cap:
+            kept.append(TRUNCATION_MARK)
+            break
+        kept.append(rendered)
+        if role == "user":
+            users_seen += 1
+            if users_seen >= exchanges:
+                break
+    return redact.redact("\n".join(reversed(kept)), rules_path) if kept else ""

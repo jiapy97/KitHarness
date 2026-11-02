@@ -1,7 +1,7 @@
 import io
 import json
 
-from autoharness.stage_skill import server
+from kitharness.stage_skill import server
 
 
 def test_nonobject_json_requests_return_error_and_continue_serving():

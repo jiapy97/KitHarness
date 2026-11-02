@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from autoharness.hook import dispatch
+from kitharness.hook import dispatch
 
 
 @pytest.mark.parametrize("event", [None, [], ["Stop"], "Stop", 4, False])

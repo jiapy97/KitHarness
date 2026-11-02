@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import dispatch
-from autoharness.lib import counters, layer, sidecar, skill_store
+from kitharness import config
+from kitharness.hook import dispatch
+from kitharness.lib import counters, layer, sidecar, skill_store
 
 
 @pytest.fixture(autouse=True)
@@ -355,7 +355,7 @@ def test_main_session_stop_drains_the_interactive_queue(tmp_path, monkeypatch):
     # nothing else drains it: spawn drains only its own run ids after a child exits. Without this a
     # /learn proposal sits in the queue forever and the skill's own promise ("lands; reported next
     # session start") is false.
-    from autoharness.lib import intent_queue, skill_store
+    from kitharness.lib import intent_queue, skill_store
     roots = {"global": tmp_path / "g", "project": tmp_path / "p"}
     monkeypatch.delenv(config.CHILD_SESSION_ENV, raising=False)
     intent_queue.append(config.INTERACTIVE_RUN_ID, _interactive_intent(), roots["project"])
@@ -367,7 +367,7 @@ def test_main_session_stop_drains_the_interactive_queue(tmp_path, monkeypatch):
 def test_child_session_stop_leaves_the_interactive_queue_alone(tmp_path, monkeypatch):
     # a child has its own run id and spawn drains it; touching the user's queue from there would be
     # a reflector landing user proposals under the reflector's identity
-    from autoharness.lib import intent_queue
+    from kitharness.lib import intent_queue
     roots = {"global": tmp_path / "g", "project": tmp_path / "p"}
     monkeypatch.setenv(config.CHILD_SESSION_ENV, "1")
     intent_queue.append(config.INTERACTIVE_RUN_ID, _interactive_intent(), roots["project"])
@@ -378,7 +378,7 @@ def test_child_session_stop_leaves_the_interactive_queue_alone(tmp_path, monkeyp
 def test_stop_with_empty_interactive_queue_writes_no_run_account(tmp_path, monkeypatch):
     # every turn drains; an empty drain must not leave a runs/ file or a last_run summary behind,
     # or the next session start would report a run that never happened
-    from autoharness.lib import layer
+    from kitharness.lib import layer
     roots = {"global": tmp_path / "g", "project": tmp_path / "p"}
     monkeypatch.delenv(config.CHILD_SESSION_ENV, raising=False)
     dispatch.dispatch({"hook_event_name": "Stop", "session_id": "s1"}, roots=roots, reflect=lambda *a: None)
@@ -401,7 +401,7 @@ def _run_under_old_python(tmp_path, version=(3, 9, 6, "final", 0)):
         "            raise ModuleNotFoundError(\"No module named 'tomllib'\", name='tomllib')\n"
         "        return None\n"
         "sys.meta_path.insert(0, _NoTomllib())\n"
-        "import autoharness.hook.dispatch\n"
+        "import kitharness.hook.dispatch\n"
     )
     root = Path(__file__).resolve().parents[1]
     return subprocess.run(

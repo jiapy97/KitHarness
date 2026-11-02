@@ -10,7 +10,7 @@
 每个提示提交事件独立检索，所以任务切换时会重新选择；没有匹配时不拿无关技能凑数。
 插件启动的反思/整理子会话跳过这一入口，避免递归注入。反思与整理自己的比较索引仍读取完整描述，不受这里的 top-K 筛选影响。
 
-`AUTOHARNESS_RECALL_MODE=catalog` 可切换到启动时的分类目录；该模式也受 top-K 和字节预算约束，提示提交时不重复注入。
+`KITHARNESS_RECALL_MODE=catalog` 可切换到启动时的分类目录；该模式也受 top-K 和字节预算约束，提示提交时不重复注入。
 已安装的缓存副本需要更新或重新加载插件，新增 hook 才会生效；本轮没有改写个人宿主配置或部署插件。
 
 ## 怎么排序、怎么解释
@@ -28,7 +28,7 @@
 可以通过只读 CLI 查看完整排序依据，根目录是含 `skills/` 的 `.claude` 配置目录：
 
 ```sh
-PYTHONPATH=src python3.12 -m autoharness.lib.recall --stdin --root /path/to/project/.claude --global-root /path/to/global/.claude
+PYTHONPATH=src python3.12 -m kitharness.lib.recall --stdin --root /path/to/project/.claude --global-root /path/to/global/.claude
 # 在 stdin 输入任务文本后结束输入；也可使用 --query '检查日期跨时区边界'
 ```
 
@@ -40,14 +40,14 @@ PYTHONPATH=src python3.12 -m autoharness.lib.recall --stdin --root /path/to/proj
 
 | 配置 | 默认值 | 作用 |
 | --- | --- | --- |
-| `AUTOHARNESS_RECALL_MODE` | `task` | `task` 或 `catalog`；非法值回退 task |
-| `AUTOHARNESS_RECALL_MAX_BYTES` | `4096` | 单个 hook 事件的插件注入文本 UTF-8 硬上限；0 关闭注入 |
-| `AUTOHARNESS_RECALL_TOP_K` | `5` | 单次最多选入的技能数，必须是正整数 |
-| `AUTOHARNESS_INDEX_DESC_MAX_CHARS` | `60` | 单条 description 预览长度，完整描述仍独立保存 |
+| `KITHARNESS_RECALL_MODE` | `task` | `task` 或 `catalog`；非法值回退 task |
+| `KITHARNESS_RECALL_MAX_BYTES` | `4096` | 单个 hook 事件的插件注入文本 UTF-8 硬上限；0 关闭注入 |
+| `KITHARNESS_RECALL_TOP_K` | `5` | 单次最多选入的技能数，必须是正整数 |
+| `KITHARNESS_INDEX_DESC_MAX_CHARS` | `60` | 单条 description 预览长度，完整描述仍独立保存 |
 
 标题、换行、分类标题、技能行、worktree 路径提示都计入预算。整个候选条目放不下时跳过，继续尝试后面的候选，不把一条路径或技能行切成半截。
 目录模式先为上次执行摘要留出预算；摘要本身过长时不注入，但持久运行记录仍保留。
-`AUTOHARNESS_INDEX_SUSPENDED=1` 停止技能索引注入，生命周期和使用计数机制照常运行。
+`KITHARNESS_INDEX_SUSPENDED=1` 停止技能索引注入，生命周期和使用计数机制照常运行。
 
 报告中的 `token_estimate=ceil(UTF-8字节数/4)` 只是统一对照用的粗略代理值，**不是 Claude 实际 Token 或计费数据**，也不是实际 Token 上限。
 硬保证针对解码后的插件文本字节数，不包含 JSON 转义开销、宿主包装、原生技能上下文、随后加载的正文、用户对话或其他插件。

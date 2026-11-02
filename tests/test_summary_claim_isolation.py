@@ -2,7 +2,7 @@
 import threading
 from pathlib import Path
 
-from autoharness.hook import on_session_start, promoter
+from kitharness.hook import on_session_start, promoter
 
 
 def _publish(root, run_id, count):

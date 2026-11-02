@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from autoharness.hook import promoter
-from autoharness.lib import intent_queue, sidecar, skill_store
+from kitharness.hook import promoter
+from kitharness.lib import intent_queue, sidecar, skill_store
 
 
 def test_transient_read_failure_preserves_intent_for_retry(tmp_path, monkeypatch):

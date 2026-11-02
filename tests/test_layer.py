@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from autoharness.lib import layer
+from kitharness.lib import layer
 
 
 def test_layers_are_the_two_known():
@@ -44,7 +44,7 @@ def test_global_root_env_unset_keeps_home(monkeypatch):
 
 @pytest.mark.parametrize("value", ["", "   "])
 def test_global_root_env_blank_falls_back_to_home(monkeypatch, value):
-    # an empty value must not resolve to the cwd, or a stray `AUTOHARNESS_GLOBAL_ROOT=` in a settings
+    # an empty value must not resolve to the cwd, or a stray `KITHARNESS_GLOBAL_ROOT=` in a settings
     # block would silently re-root the global layer on whatever project the session happens to be in
     monkeypatch.setenv(layer.GLOBAL_ROOT_ENV, value)
     assert layer.default_root("global") == Path.home() / ".claude"

@@ -1,10 +1,10 @@
 """Expected string values follow YAML block scalar indentation, folding and chomping."""
 import pytest
 
-from autoharness import config
-from autoharness.hook import on_session_start, promoter
-from autoharness.lib import validate
-from autoharness.stage_skill import server
+from kitharness import config
+from kitharness.hook import on_session_start, promoter
+from kitharness.lib import validate
+from kitharness.stage_skill import server
 
 
 @pytest.mark.parametrize("header,content,expected", [

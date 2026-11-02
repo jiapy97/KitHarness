@@ -7,7 +7,7 @@ import json
 import sys
 from pathlib import Path
 
-SRC = Path(__file__).resolve().parent.parent / "src" / "autoharness"
+SRC = Path(__file__).resolve().parent.parent / "src" / "kitharness"
 
 
 def _kw(call, name):
@@ -49,7 +49,7 @@ def _cp1252_pipe(data=b""):
 
 
 def test_hook_pipes_carry_utf8_on_a_cp1252_host(monkeypatch):
-    from autoharness.hook import dispatch
+    from kitharness.hook import dispatch
     seen = {}
 
     def fake(event):
@@ -67,12 +67,12 @@ def test_hook_pipes_carry_utf8_on_a_cp1252_host(monkeypatch):
 
 
 def test_mcp_pipes_carry_utf8_on_a_cp1252_host(monkeypatch, tmp_path):
-    from autoharness.lib import intent_queue
-    from autoharness.stage_skill import server
+    from kitharness.lib import intent_queue
+    from kitharness.stage_skill import server
     body = "---\nname: foo\ndescription: Use when a date — 👍 — needs ISO format.\n---\n# Foo\nUse strftime.\n"
     req = {"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "stage_skill", "arguments": {
         "action": "create", "name": "foo", "body": body, "reason": "r", "evidence": "e"}}}
-    monkeypatch.setenv("AUTOHARNESS_PROJECT_ROOT", str(tmp_path))
+    monkeypatch.setenv("KITHARNESS_PROJECT_ROOT", str(tmp_path))
     monkeypatch.setattr(sys, "stdin", _cp1252_pipe((json.dumps(req, ensure_ascii=False) + "\n").encode("utf-8")))
     monkeypatch.setattr(sys, "stdout", _cp1252_pipe())
     server.serve()

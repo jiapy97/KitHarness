@@ -20,8 +20,8 @@ def test_hooks_route_all_events_to_dispatch():
     for groups in h.values():
         for group in groups:
             for hook in group["hooks"]:
-                assert "autoharness.hook.dispatch" in hook["command"]
-    assert (ROOT / "src/autoharness/hook/dispatch.py").exists()
+                assert "kitharness.hook.dispatch" in hook["command"]
+    assert (ROOT / "src/kitharness/hook/dispatch.py").exists()
 
 
 def test_pretooluse_reaches_dispatch_for_every_tool_exactly_once():
@@ -37,14 +37,14 @@ def test_pretooluse_backstops_reflector_writes():
     # S1/S3: the reflector write deny is a top-level PreToolUse backstop (not agent frontmatter),
     # so the catch-all group must be the one carrying dispatch — routing is dispatch's job.
     pre = _load("hooks/hooks.json")["hooks"]["PreToolUse"]
-    assert any("autoharness.hook.dispatch" in hook["command"]
+    assert any("kitharness.hook.dispatch" in hook["command"]
                for group in pre for hook in group["hooks"])
 
 
 def test_mcp_registers_existing_stage_skill():
     m = _load(".claude-plugin/plugin.json")["mcpServers"]["stage_skill"]
-    assert "autoharness.stage_skill.server" in m["args"]
-    assert (ROOT / "src/autoharness/stage_skill/server.py").exists()
+    assert "kitharness.stage_skill.server" in m["args"]
+    assert (ROOT / "src/kitharness/stage_skill/server.py").exists()
 
 
 def test_mcp_ships_only_this_plugin_servers():

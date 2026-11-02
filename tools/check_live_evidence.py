@@ -3,7 +3,7 @@ import argparse
 import json
 from pathlib import Path
 
-from autoharness.lib.live_study_report import verify_archive
+from kitharness.lib.live_study_report import verify_archive
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)

@@ -1,6 +1,6 @@
 import pytest
 
-from autoharness.lib import ledger
+from kitharness.lib import ledger
 
 
 def test_archived_ledger_cannot_read_outside_archive(tmp_path):

@@ -3,10 +3,10 @@ import json
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import on_session_start, promoter
-from autoharness.lib import counters, intent_queue, layer, skill_store
-from autoharness.stage_skill import server
+from kitharness import config
+from kitharness.hook import on_session_start, promoter
+from kitharness.lib import counters, intent_queue, layer, skill_store
+from kitharness.stage_skill import server
 
 INVALID_TARGETS = [
     pytest.param({}, id="omitted"),

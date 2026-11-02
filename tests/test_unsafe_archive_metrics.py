@@ -1,4 +1,4 @@
-from autoharness.lib import layer, metrics
+from kitharness.lib import layer, metrics
 
 
 def test_unsafe_archived_name_does_not_disable_metrics(tmp_path):

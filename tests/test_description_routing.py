@@ -6,10 +6,10 @@ from pathlib import Path
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import on_session_start, promoter, spawn
-from autoharness.lib import intent_queue, layer, sidecar, skill_store, validate
-from autoharness.stage_skill import server
+from kitharness import config
+from kitharness.hook import on_session_start, promoter, spawn
+from kitharness.lib import intent_queue, layer, sidecar, skill_store, validate
+from kitharness.stage_skill import server
 
 
 def body(desc, *, scalar=False):
@@ -163,8 +163,8 @@ def test_chinese_cues_do_not_bypass_credential_checks(tmp_path):
 @pytest.mark.parametrize("raw", ["0", "-1", "bad"])
 def test_invalid_full_description_limit_uses_positive_default(raw):
     env = {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src"),
-           "AUTOHARNESS_SKILL_DESC_MAX_CHARS": raw}
-    result = subprocess.run([sys.executable, "-c", "from autoharness import config; print(config.SKILL_DESC_MAX_CHARS)"],
+           "KITHARNESS_SKILL_DESC_MAX_CHARS": raw}
+    result = subprocess.run([sys.executable, "-c", "from kitharness import config; print(config.SKILL_DESC_MAX_CHARS)"],
                             env=env, capture_output=True, text=True, encoding="utf-8", timeout=5)
     assert result.returncode == 0
     assert result.stdout.strip() == "1024"

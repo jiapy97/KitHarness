@@ -65,7 +65,7 @@ cd KitHarness
 
 通过校验的经验会写入项目的 `.claude/skills/` 或全局的 `~/.claude/skills/`。没有值得保留的经验时，不会强行创建技能。
 
-> 运行环境需要可用的 `python3` 启动入口。启动模块会自动寻找 Python 3.11+，也可用 `AUTOHARNESS_PYTHON` 指定解释器。诊断方法见 [常见问题](#常见问题)。
+> 运行环境需要可用的 `python3` 启动入口。启动模块会自动寻找 Python 3.11+，也可用 `KITHARNESS_PYTHON` 指定解释器。诊断方法见 [常见问题](#常见问题)。
 
 ## 使用方式
 
@@ -79,7 +79,7 @@ cd KitHarness
 
 默认 `task` 模式在每次提交提示时匹配相关技能，最多选择 5 条，附加上下文最多 4096 字节。没有匹配项时不注入。Claude Code 原生技能召回继续工作。
 
-如果希望在会话启动时看到分组技能目录，可将 `AUTOHARNESS_RECALL_MODE` 设为 `catalog`。召回算法与解释方法见 [任务感知召回](docs/task-recall.md)。
+如果希望在会话启动时看到分组技能目录，可将 `KITHARNESS_RECALL_MODE` 设为 `catalog`。召回算法与解释方法见 [任务感知召回](docs/task-recall.md)。
 
 ### 查看与恢复
 
@@ -119,7 +119,7 @@ cd KitHarness
 ```json
 {
   "env": {
-    "AUTOHARNESS_DISABLE_GLOBAL": "1"
+    "KITHARNESS_DISABLE_GLOBAL": "1"
   }
 }
 ```
@@ -128,12 +128,12 @@ cd KitHarness
 
 | 环境变量 | 默认值 | 用途 |
 |---|---|---|
-| `AUTOHARNESS_DISABLE_GLOBAL` | `0` | 设为 `1`，仅管理项目层 |
-| `AUTOHARNESS_REFLECT_EVERY_N` | `50` | 每累计多少次主会话工具调用触发反思 |
-| `AUTOHARNESS_CONSOLIDATE_EVERY_N` | `250` | 同项目累计多少次工具调用触发整库整理；`0` 禁用 |
-| `AUTOHARNESS_RECALL_MODE` | `task` | 按任务召回，或使用启动目录模式 `catalog` |
-| `AUTOHARNESS_RECALL_MAX_BYTES` | `4096` | 每次事件的附加上下文字节上限 |
-| `AUTOHARNESS_NOTIFY` | 未设置 | 设为 `desktop`，开启运行结果桌面通知 |
+| `KITHARNESS_DISABLE_GLOBAL` | `0` | 设为 `1`，仅管理项目层 |
+| `KITHARNESS_REFLECT_EVERY_N` | `50` | 每累计多少次主会话工具调用触发反思 |
+| `KITHARNESS_CONSOLIDATE_EVERY_N` | `250` | 同项目累计多少次工具调用触发整库整理；`0` 禁用 |
+| `KITHARNESS_RECALL_MODE` | `task` | 按任务召回，或使用启动目录模式 `catalog` |
+| `KITHARNESS_RECALL_MAX_BYTES` | `4096` | 每次事件的附加上下文字节上限 |
+| `KITHARNESS_NOTIFY` | 未设置 | 设为 `desktop`，开启运行结果桌面通知 |
 
 设置后从下一次会话起生效。全部选项见 [配置参考](docs/configuration.md)；后台调用的超时、并发和预算限制见 [运行诊断与限额](docs/runtime-controls.md)。
 
@@ -164,6 +164,8 @@ claude plugin update kitharness@kitharness
 
 更新后重启 Claude Code。先刷新目录可避免旧缓存造成“已是最新版”的误报。第三方市场默认关闭自动更新，可在 `/plugin` → **Marketplaces** → **kitharness** → **Enable auto-update** 中开启；发布新版本需提升 `plugin.json` 的 `version`。
 
+0.6.0 统一了 Python 包名与环境变量前缀；旧入口和配置保留兼容支持，已有技能与状态无需迁移。新配置使用 `kitharness` 和 `KITHARNESS_*`，详见 [配置参考](docs/configuration.md)。
+
 卸载：
 
 ```sh
@@ -179,15 +181,17 @@ claude plugin marketplace remove kitharness
 
 默认自动反思需要累计 50 次主会话工具调用，纯聊天不推进计数。也可用 `/learn` 主动提炼。触发反思只是发起后台任务；是否成功以及提案被拒绝的原因，可查看 `.claude/kitharness/runs/`。
 
+如果已经调用 `stage_skill` 却没有生成技能，先展开工具返回结果。`missing/invalid frontmatter` 表示正文缺少 YAML 元数据，应补齐 `name`、触发条件 `description` 后重试；`altitude` 表示正文超过非空行数上限（默认 25 行），应精简规则或将示例移到被正文引用的 `references/` 文件。前置校验失败的提案尚未入队，因此不会生成运行报告。项目级长期偏好属于支持范围。`ok: true`、`status: queued` 仅表示入队，轮次结束后才由执行器校验落盘。
+
 ### Python 环境有问题怎么办？
 
 在仓库根目录执行只读诊断，不会登录或调用模型：
 
 ```sh
-PYTHONPATH=src python3 -m autoharness.runtime doctor
+PYTHONPATH=src python3 -m kitharness.runtime doctor
 ```
 
-启动模块兼容 Python 3.9，会选择可用的 Python 3.11+。可通过 `AUTOHARNESS_PYTHON=/absolute/path/to/python3.12` 显式指定。详见 [运行诊断](docs/runtime-controls.md)。
+启动模块兼容 Python 3.9，会选择可用的 Python 3.11+。可通过 `KITHARNESS_PYTHON=/absolute/path/to/python3.12` 显式指定。详见 [运行诊断](docs/runtime-controls.md)。
 
 ### 会修改我已有的技能吗？
 

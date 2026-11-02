@@ -2,7 +2,7 @@
 
 import time
 
-from autoharness.lib import redact
+from kitharness.lib import redact
 
 
 def test_email_rule_redacts_normal_addresses():

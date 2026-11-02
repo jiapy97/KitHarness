@@ -8,8 +8,8 @@ Without the lock each pass reads the library without seeing the other's skill an
 import threading
 import time
 
-from autoharness.hook import promoter
-from autoharness.lib import intent_queue
+from kitharness.hook import promoter
+from kitharness.lib import intent_queue
 
 GOOD_BODY = "---\nname: foo\ndescription: Use when formatting a date as ISO.\n---\n# Foo\nUse strftime.\n"
 

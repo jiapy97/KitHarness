@@ -1,7 +1,7 @@
 """Regression: digest() must read only end_offset bytes, not the entire transcript."""
 from unittest.mock import mock_open, patch
 
-from autoharness.hook.capture import digest
+from kitharness.hook.capture import digest
 
 
 def test_digest_bounded_read(tmp_path):

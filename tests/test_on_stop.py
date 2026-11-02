@@ -1,6 +1,6 @@
-from autoharness import config
-from autoharness.hook import on_stop
-from autoharness.lib import counters
+from kitharness import config
+from kitharness.hook import on_stop
+from kitharness.lib import counters
 
 EV = {"session_id": "sess-1"}
 
@@ -56,7 +56,7 @@ def test_stop_without_activity_never_triggers(tmp_path):
 
 
 def test_tool_calls_accumulate_and_stop_judges(tmp_path):
-    from autoharness.lib import counters
+    from kitharness.lib import counters
     for _ in range(3):
         counters.bump_session("s1", tmp_path)  # what dispatch does per PreToolUse now
     r = on_stop.on_stop({"session_id": "s1"}, root=tmp_path, n=3)

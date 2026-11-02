@@ -4,8 +4,8 @@ import json
 
 import pytest
 
-from autoharness.hook import promoter
-from autoharness.lib import (
+from kitharness.hook import promoter
+from kitharness.lib import (
     intent_queue,
     layer,
     ledger,

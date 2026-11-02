@@ -1,6 +1,6 @@
 import json
 
-from autoharness.hook import capture
+from kitharness.hook import capture
 
 
 def _write_transcript(p, records):

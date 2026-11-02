@@ -9,8 +9,8 @@ from pathlib import Path
 
 import pytest
 
-from autoharness.hook import on_session_start, promoter
-from autoharness.lib import (
+from kitharness.hook import on_session_start, promoter
+from kitharness.lib import (
     intent_queue,
     layer,
     ledger,
@@ -113,8 +113,8 @@ def test_snapshot_size_limit_fails_before_changes(roots, monkeypatch):
 _CRASH_SCRIPT = '''
 import json, os, sys
 from pathlib import Path
-from autoharness.hook import promoter
-from autoharness.lib import ledger, operations, skill_store, versions
+from kitharness.hook import promoter
+from kitharness.lib import ledger, operations, skill_store, versions
 args = json.loads(sys.argv[1])
 roots = {key: Path(value) for key, value in args['roots'].items()}
 module, attribute = {
@@ -278,7 +278,7 @@ def test_version_cli_lists_and_restores_a_complete_directory(roots):
     before = _snapshot(root)
     assert promoter.promote(_update(), roots=roots)["ok"]
     env = {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")}
-    command = [sys.executable, "-m", "autoharness.lib.versions"]
+    command = [sys.executable, "-m", "kitharness.lib.versions"]
     result = subprocess.run([*command, "list", "dates", "--root", str(root)],
                             env=env, capture_output=True, text=True, timeout=10, check=True)
     version_id = json.loads(result.stdout)[-1]["id"]
@@ -295,7 +295,7 @@ def test_real_process_exit_during_manual_rollback_restores_pre_rollback_state(ro
     script = '''
 import os, sys
 from pathlib import Path
-from autoharness.lib import versions
+from kitharness.lib import versions
 original = os.replace
 def abrupt(source, target):
     result = original(source, target)

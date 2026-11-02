@@ -24,8 +24,8 @@ category: testing
 
 | 内容 | 用途 | 长度规则 |
 | --- | --- | --- |
-| 完整 `description` | 保存在 SKILL.md；供宿主及反思/整理的比较索引读取 | create/update 使用 `AUTOHARNESS_SKILL_DESC_MAX_CHARS`，默认 1024 |
-| 注入索引摘要 | 任务模式的相关技能列表，或目录模式的启动目录 | 使用 `AUTOHARNESS_INDEX_DESC_MAX_CHARS`，默认 60；超出时截短并附加 `...` |
+| 完整 `description` | 保存在 SKILL.md；供宿主及反思/整理的比较索引读取 | create/update 使用 `KITHARNESS_SKILL_DESC_MAX_CHARS`，默认 1024 |
+| 注入索引摘要 | 任务模式的相关技能列表，或目录模式的启动目录 | 使用 `KITHARNESS_INDEX_DESC_MAX_CHARS`，默认 60；超出时截短并附加 `...` |
 
 完整描述不再因为超过 60 字而被拒绝。把索引长度调小不会缩减完整描述上限，调大也不会放宽完整描述上限。
 长度按 Python 字符串字符数计算，不是 UTF-8 字节数，也不是模型 Token 数。完整描述上限必须为正整数，非法值会提示并回退默认值。

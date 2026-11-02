@@ -8,8 +8,8 @@ from types import SimpleNamespace
 
 import pytest
 
-from autoharness.lib import live_auth as auth
-from autoharness.lib import live_pilot as pilot
+from kitharness.lib import live_auth as auth
+from kitharness.lib import live_pilot as pilot
 
 TOKEN = "private-test-credential"
 

@@ -10,9 +10,9 @@ from pathlib import Path
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import on_session_start, promoter
-from autoharness.lib import intent_queue, layer, skill_store
+from kitharness import config
+from kitharness.hook import on_session_start, promoter
+from kitharness.lib import intent_queue, layer, skill_store
 
 pytestmark = pytest.mark.skipif(not hasattr(os, "killpg"), reason="POSIX process groups")
 BODY = "---\nname: foo\ndescription: Use when formatting dates as ISO.\n---\n# Dates\nUse strftime.\n"
@@ -74,7 +74,7 @@ def test_live_child_prevents_adoption_after_supervisor_exits(tmp_path):
     roots = {"project": tmp_path / "p", "global": tmp_path / "g"}
     code = """import json,subprocess,sys,time
 from pathlib import Path
-from autoharness.hook import recovery
+from kitharness.hook import recovery
 recovery.track('live', Path(sys.argv[1]))
 child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(60)'])
 print(json.dumps({'child':child.pid}),flush=True)
@@ -118,20 +118,20 @@ def test_retryable_filesystem_failure_retains_queue_and_owner(tmp_path, monkeypa
 
 
 def test_writer_in_new_session_prevents_adoption_after_supervisor_exits(tmp_path):
-    from autoharness.hook import recovery
+    from kitharness.hook import recovery
     roots = {"project": tmp_path / "p", "global": tmp_path / "g"}
     proposal = {"action": "create", "name": "foo", "level": "project", "body": BODY,
                 "reason": "owned regression", "evidence": "owned fixture"}
     writer_code = f"""from pathlib import Path
 import os,sys,time
-from autoharness.lib import intent_queue
+from kitharness.lib import intent_queue
 intent_queue.append('escaped', {proposal!r}, Path(sys.argv[1]))
 print(os.getpid(), flush=True)
 time.sleep(60)
 """
     supervisor_code = f"""from pathlib import Path
 import subprocess,sys
-from autoharness.hook import recovery
+from kitharness.hook import recovery
 recovery.track('escaped', Path(sys.argv[1]))
 child=subprocess.Popen([sys.executable,'-c',{writer_code!r},sys.argv[1]],
     start_new_session=True,stdout=subprocess.PIPE,text=True)
@@ -164,7 +164,7 @@ print(child.stdout.readline().strip(),flush=True)
 
 
 def test_completed_owner_rejects_late_append_without_recreating_queue(tmp_path):
-    from autoharness.hook import recovery
+    from kitharness.hook import recovery
     roots = {"project": tmp_path / "p", "global": tmp_path / "g"}
     abandoned(roots["project"])
     assert recovery.recover(roots=roots) == ["dead"]
@@ -177,7 +177,7 @@ def test_completed_owner_rejects_late_append_without_recreating_queue(tmp_path):
 
 
 def test_complete_preserves_owner_when_writer_committed_after_drain(tmp_path):
-    from autoharness.hook import recovery
+    from kitharness.hook import recovery
     roots = {"project": tmp_path / "p", "global": tmp_path / "g"}
     path = abandoned(roots["project"])
     promoter.drain("dead", roots=roots)
@@ -199,7 +199,7 @@ def test_completed_account_survives_unconsumed_owner(tmp_path):
 
 
 def test_concurrent_recovery_accounts_owned_run_once(tmp_path, monkeypatch):
-    from autoharness.hook import recovery
+    from kitharness.hook import recovery
     roots = {"project": tmp_path / "p", "global": tmp_path / "g"}
     path = abandoned(roots["project"])
     actual = promoter.promote
@@ -227,7 +227,7 @@ def test_concurrent_recovery_accounts_owned_run_once(tmp_path, monkeypatch):
 
 
 def test_untracked_interactive_invalid_and_inaccessible_owners_are_not_adopted(tmp_path, monkeypatch):
-    from autoharness.hook import recovery
+    from kitharness.hook import recovery
     roots = {"project": tmp_path / "p", "global": tmp_path / "g"}
     for run_id, group in [("untracked", None), (config.INTERACTIVE_RUN_ID, dead_group()),
                           ("bad", True), ("inaccessible", 123456)]:
@@ -255,8 +255,8 @@ def test_real_detached_spawn_entry_tracks_and_consumes_or_recovers(tmp_path, cur
             ["unused", "sid", "owned", str(roots["project"]), str(roots["global"])])
     code = f"""import sys
 from pathlib import Path
-from autoharness.hook import spawn,promoter
-from autoharness.lib import intent_queue
+from kitharness.hook import spawn,promoter
+from kitharness.lib import intent_queue
 root=Path(sys.argv[1]); global_root=Path(sys.argv[2])
 def owned_run(*args, **kwargs):
     intent_queue.append('owned', {proposal!r}, root)

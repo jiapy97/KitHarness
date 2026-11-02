@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from autoharness.lib import live_preflight as preflight
+from kitharness.lib import live_preflight as preflight
 
 
 def completed(stdout="", code=0):

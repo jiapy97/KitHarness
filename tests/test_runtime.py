@@ -5,7 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from autoharness import runtime
+from kitharness import runtime
 
 
 def test_bootstrap_source_remains_python39_compatible():
@@ -44,8 +44,8 @@ def test_explicit_override_is_one_executable_not_a_shell_command(monkeypatch):
 
 def test_doctor_is_read_only_and_has_no_model_call(tmp_path):
     src = Path(__file__).resolve().parents[1] / "src"
-    env = {**os.environ, "PYTHONPATH": str(src), "AUTOHARNESS_PYTHON": sys.executable}
-    result = subprocess.run([sys.executable, "-m", "autoharness.runtime", "doctor"],
+    env = {**os.environ, "PYTHONPATH": str(src), "KITHARNESS_PYTHON": sys.executable}
+    result = subprocess.run([sys.executable, "-m", "kitharness.runtime", "doctor"],
                             env=env, cwd=tmp_path, capture_output=True, text=True, encoding="utf-8", timeout=5)
     report = json.loads(result.stdout)
     assert report["selected_python"]["version"][:2] >= [3, 11]
@@ -54,8 +54,8 @@ def test_doctor_is_read_only_and_has_no_model_call(tmp_path):
 
 def test_bootstrap_mcp_keeps_stdout_as_jsonrpc(tmp_path):
     src = Path(__file__).resolve().parents[1] / "src"
-    env = {**os.environ, "PYTHONPATH": str(src), "AUTOHARNESS_PYTHON": sys.executable}
-    result = subprocess.run([sys.executable, "-m", "autoharness.runtime", "autoharness.stage_skill.server"],
+    env = {**os.environ, "PYTHONPATH": str(src), "KITHARNESS_PYTHON": sys.executable}
+    result = subprocess.run([sys.executable, "-m", "kitharness.runtime", "kitharness.stage_skill.server"],
                             env=env, input='{"jsonrpc":"2.0","id":1,"method":"tools/list"}\n',
                             cwd=tmp_path, text=True, encoding="utf-8", capture_output=True, timeout=5)
     assert result.returncode == 0
@@ -64,5 +64,5 @@ def test_bootstrap_mcp_keeps_stdout_as_jsonrpc(tmp_path):
 
 def test_broken_override_is_actionable_and_mcp_fails_closed(monkeypatch, capsys):
     monkeypatch.setattr(runtime, "select_python", lambda: (None, None, "bad interpreter"))
-    assert runtime.main(["autoharness.stage_skill.server"]) == 2
+    assert runtime.main(["kitharness.stage_skill.server"]) == 2
     assert "doctor" in capsys.readouterr().err

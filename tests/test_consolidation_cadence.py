@@ -7,9 +7,9 @@ from pathlib import Path
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import dispatch
-from autoharness.lib import counters, layer
+from kitharness import config
+from kitharness.hook import dispatch
+from kitharness.lib import counters, layer
 
 
 @pytest.fixture
@@ -203,8 +203,8 @@ def test_launch_error_diagnostics_redact_credentials(roots):
 @pytest.mark.parametrize(("raw", "expected"), [("0", "0"), ("-1", "250"), ("bad", "250")])
 def test_consolidation_config_accepts_zero_and_rejects_invalid_values(raw, expected):
     env = {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src"),
-           "AUTOHARNESS_CONSOLIDATE_EVERY_N": raw}
-    result = subprocess.run([sys.executable, "-c", "from autoharness import config; print(config.CONSOLIDATE_EVERY_N)"],
+           "KITHARNESS_CONSOLIDATE_EVERY_N": raw}
+    result = subprocess.run([sys.executable, "-c", "from kitharness import config; print(config.CONSOLIDATE_EVERY_N)"],
                             env=env, capture_output=True, text=True, encoding="utf-8", timeout=5)
     assert result.returncode == 0
     assert result.stdout.strip() == expected
@@ -218,7 +218,7 @@ def test_simultaneous_stop_processes_launch_one_curator(roots, tmp_path):
     script = '''
 import json, sys, time
 from pathlib import Path
-from autoharness.hook import dispatch
+from kitharness.hook import dispatch
 roots = {k: Path(v) for k, v in json.loads(sys.argv[1]).items()}
 def launch(rid, roots):
     with Path(sys.argv[2]).open('a', encoding='utf-8') as handle:
@@ -229,7 +229,7 @@ result = dispatch.dispatch({'hook_event_name':'Stop', 'session_id':'s1'}, roots=
 assert 'error' not in result, result
 '''
     env = {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src"),
-           "AUTOHARNESS_CONSOLIDATE_EVERY_N": "3", "AUTOHARNESS_DISABLE_GLOBAL": "0"}
+           "KITHARNESS_CONSOLIDATE_EVERY_N": "3", "KITHARNESS_DISABLE_GLOBAL": "0"}
     env.pop(config.CHILD_SESSION_ENV, None)
     argv = [sys.executable, "-c", script, json.dumps({k: str(v) for k, v in roots.items()}), str(log)]
     processes = [subprocess.Popen(argv, env=env) for _ in range(4)]
@@ -247,7 +247,7 @@ def test_activity_increments_are_not_lost_between_processes(roots):
     script = '''
 import sys
 from pathlib import Path
-from autoharness.lib import counters
+from kitharness.lib import counters
 for _ in range(20):
     counters.bump_activity(Path(sys.argv[1]))
 '''

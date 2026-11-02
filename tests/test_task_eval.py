@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from autoharness.lib import task_eval as evaluation
+from kitharness.lib import task_eval as evaluation
 
 ROOT = Path(__file__).resolve().parents[1]
 SUITE = ROOT / "evals/tasks/suite.json"
@@ -316,7 +316,7 @@ def test_smoke_report_is_fixture_only_reproducible_and_has_real_failure_paths():
 
 
 def test_cli_prepare_reports_no_model_calls(tmp_path):
-    result = subprocess.run([sys.executable, "-m", "autoharness.lib.task_eval", "--repo", str(ROOT), "--suite", str(SUITE),
+    result = subprocess.run([sys.executable, "-m", "kitharness.lib.task_eval", "--repo", str(ROOT), "--suite", str(SUITE),
                              "prepare", "--output", str(tmp_path / "cli"), "--model", "not-invoked"],
                             env={**os.environ, "PYTHONPATH": str(ROOT / "src")},
                             capture_output=True, text=True, encoding="utf-8", timeout=10)

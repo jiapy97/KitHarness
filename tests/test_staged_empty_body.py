@@ -1,7 +1,7 @@
 import pytest
 
-from autoharness.lib import intent_queue
-from autoharness.stage_skill import server
+from kitharness.lib import intent_queue
+from kitharness.stage_skill import server
 
 
 @pytest.mark.parametrize('action', ['create', 'update'])

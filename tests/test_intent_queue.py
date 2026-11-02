@@ -1,6 +1,6 @@
 import pytest
 
-from autoharness.lib import intent_queue
+from kitharness.lib import intent_queue
 
 
 def test_append_read_clear_roundtrip(tmp_path):

@@ -7,29 +7,29 @@
 在仓库根目录执行：
 
 ```sh
-PYTHONPATH=src python3 -m autoharness.runtime doctor
+PYTHONPATH=src python3 -m kitharness.runtime doctor
 ```
 
 hook 和 MCP 都先经过这个兼容 Python 3.9 的启动模块。默认 `python3` 已满足 3.11 时直接使用；否则在 PATH 上依次寻找 `python3.14`、`python3.13`、`python3.12`、`python3.11`、`python3`。
-可通过 `AUTOHARNESS_PYTHON=/absolute/path/to/python3.12` 显式指定解释器；指定错误时报告问题，不悄悄换成另一个解释器。
+可通过 `KITHARNESS_PYTHON=/absolute/path/to/python3.12` 显式指定解释器；指定错误时报告问题，不悄悄换成另一个解释器。
 环境里仍需要能运行启动模块的 `python3`。
 
 doctor 输出启动解释器、实际选中的解释器和 Claude 可执行文件位置。命令只读，不登录、不调用模型，不检查账号额度、CLI 参数兼容性或目录写权限。
 找不到 Python 3.11+ 时，hook 在 stderr 提示诊断方法并退出，MCP 则以非零状态停止，避免把普通文本混入 JSON-RPC。
-`AUTOHARNESS_CLAUDE_BIN` 可指定 Claude 可执行文件；它是一个文件路径或命令名，不能填带参数的 shell 命令。
+`KITHARNESS_CLAUDE_BIN` 可指定 Claude 可执行文件；它是一个文件路径或命令名，不能填带参数的 shell 命令。
 
 ## 后台任务限额
 
 | 环境变量 | 默认值 | 作用 |
 | --- | --- | --- |
-| `AUTOHARNESS_JOB_TIMEOUT_S` | `180` | Claude 子进程调用的超时秒数 |
-| `AUTOHARNESS_JOB_PROJECT_LIMIT` | `1` | 同一项目配置根目录的并发上限，反思和整理共用 |
-| `AUTOHARNESS_JOB_GLOBAL_LIMIT` | `2` | 共享同一全局配置根目录的项目之间的并发上限 |
-| `AUTOHARNESS_JOB_MAX_BUDGET_USD` | `1` | 每次 Claude 调用传入的美元预算 |
-| `AUTOHARNESS_VERSION_KEEP` | `10` | 手动清理时默认保留的最近版本数 |
+| `KITHARNESS_JOB_TIMEOUT_S` | `180` | Claude 子进程调用的超时秒数 |
+| `KITHARNESS_JOB_PROJECT_LIMIT` | `1` | 同一项目配置根目录的并发上限，反思和整理共用 |
+| `KITHARNESS_JOB_GLOBAL_LIMIT` | `2` | 共享同一全局配置根目录的项目之间的并发上限 |
+| `KITHARNESS_JOB_MAX_BUDGET_USD` | `1` | 每次 Claude 调用传入的美元预算 |
+| `KITHARNESS_VERSION_KEEP` | `10` | 手动清理时默认保留的最近版本数 |
 
 这些值必须为正数；秒数、并发数和版本数必须是整数。非法值会提示并使用默认值。
-全局层被 `AUTOHARNESS_DISABLE_GLOBAL=1` 禁用时，不读取或创建全局并发锁，只保留项目限制。
+全局层被 `KITHARNESS_DISABLE_GLOBAL=1` 禁用时，不读取或创建全局并发锁，只保留项目限制。
 全局上限依赖所有项目使用同一个全局配置根目录；它不是跨机器的并发服务。
 
 并发名额用跨进程文件锁管理，不等待空位，也不会堆积模型任务。名额占满时记录 `concurrency_limit` 并结束本次运行。
@@ -63,10 +63,10 @@ stdout/stderr 先进入临时文件，只限量读取；错误摘要仍经过脱
 
 ```sh
 # 默认只预览候选版本及可释放的文件字节数
-PYTHONPATH=src python3.12 -m autoharness.lib.versions prune dates --root /path/to/project/.claude
+PYTHONPATH=src python3.12 -m kitharness.lib.versions prune dates --root /path/to/project/.claude
 
 # 核对预览后，显式删除旧版本；保留最近 10 个
-PYTHONPATH=src python3.12 -m autoharness.lib.versions prune dates --root /path/to/project/.claude --keep 10 --apply
+PYTHONPATH=src python3.12 -m kitharness.lib.versions prune dates --root /path/to/project/.claude --keep 10 --apply
 ```
 
 清理和技能修改、恢复、回滚使用同一把技能锁。至少保留一个版本，额外保护所有 `prepared` 事务引用的快照，以及最近一个可恢复的完整目录。

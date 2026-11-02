@@ -27,9 +27,9 @@ KitHarness 在 Claude Code 旁运行一条学习流水线。生成的技能是�
 ```json
 {
   "env": {
-    "AUTOHARNESS_REFLECT_EVERY_N": "3",
-    "AUTOHARNESS_MATURITY_PROJECT": "5",
-    "AUTOHARNESS_CAPACITY_PROJECT": "2"
+    "KITHARNESS_REFLECT_EVERY_N": "3",
+    "KITHARNESS_MATURITY_PROJECT": "5",
+    "KITHARNESS_CAPACITY_PROJECT": "2"
   }
 }
 ```
@@ -50,6 +50,12 @@ KitHarness 在 Claude Code 旁运行一条学习流水线。生成的技能是�
 ```
 
 ### 2. 查看新技能
+
+若调用 `stage_skill` 后未出现技能，先检查工具返回的 `ok` 和 `errors`。`missing/invalid frontmatter` 是正文格式错误，不表示项目偏好不受支持。创建或更新时，正文必须以 `---` 包围的 YAML 元数据开头，包含 `name` 和带使用条件的 `description`；修正后重试。前置校验失败的提案不会进入队列，也不会生成落盘运行报告。
+
+正文行数限制同样在工具调用时检查：默认最多 25 个非空行，不含 YAML 元数据。`altitude` 错误应通过精简规则或将详细示例移到被正文引用的 `references/` 文件修正；不要为了通过检查而补写未确认的偏好。
+
+工具返回 `ok: true`、`status: queued` 表示提案已入队。当前轮次结束后的 `Stop` 钩子才会调用执行器，最终是否落盘应以文件或运行记录为准。
 
 反思通过校验并落盘后，项目技能出现在 `.claude/skills/`，跨项目通用技能出现在 `~/.claude/skills/`。使用 `ls -la` 查看隐藏的附属文件：
 

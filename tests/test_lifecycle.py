@@ -1,4 +1,4 @@
-from autoharness.lib import lifecycle
+from kitharness.lib import lifecycle
 
 
 def _m(name, calls, anchor=0):

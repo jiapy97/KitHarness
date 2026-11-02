@@ -8,9 +8,9 @@ from pathlib import Path
 
 import pytest
 
-from autoharness import config
-from autoharness.hook import promoter
-from autoharness.lib import intent_queue, layer, lock, operations, skill_store, versions
+from kitharness import config
+from kitharness.hook import promoter
+from kitharness.lib import intent_queue, layer, lock, operations, skill_store, versions
 
 BODY = "---\nname: dates\ndescription: Use when formatting dates.\n---\nUse ISO dates.\n"
 
@@ -179,7 +179,7 @@ def test_global_disable_and_configured_default(roots, monkeypatch):
 
 
 def test_cli_prune_defaults_to_preview(roots):
-    result = subprocess.run([sys.executable, "-m", "autoharness.lib.versions", "prune", "dates",
+    result = subprocess.run([sys.executable, "-m", "kitharness.lib.versions", "prune", "dates",
                              "--root", str(roots["project"]), "--keep", "1"],
                             env={**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")},
                             capture_output=True, text=True, encoding="utf-8", timeout=5)

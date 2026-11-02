@@ -3,7 +3,7 @@ import stat
 
 import pytest
 
-from autoharness.lib import atomic
+from kitharness.lib import atomic
 
 
 @pytest.mark.skipif(os.name == "nt", reason="POSIX executable and permission bits")
