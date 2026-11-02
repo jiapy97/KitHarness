@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "id": "workflow-decisions-v1",
+  "scope": "Structured workflow decisions, not executable code patches or a general coding benchmark.",
+  "tasks": [
+    {
+      "id": "retry-plan",
+      "instruction": "按顺序处理 statuses。只有 429 和 503 可重试，其他非 2xx 状态立即 failed；2xx 立即 success。最多 max_attempts 次请求。每次实际发生的重试前等待 min(cap_ms, base_ms * 2^(已失败请求序号-1))；若该请求有 retry_after_s，则用它的秒数乘 1000 替代指数等待并仍受 cap_ms 限制。没有下一次请求机会时不追加等待。处理完仍未成功则 exhausted。输出 {delays_ms:整数数组,outcome:字符串}。",
+      "warmup": "重试经验：不能在已经耗尽请求次数后再追加等待；Retry-After 的单位是秒，等待数组的单位是毫秒。",
+      "cases": [
+        {"id":"exponential","input":{"statuses":[503,503,200],"max_attempts":3,"base_ms":100,"cap_ms":1000},"expected":{"delays_ms":[100,200],"outcome":"success"}},
+        {"id":"after-seconds","input":{"statuses":[429,200],"retry_after_s":{"1":3},"max_attempts":2,"base_ms":100,"cap_ms":2000},"expected":{"delays_ms":[2000],"outcome":"success"}},
+        {"id":"not-retryable","input":{"statuses":[400,200],"max_attempts":2,"base_ms":100,"cap_ms":1000},"expected":{"delays_ms":[],"outcome":"failed"}},
+        {"id":"exhaustion","input":{"statuses":[503,503,200],"max_attempts":2,"base_ms":100,"cap_ms":1000},"expected":{"delays_ms":[100],"outcome":"exhausted"}}
+      ]
+    },
+    {
+      "id": "pagination",
+      "instruction": "按 pages 顺序汇总整数 ids，去重且保留第一次出现的顺序。处理每页后，next 为 null 则立即停止并返回 stop=end；next 为曾在前面页出现的非 null 游标则立即停止并返回 stop=cycle；否则记录游标并继续。读完所有页仍未停止则 stop=more。输出 {ids:整数数组,stop:字符串}。",
+      "warmup": "分页经验：空页但 next 非空不代表结束；重复游标必须终止，跨页重复记录保留首次位置。",
+      "cases": [
+        {"id":"stable-dedup","input":{"pages":[{"ids":[3,1],"next":"a"},{"ids":[1,2],"next":null}]},"expected":{"ids":[3,1,2],"stop":"end"}},
+        {"id":"empty-page","input":{"pages":[{"ids":[],"next":"a"},{"ids":[7],"next":null}]},"expected":{"ids":[7],"stop":"end"}},
+        {"id":"cursor-cycle","input":{"pages":[{"ids":[1],"next":"a"},{"ids":[2],"next":"a"},{"ids":[3],"next":null}]},"expected":{"ids":[1,2],"stop":"cycle"}},
+        {"id":"early-end","input":{"pages":[{"ids":[9],"next":null},{"ids":[8],"next":"a"}]},"expected":{"ids":[9],"stop":"end"}}
+      ]
+    },
+    {
+      "id": "utc-boundaries",
+      "instruction": "把 timestamp 中的固定时区偏移转换成 UTC。输入无小数秒，输出 utc 使用 YYYY-MM-DDTHH:MM:SSZ，并同时返回 UTC 日历日 date。输出 {utc:字符串,date:字符串}。不要使用输入当地的日期作为 UTC 日期。",
+      "warmup": "日期经验：先做偏移换算，再取 UTC 日期；特别检查跨年、闰日和跨日，不能直接截取输入前十个字符。",
+      "cases": [
+        {"id":"leap-back","input":{"timestamp":"2024-03-01T00:30:00+01:00"},"expected":{"utc":"2024-02-29T23:30:00Z","date":"2024-02-29"}},
+        {"id":"year-forward","input":{"timestamp":"2025-12-31T23:30:00-02:00"},"expected":{"utc":"2026-01-01T01:30:00Z","date":"2026-01-01"}},
+        {"id":"half-hour","input":{"timestamp":"2026-06-10T00:15:00+05:30"},"expected":{"utc":"2026-06-09T18:45:00Z","date":"2026-06-09"}},
+        {"id":"already-utc","input":{"timestamp":"2026-06-10T10:00:00+00:00"},"expected":{"utc":"2026-06-10T10:00:00Z","date":"2026-06-10"}}
+      ]
+    },
+    {
+      "id": "nested-redaction",
+      "instruction": "递归处理 data 中的 JSON 对象和数组。对象的键忽略大小写后恰好为 token、password、api_key 时，将对应整个值替换为字符串 [REDACTED]，包括原值为对象或 null 的情况。保留键名、其他值、数组顺序和数据类型。输出处理后的 data 本身，不增加包装字段；普通字符串里的关键词不替换。所有示例值都是虚构数据。",
+      "warmup": "脱敏经验：必须递归访问数组中的对象；键匹配忽略大小写；不能为了清除 token 字样而破坏普通业务字段。",
+      "cases": [
+        {"id":"nested-array","input":{"data":{"events":[{"token":"fixture-alpha","ok":true}]}},"expected":{"events":[{"token":"[REDACTED]","ok":true}]}},
+        {"id":"case-insensitive","input":{"data":{"API_KEY":"fixture-beta","Password":null}},"expected":{"API_KEY":"[REDACTED]","Password":"[REDACTED]"}},
+        {"id":"whole-value","input":{"data":{"token":{"nested":"fixture-gamma"},"count":2}},"expected":{"token":"[REDACTED]","count":2}},
+        {"id":"preserve-content","input":{"data":{"message":"the token field is absent","token_count":3,"flags":[false,null]}},"expected":{"message":"the token field is absent","token_count":3,"flags":[false,null]}}
+      ]
+    },
+    {
+      "id": "merge-guard",
+      "instruction": "决定能否归档 source。按以下优先级返回 reason：target 为空是 missing_target；target 等于 source 是 self_target；目标非存活或非托管是 invalid_target；目标也被安排归档是 target_archived；目标在本批有内容修改且修改失败是 dependency_failed；其余是 merged。只有 merged 时 archive=true。输出 {archive:布尔值,reason:字符串}。",
+      "warmup": "合并经验：来源归档必须依赖目标内容成功落地；不能把同批失败或即将归档的目标当作安全承接者。",
+      "cases": [
+        {"id":"missing-target","input":{"source":"small","target":"","target_live":true,"target_managed":true,"target_archived":false,"target_changed":false,"target_change_ok":true},"expected":{"archive":false,"reason":"missing_target"}},
+        {"id":"failed-dependency","input":{"source":"small","target":"umbrella","target_live":true,"target_managed":true,"target_archived":false,"target_changed":true,"target_change_ok":false},"expected":{"archive":false,"reason":"dependency_failed"}},
+        {"id":"archive-chain","input":{"source":"small","target":"umbrella","target_live":true,"target_managed":true,"target_archived":true,"target_changed":true,"target_change_ok":true},"expected":{"archive":false,"reason":"target_archived"}},
+        {"id":"safe-merge","input":{"source":"small","target":"umbrella","target_live":true,"target_managed":true,"target_archived":false,"target_changed":true,"target_change_ok":true},"expected":{"archive":true,"reason":"merged"}}
+      ]
+    },
+    {
+      "id": "transaction-recovery",
+      "instruction": "根据持久事务状态决定下一步。prepared：恢复操作前目录，然后允许重试；committed：复用已保存结果，不恢复、不再次执行，即使独立 receipt 缺失也如此；rolled_back：无需再恢复，可重试。输出 {restore:布尔值,apply:布尔值,reuse_result:布尔值}。",
+      "warmup": "恢复经验：已提交事务中的结果可以补足独立回执写入前的崩溃窗口；不能仅因 receipt 缺失就再次修改技能。",
+      "cases": [
+        {"id":"prepared","input":{"status":"prepared","receipt":false},"expected":{"restore":true,"apply":true,"reuse_result":false}},
+        {"id":"committed-no-receipt","input":{"status":"committed","receipt":false},"expected":{"restore":false,"apply":false,"reuse_result":true}},
+        {"id":"committed-receipt","input":{"status":"committed","receipt":true},"expected":{"restore":false,"apply":false,"reuse_result":true}},
+        {"id":"rolled-back","input":{"status":"rolled_back","receipt":false},"expected":{"restore":false,"apply":true,"reuse_result":false}}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,712 @@
+{
+  "attempts": [
+    {
+      "attempt_id": "no_learning-r00-merge-guard",
+      "case_correct": {
+        "archive-chain": true,
+        "failed-dependency": true,
+        "missing-target": false,
+        "safe-merge": true
+      },
+      "case_score": 0.75,
+      "condition": "no_learning",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": false,
+      "task": "merge-guard",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "original-r00-merge-guard",
+      "case_correct": {
+        "archive-chain": true,
+        "failed-dependency": true,
+        "missing-target": false,
+        "safe-merge": true
+      },
+      "case_score": 0.75,
+      "condition": "original",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": false,
+      "task": "merge-guard",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "kitharness-r00-merge-guard",
+      "case_correct": {
+        "archive-chain": true,
+        "failed-dependency": true,
+        "missing-target": false,
+        "safe-merge": true
+      },
+      "case_score": 0.75,
+      "condition": "kitharness",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": false,
+      "task": "merge-guard",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "original-r00-retry-plan",
+      "case_correct": {
+        "after-seconds": true,
+        "exhaustion": true,
+        "exponential": true,
+        "not-retryable": true
+      },
+      "case_score": 1.0,
+      "condition": "original",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "retry-plan",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "kitharness-r00-retry-plan",
+      "case_correct": {
+        "after-seconds": true,
+        "exhaustion": true,
+        "exponential": true,
+        "not-retryable": true
+      },
+      "case_score": 1.0,
+      "condition": "kitharness",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "retry-plan",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "no_learning-r00-retry-plan",
+      "case_correct": {
+        "after-seconds": true,
+        "exhaustion": true,
+        "exponential": true,
+        "not-retryable": true
+      },
+      "case_score": 1.0,
+      "condition": "no_learning",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "retry-plan",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "kitharness-r00-transaction-recovery",
+      "case_correct": {
+        "committed-no-receipt": false,
+        "committed-receipt": false,
+        "prepared": false,
+        "rolled-back": false
+      },
+      "case_score": 0,
+      "condition": "kitharness",
+      "recorded": true,
+      "repetition": 0,
+      "status": "timeout",
+      "success": false,
+      "task": "transaction-recovery",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": false
+    },
+    {
+      "attempt_id": "no_learning-r00-transaction-recovery",
+      "case_correct": {
+        "committed-no-receipt": false,
+        "committed-receipt": false,
+        "prepared": false,
+        "rolled-back": false
+      },
+      "case_score": 0,
+      "condition": "no_learning",
+      "recorded": true,
+      "repetition": 0,
+      "status": "timeout",
+      "success": false,
+      "task": "transaction-recovery",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": false
+    },
+    {
+      "attempt_id": "original-r00-transaction-recovery",
+      "case_correct": {
+        "committed-no-receipt": false,
+        "committed-receipt": false,
+        "prepared": false,
+        "rolled-back": false
+      },
+      "case_score": 0,
+      "condition": "original",
+      "recorded": true,
+      "repetition": 0,
+      "status": "timeout",
+      "success": false,
+      "task": "transaction-recovery",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": false
+    },
+    {
+      "attempt_id": "no_learning-r00-nested-redaction",
+      "case_correct": {
+        "case-insensitive": true,
+        "nested-array": true,
+        "preserve-content": true,
+        "whole-value": true
+      },
+      "case_score": 1.0,
+      "condition": "no_learning",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "nested-redaction",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "original-r00-nested-redaction",
+      "case_correct": {
+        "case-insensitive": true,
+        "nested-array": true,
+        "preserve-content": true,
+        "whole-value": true
+      },
+      "case_score": 1.0,
+      "condition": "original",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "nested-redaction",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "kitharness-r00-nested-redaction",
+      "case_correct": {
+        "case-insensitive": true,
+        "nested-array": true,
+        "preserve-content": true,
+        "whole-value": true
+      },
+      "case_score": 1.0,
+      "condition": "kitharness",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "nested-redaction",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "original-r00-pagination",
+      "case_correct": {
+        "cursor-cycle": true,
+        "early-end": true,
+        "empty-page": true,
+        "stable-dedup": true
+      },
+      "case_score": 1.0,
+      "condition": "original",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "pagination",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "kitharness-r00-pagination",
+      "case_correct": {
+        "cursor-cycle": true,
+        "early-end": true,
+        "empty-page": true,
+        "stable-dedup": true
+      },
+      "case_score": 1.0,
+      "condition": "kitharness",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "pagination",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "no_learning-r00-pagination",
+      "case_correct": {
+        "cursor-cycle": true,
+        "early-end": true,
+        "empty-page": true,
+        "stable-dedup": true
+      },
+      "case_score": 1.0,
+      "condition": "no_learning",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "pagination",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "kitharness-r00-utc-boundaries",
+      "case_correct": {
+        "already-utc": true,
+        "half-hour": true,
+        "leap-back": true,
+        "year-forward": true
+      },
+      "case_score": 1.0,
+      "condition": "kitharness",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "utc-boundaries",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "no_learning-r00-utc-boundaries",
+      "case_correct": {
+        "already-utc": true,
+        "half-hour": true,
+        "leap-back": true,
+        "year-forward": true
+      },
+      "case_score": 1.0,
+      "condition": "no_learning",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "utc-boundaries",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    },
+    {
+      "attempt_id": "original-r00-utc-boundaries",
+      "case_correct": {
+        "already-utc": true,
+        "half-hour": true,
+        "leap-back": true,
+        "year-forward": true
+      },
+      "case_score": 1.0,
+      "condition": "original",
+      "recorded": true,
+      "repetition": 0,
+      "status": "completed",
+      "success": true,
+      "task": "utc-boundaries",
+      "telemetry": {
+        "cache_creation_input_tokens": null,
+        "cache_read_input_tokens": null,
+        "duration_ms": null,
+        "input_tokens": null,
+        "library_sha256": null,
+        "model": null,
+        "output_tokens": null,
+        "source": "external-unverified",
+        "total_cost_usd": null
+      },
+      "valid": true
+    }
+  ],
+  "conditions": {
+    "kitharness": {
+      "mean_case_score": 0.7916666666666666,
+      "planned": 6,
+      "provenance": {
+        "library_consistent": null,
+        "library_fingerprint_count": 0,
+        "observed_model_count": 0
+      },
+      "recorded": 6,
+      "statuses": {
+        "completed": 5,
+        "timeout": 1
+      },
+      "success_rate": 0.6666666666666666,
+      "successes": 4,
+      "telemetry": {
+        "cache_creation_input_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "cache_read_input_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "duration_ms": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "input_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "output_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "total_cost_usd": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        }
+      }
+    },
+    "no_learning": {
+      "mean_case_score": 0.7916666666666666,
+      "planned": 6,
+      "provenance": {
+        "library_consistent": null,
+        "library_fingerprint_count": 0,
+        "observed_model_count": 0
+      },
+      "recorded": 6,
+      "statuses": {
+        "completed": 5,
+        "timeout": 1
+      },
+      "success_rate": 0.6666666666666666,
+      "successes": 4,
+      "telemetry": {
+        "cache_creation_input_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "cache_read_input_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "duration_ms": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "input_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "output_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "total_cost_usd": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        }
+      }
+    },
+    "original": {
+      "mean_case_score": 0.7916666666666666,
+      "planned": 6,
+      "provenance": {
+        "library_consistent": null,
+        "library_fingerprint_count": 0,
+        "observed_model_count": 0
+      },
+      "recorded": 6,
+      "statuses": {
+        "completed": 5,
+        "timeout": 1
+      },
+      "success_rate": 0.6666666666666666,
+      "successes": 4,
+      "telemetry": {
+        "cache_creation_input_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "cache_read_input_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "duration_ms": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "input_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "output_tokens": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        },
+        "total_cost_usd": {
+          "known_count": 0,
+          "known_mean": null,
+          "known_total": null,
+          "planned_count": 6
+        }
+      }
+    }
+  },
+  "kind": "fixture_smoke",
+  "manifest_sha256": "cd4a962c58c643744a837afefff3ed947e9d7ffd47282861321912832860adb0",
+  "model": "offline-fixture",
+  "paired": {
+    "no_learning": {
+      "baseline_only_success": 0,
+      "comparable_pairs": 6,
+      "kit_only_success": 0,
+      "planned_pairs": 6,
+      "ties": 6
+    },
+    "original": {
+      "baseline_only_success": 0,
+      "comparable_pairs": 6,
+      "kit_only_success": 0,
+      "planned_pairs": 6,
+      "ties": 6
+    }
+  },
+  "protocol_verification": "host execution, warmup completion, isolation and library freezing require step 11 evidence",
+  "scope": "JSON artifact grading; fixture results are not model effectiveness measurements",
+  "source_verified": {
+    "kitharness": true,
+    "no_learning": true,
+    "original": true
+  },
+  "sources": {
+    "kitharness": {
+      "commit": "b232f74c5c7e6f0a02dcda688584cfb6dbf19c52",
+      "snapshot_sha256": "715a5d0aeb326a2c54f79eeddfe8554747db1267bccb1e53f3ad445dee67e000"
+    },
+    "no_learning": null,
+    "original": {
+      "commit": "f2de058720317025c4c18369b7227235141a218b",
+      "snapshot_sha256": "e3cbc40cd57eff4e8ee91813f1f1cb96023e23d7aa884c4f60642eaaa9c46598"
+    }
+  },
+  "suite_sha256": "fedb7560d6a00a7f34e04a25a053ca463ed908b4c21eed1dd26b5cedf2e2d5c9",
+  "telemetry_scope": "solver attempts only; warmup, reflection and curation overhead are not included",
+  "version": 1
+}

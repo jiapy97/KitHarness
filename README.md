@@ -300,6 +300,14 @@ its ledger names the umbrella that absorbed it — a fold and a pruning stay dis
 **8 · Yours are never touched.** Every autoharness-authored skill carries the ledger marker;
 anything without it — skills you wrote or installed — is invisible to the promoter and MNG.
 
+## Task evaluation toolkit
+
+Step 10 provides a pinned three-arm task protocol (`no_learning`, upstream AutoHarness,
+KitHarness), six structured workflow tasks, deterministic JSON grading, failure accounting,
+and telemetry coverage. It prepares and scores artifacts without invoking models or executing
+candidate code. The bundled smoke report uses synthetic answers and is not evidence of model gains.
+See [task evaluation](docs/task-evaluation.md) for reproduction and the remaining live-host protocol.
+
 ## How it compares
 
 A self-learning skill layer can be validated against a held-out benchmark, or against its own use.
