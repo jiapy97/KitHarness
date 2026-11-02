@@ -78,7 +78,11 @@ def test_rejected_umbrella_create_keeps_source_skill_and_records_rejection(tmp_p
     assert not (layer.archive_dir("project", root) / "narrow").exists()
     account = json.loads((layer.state_dir("project", root) / "runs" / "merge.json").read_text())
     assert [row["ok"] for row in account["verdicts"]] == [False, False]
-    assert "absorbed_into" in account["verdicts"][1]["findings"]
+    if with_target:
+        assert account["verdicts"][1]["findings"] == ["merge_dependency"]
+        assert account["verdicts"][1]["depends_on"] == [0]
+    else:
+        assert "absorbed_into" in account["verdicts"][1]["findings"]
 
 
 def test_successful_umbrella_create_allows_explicit_merge_archive(tmp_path):

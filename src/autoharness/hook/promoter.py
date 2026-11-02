@@ -12,6 +12,8 @@ validating admission (validate in-flight, persist only on allow) + POSIX atomic-
   applies to update too).
 - Model-proposed delete is merge-only: absorbed_into must name a live self-produced skill.
   Lifecycle retirement uses skill_store.archive independently of model proposals.
+- Batch dependencies: content changes run before merge archives. A rejected change to a target,
+  or a target scheduled for archive itself, blocks dependent deletes. Verdicts keep proposal order.
 - Land (after pass): land intent subfiles first (paths re-gated; every landing parent resolved and
   escape-checked BEFORE any write — a pre-planted symlink rejects with zero writes) → materialize the
   evidence slice into references/evidence-<hash>.md (redacted again at this egress, content-addressed →
@@ -49,6 +51,7 @@ from autoharness.lib import (
 )
 
 _MODIFY = ("update", "patch", "remove_file", "delete")
+_CONTENT_ACTIONS = ("create", "update", "patch", "remove_file")
 
 
 def _reject(action, level, findings):
@@ -268,9 +271,13 @@ def _account(run_id, intents, verdicts, proot):
     """Run-level verdict account (direction B, anti-silence): the per-symbol LED records only landed
     facts, so a rejected create would vanish without trace — this account is where verdicts live.
     last_run.json feeds the one-line SessionStart summary and is consumed after one injection."""
-    rows = [{"action": v.get("action"), "name": i.get("name"), "ok": v["ok"],
-             "findings": [f[0] for f in v.get("findings", [])], "notes": v.get("notes", [])}
-            for i, v in zip(intents, verdicts, strict=True)]
+    rows = []
+    for intent, verdict in zip(intents, verdicts, strict=True):
+        row = {"action": verdict.get("action"), "name": intent.get("name"), "ok": verdict["ok"],
+               "findings": [f[0] for f in verdict.get("findings", [])], "notes": verdict.get("notes", [])}
+        if "depends_on" in verdict:
+            row["depends_on"] = verdict["depends_on"]  # zero-based positions in this verdict list
+        rows.append(row)
     landed = sum(1 for r in rows if r["ok"])
     absorbed = sum(1 for i, v in zip(intents, verdicts, strict=True)
                    if v["ok"] and i.get("action") == "delete" and i.get("absorbed_into"))
@@ -317,6 +324,48 @@ def _promote_one(intent, roots, repo_name):
         return _reject(intent.get("action"), None, [("crash", f"{type(exc).__name__}: {exc}")])
 
 
+def _promote_batch(intents, roots, repo_name):
+    """Apply content changes before archives, keeping verdicts in original proposal order.
+
+    Any rejected content operation blocks that target's dependent archives, even if a later
+    operation succeeds. A target also scheduled for archive cannot be an absorption destination:
+    reject chains/cycles conservatively instead of guessing that their content was carried along.
+    This is a per-claim dependency guard, not rollback or semantic proof of knowledge transfer.
+    """
+    verdicts = [None] * len(intents)
+    failed_changes, archives = {}, {}
+    for index, intent in enumerate(intents):
+        action, name = intent.get("action"), intent.get("name")
+        if action == "delete":
+            if isinstance(name, str):
+                archives.setdefault(name, []).append(index)
+            continue
+        verdict = _promote_one(intent, roots, repo_name)
+        verdicts[index] = verdict
+        if not verdict["ok"] and action in _CONTENT_ACTIONS and isinstance(name, str):
+            failed_changes.setdefault(name, []).append(index)
+
+    for index, intent in enumerate(intents):
+        if intent.get("action") != "delete":
+            continue
+        target = intent.get("absorbed_into")
+        failed = failed_changes.get(target, []) if isinstance(target, str) else []
+        retiring = archives.get(target, []) if isinstance(target, str) else []
+        if failed or retiring:
+            reasons = []
+            if failed:
+                reasons.append("has rejected content changes")
+            if retiring:
+                reasons.append("is also scheduled for archive")
+            verdicts[index] = {
+                **_reject("delete", None, [("merge_dependency", f"merge target {target!r} " + " and ".join(reasons))]),
+                "depends_on": sorted(failed + retiring),
+            }
+        else:
+            verdicts[index] = _promote_one(intent, roots, repo_name)
+    return verdicts
+
+
 def _drain_run(run_id, *, roots, repo_name, proot):
     """Land one run's queued intents: take (atomic claim), promote, account, drop. Notification
     is the caller's job, so a fire-and-forget send never holds the drain lock. A promotion that
@@ -324,7 +373,7 @@ def _drain_run(run_id, *, roots, repo_name, proot):
     queue, so the next drain retries it instead of waiting for the orphans scan."""
     intents = intent_queue.take(run_id, proot)
     try:
-        verdicts = [_promote_one(i, roots, repo_name) for i in intents]
+        verdicts = _promote_batch(intents, roots, repo_name)
         record = _account(run_id, intents, verdicts, proot) if intents else None
     except BaseException:
         intent_queue.release(run_id, proot)

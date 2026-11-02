@@ -29,8 +29,17 @@ This checkout is the starting point for KitHarness. See the [iteration plan](doc
 for progress and verification results. Model-proposed `delete` operations require a non-empty
 `absorbed_into` naming a live, agent-created merge target; naming the target only in `reason`
 is insufficient. Older queued deletes without that field are rejected, leaving the source skill
-in place. Pure retirement remains the lifecycle manager's responsibility. This initial guard
-does not provide batch dependency checks or a full transaction across skill files.
+in place. Pure retirement remains the lifecycle manager's responsibility.
+
+Within a claimed batch, content changes run in their original order before any merge archives.
+If any content change to a merge target is rejected, its dependent archives are rejected too,
+even when another change to the same target succeeds. A skill scheduled for archive in the
+same batch cannot receive another merge; split chains into separate, verified batches instead.
+Run-account verdicts retain proposal order. Dependency rejections carry `merge_dependency`
+and `depends_on`, a list of zero-based positions in that batch's verdicts. These checks apply
+to normal drains and abandoned-queue recovery; standalone `promote()` has no batch context.
+They do not establish semantic completeness of a merge, provide cross-batch transactions,
+or roll back content changes that already landed.
 
 ## Install
 
