@@ -16,7 +16,7 @@ along with sidecar.
 """
 import json
 
-from autoharness.lib import layer
+from autoharness.lib import layer, redact
 
 FILENAME = ".ledger.jsonl"
 
@@ -31,7 +31,7 @@ def append(lyr, name, entry, root=None):
     # a tail torn by a crash mid-append has no newline: start on a fresh line so this entry survives
     torn = p.exists() and p.stat().st_size > 0 and _last_byte(p) != b"\n"
     with p.open("a", encoding="utf-8") as f:
-        f.write(("\n" if torn else "") + json.dumps(entry, ensure_ascii=False) + "\n")
+        f.write(("\n" if torn else "") + json.dumps(redact.data(entry), ensure_ascii=False) + "\n")
 
 
 def _last_byte(p):

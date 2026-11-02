@@ -92,9 +92,9 @@ def test_successful_target_change_precedes_archive_and_preserves_report_order(ro
         assert server.stage(intent, run_id="merge", root=roots["project"])["ok"]
     original_archive = skill_store.archive
 
-    def archive_after_content(lyr, name, root=None):
+    def archive_after_content(lyr, name, root=None, **kwargs):
         assert "Merged narrow lesson." in skill_store.read_body("project", "umbrella", roots["project"])
-        return original_archive(lyr, name, root)
+        return original_archive(lyr, name, root, **kwargs)
 
     monkeypatch.setattr(skill_store, "archive", archive_after_content)
 

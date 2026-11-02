@@ -70,15 +70,23 @@ def remove(lyr, name, root=None):
         shutil.rmtree(sdir)
 
 
-def archive(lyr, name, root=None):
+def archive(lyr, name, root=None, *, destination=None):
     with lock.file_lock(layer.symbol_lock_path(lyr, name, root)):
         sdir = layer.symbol_dir(lyr, name, root)
         if not sdir.exists():
             return None
-        dest = layer.archive_dir(lyr, root) / name
+        dest = destination or layer.archive_dir(lyr, root) / name
+        if dest.parent.resolve() != layer.archive_dir(lyr, root).resolve():
+            raise ValueError("archive destination is outside this layer")
+        layer._check_name(dest.name)
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest = _collision_safe_dest(dest)
+        if destination is None:
+            dest = _collision_safe_dest(dest)
+        elif dest.exists() or dest.is_symlink():
+            raise FileExistsError(dest)
         os.replace(sdir, dest)
+        atomic.sync_dir(dest.parent)
+        atomic.sync_dir(sdir.parent)
         return dest
 
 

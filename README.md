@@ -38,8 +38,17 @@ same batch cannot receive another merge; split chains into separate, verified ba
 Run-account verdicts retain proposal order. Dependency rejections carry `merge_dependency`
 and `depends_on`, a list of zero-based positions in that batch's verdicts. These checks apply
 to normal drains and abandoned-queue recovery; standalone `promote()` has no batch context.
-They do not establish semantic completeness of a merge, provide cross-batch transactions,
-or roll back content changes that already landed.
+They do not establish semantic completeness of a merge or provide cross-batch transactions.
+
+Queued operations now have durable identities and result receipts, so account retries do not
+repeat successful edits. Validated skill changes save full-directory pre-images and a write-ahead
+journal: incomplete changes are recovered before the next managed operation, while committed
+changes reuse their outcome. An operator CLI can list versions and restore a complete directory,
+including an undo version for the rollback itself. See [reliable skill evolution](docs/reliable-skill-evolution.md)
+for commands, crash behavior, storage limits, and the boundary around unlocked host reads.
+
+New provenance is redacted before queue and ledger persistence, and the staging tool rejects
+recognized credentials in skill bodies and subfiles before writing a queue record.
 
 ## Install
 

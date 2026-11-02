@@ -14,7 +14,8 @@ validating admission (validate in-flight, persist only on allow) + POSIX atomic-
   Lifecycle retirement uses skill_store.archive independently of model proposals.
 - Batch dependencies: content changes run before merge archives. A rejected change to a target,
   or a target scheduled for archive itself, blocks dependent deletes. Verdicts keep proposal order.
-- Land (after pass): land intent subfiles first (paths re-gated; every landing parent resolved and
+- Land (after pass): hold the stable symbol lock, persist a complete pre-image and prepared journal,
+  then land intent subfiles first (paths re-gated; every landing parent resolved and
   escape-checked BEFORE any write — a pre-planted symlink rejects with zero writes) → materialize the
   evidence slice into references/evidence-<hash>.md (redacted again at this egress, content-addressed →
   idempotent; the model never names or writes it) → write SKILL.md last (atomic replace = the commit
@@ -24,11 +25,14 @@ validating admission (validate in-flight, persist only on allow) + POSIX atomic-
   os.replace carries the slices along). remove_file = drop one subfile (path re-gated + escape-checked;
   rejected while the live SKILL.md still references it; missing target = no-op, so crash replays stay
   idempotent) + evidence + LED with the removed path. Reject = zero writes, no stamp, no ledger.
-- Drain: read queue → promote one by one → clear at the end (at-least-once + atomic land = effectively
-  exactly-once); on startup sweep orphan .tmp. On a crash, unprocessed intents stay in the durable queue
-  and are retried next time; in the extreme of never running → zero land (fail-safe).
+- Commit the skill journal before the project operation receipt. A crash before commit restores the
+  pre-image; a crash after commit reuses the saved outcome. Batch account retries reuse receipts.
+- Drain: claim queue → apply content changes → dependency-gated archives → account → drop claim.
+  Queue operation identities survive release and retry. Standalone calls without an identity are
+  distinct operations. Recovery is per skill, not whole-batch rollback or host read isolation.
 
-ponytail: one drain per project root is now serialized through lib.lock (see drain). LED watermark still pends true values from CAP; the create anchor reads the layer request counter at land time (probation is fiction without a true anchor). Whole-run clear, the tiny crash window (between land and clear) may re-append the LED — per-item idempotent watermark pending the intent-queue granularity being finalized (validate-store open).
+One drain per project root is serialized through lib.lock. The create anchor reads the layer request
+counter at land time. The operation identity links queue, ledger, transaction journal and run account.
 """
 import errno
 import hashlib
@@ -43,11 +47,13 @@ from autoharness.lib import (
     ledger,
     lock,
     notify,
+    operations,
     redact,
     run_owners,
     sidecar,
     skill_store,
     validate,
+    versions,
 )
 
 _MODIFY = ("update", "patch", "remove_file", "delete")
@@ -89,6 +95,8 @@ def _led(intent, evidence_ref):
         entry["path"] = intent["path"]
     if intent.get("absorbed_into"):
         entry["absorbed_into"] = intent["absorbed_into"]  # consolidated vs pruned, distinguishable in the account
+    if intent.get(operations.ID_FIELD):
+        entry[operations.ID_FIELD] = intent[operations.ID_FIELD]
     return entry
 
 
@@ -142,11 +150,11 @@ def _occupied(base_dir):
 _OS_DEBRIS = {".DS_Store", "Thumbs.db", "desktop.ini"}
 
 
-def _land(action, intent, body, level, name, root):
+def _land(action, intent, body, level, name, root, archive_to=None):
     if action == "delete":
         evidence_ref = _materialize_evidence(level, name, intent.get("evidence"), root)
         ledger.append(level, name, _led(intent, evidence_ref), root)
-        skill_store.archive(level, name, root)
+        skill_store.archive(level, name, root, destination=archive_to)
         return
     if action == "remove_file":
         _remove_subfile(level, name, intent["path"], root)
@@ -167,6 +175,7 @@ def _land(action, intent, body, level, name, root):
 
 def promote(intent, *, roots=None, repo_name=None):
     roots = roots or {}
+    versions.recover_all(roots)
     action = intent.get("action")
     name = intent.get("name")
     if action == "create":
@@ -200,8 +209,10 @@ def promote(intent, *, roots=None, repo_name=None):
         # Per-project drain locks cannot coordinate another project's edits to
         # the same global library. Keep local-only promotions independent.
         with lock.file_lock(layer.state_dir(level, roots.get(level)) / "promote.lock"):
-            return _promote_resolved(intent, action, name, level, roots, repo_name)
-    return _promote_resolved(intent, action, name, level, roots, repo_name)
+            with lock.file_lock(layer.symbol_lock_path(level, name, roots.get(level))):
+                return _promote_resolved(intent, action, name, level, roots, repo_name)
+    with lock.file_lock(layer.symbol_lock_path(level, name, roots.get(level))):
+        return _promote_resolved(intent, action, name, level, roots, repo_name)
 
 
 def _promote_resolved(intent, action, name, level, roots, repo_name):
@@ -241,10 +252,20 @@ def _promote_resolved(intent, action, name, level, roots, repo_name):
         return _reject(action, level, verdict["findings"])
 
     try:
-        _land(action, intent, body, level, name, root)
+        change = versions.begin(level, name, intent, root)
+        try:
+            landing_intent = {**intent, operations.ID_FIELD: change["operation_id"]}
+            archive_to = (layer.archive_dir(level, root) / change["archive_name"]
+                          if change.get("archive_name") else None)
+            _land(action, landing_intent, body, level, name, root, archive_to)
+            verdict = {"ok": True, "action": action, "level": level, "findings": [], "notes": _notes(action, body)}
+            versions.commit(level, change, verdict, root)
+        except BaseException:
+            versions.recover_record(level, change, root)
+            raise
     except ValueError as exc:
         return _reject(action, level, [("landing", str(exc))])
-    return {"ok": True, "action": action, "level": level, "findings": [], "notes": _notes(action, body)}
+    return verdict
 
 
 def _notes(action, body):
@@ -277,6 +298,8 @@ def _account(run_id, intents, verdicts, proot):
                "findings": [f[0] for f in verdict.get("findings", [])], "notes": verdict.get("notes", [])}
         if "depends_on" in verdict:
             row["depends_on"] = verdict["depends_on"]  # zero-based positions in this verdict list
+        if operations.ID_FIELD in intent:
+            row[operations.ID_FIELD] = intent[operations.ID_FIELD]
         rows.append(row)
     landed = sum(1 for r in rows if r["ok"])
     absorbed = sum(1 for i, v in zip(intents, verdicts, strict=True)
@@ -312,16 +335,33 @@ def _environmental(exc):
                                          or getattr(exc, "winerror", None) in _ENVIRONMENTAL_WINERRORS)
 
 
+def _saved_outcome(intent, roots):
+    root = roots.get(layer.PROJECT)
+    saved = operations.lookup(intent, root)
+    if saved is not None:
+        return saved
+    saved = versions.completed(intent, roots)
+    if saved is not None:
+        return operations.remember(intent, saved, root)
+    return None
+
+
 def _promote_one(intent, roots, repo_name):
+    root = roots.get(layer.PROJECT)
+    saved = _saved_outcome(intent, roots)
+    if saved is not None:
+        return saved
     if intent_queue.UNREADABLE in intent:
-        return _reject(None, None, [("queue", f"unreadable queue line: {intent[intent_queue.UNREADABLE]!r}")])
+        verdict = _reject(None, None, [("queue", f"unreadable queue line: {intent[intent_queue.UNREADABLE]!r}")])
+        return operations.remember(intent, verdict, root)
     try:
-        return promote(intent, roots=roots, repo_name=repo_name)
+        verdict = promote(intent, roots=roots, repo_name=repo_name)
     except Exception as exc:
         if _environmental(exc):
             raise  # keep the queue so the next drain retries it
         # a malformed or unlandable intent: account it once instead of replaying it on every Stop
-        return _reject(intent.get("action"), None, [("crash", f"{type(exc).__name__}: {exc}")])
+        verdict = _reject(intent.get("action"), None, [("crash", f"{type(exc).__name__}: {exc}")])
+    return operations.remember(intent, verdict, root)
 
 
 def _promote_batch(intents, roots, repo_name):
@@ -348,6 +388,10 @@ def _promote_batch(intents, roots, repo_name):
     for index, intent in enumerate(intents):
         if intent.get("action") != "delete":
             continue
+        saved = _saved_outcome(intent, roots)
+        if saved is not None:
+            verdicts[index] = saved
+            continue
         target = intent.get("absorbed_into")
         failed = failed_changes.get(target, []) if isinstance(target, str) else []
         retiring = archives.get(target, []) if isinstance(target, str) else []
@@ -361,6 +405,7 @@ def _promote_batch(intents, roots, repo_name):
                 **_reject("delete", None, [("merge_dependency", f"merge target {target!r} " + " and ".join(reasons))]),
                 "depends_on": sorted(failed + retiring),
             }
+            operations.remember(intent, verdicts[index], roots.get(layer.PROJECT))
         else:
             verdicts[index] = _promote_one(intent, roots, repo_name)
     return verdicts
@@ -391,6 +436,7 @@ def drain(run_id, *, roots=None, repo_name=None):
     # other's skill, and each lands. Held across read→land→clear, which also closes the crash window
     # the account comment below used to leave open to an external writer.
     with lock.file_lock(layer.state_dir(layer.PROJECT, proot) / "drain.lock"):
+        versions.recover_all(roots)
         sweep(roots)
         # the queue is per-run, so a child that exits before its drain leaves its intents in the
         # directory for good; land them here under the dead run's own id, which is the at-least-once

@@ -11,9 +11,13 @@ lock file is never deleted, so waiters always contend on the same inode; it is e
 state of its own.
 """
 import errno
+import os
 import sys
+import threading
 from contextlib import contextmanager
 from pathlib import Path
+
+_LOCAL = threading.local()
 
 if sys.platform == "win32":
     import msvcrt
@@ -50,12 +54,21 @@ else:
 def file_lock(path):
     """Hold the lock named by `path` for the duration of the block, releasing it on any exit."""
     lock_path = Path(path)
+    key = (os.getpid(), str(lock_path.resolve()))
+    owned = getattr(_LOCAL, "owned", None)
+    if owned is None:
+        owned = _LOCAL.owned = set()
+    if key in owned:
+        yield  # nested sidecar/archive writes share this thread's outer symbol lock
+        return
     lock_path.parent.mkdir(parents=True, exist_ok=True)
     with open(lock_path, "w", encoding="utf-8") as lock_fd:
         _lock(lock_fd)
+        owned.add(key)
         try:
             yield
         finally:
+            owned.remove(key)
             _unlock(lock_fd)
 
 

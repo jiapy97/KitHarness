@@ -17,7 +17,15 @@ from pathlib import Path
 
 from autoharness import config
 from autoharness.hook import recovery
-from autoharness.lib import counters, layer, lifecycle, sidecar, skill_store, validate
+from autoharness.lib import (
+    counters,
+    layer,
+    lifecycle,
+    sidecar,
+    skill_store,
+    validate,
+    versions,
+)
 
 # Recall self-injection (mng.md §召回面自持): the host's native description recall stays untouched;
 # this compact index of self-produced skills rides SessionStart additionalContext so "whether the
@@ -141,6 +149,7 @@ def on_session_start(event=None, *, roots=None):
         # beside the parent, or get a second index on top of its bundle
         return {"archived": {}, "context": None, "reason": "recursion_guard"}
     roots = roots or {}
+    versions.recover_all(roots)
     recovery.recover(roots=roots)
     archived = {}
     for lyr in config.active_layers():

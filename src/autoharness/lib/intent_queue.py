@@ -4,13 +4,15 @@ Durable (recovers after a crash): only appends to a per-run file in the repo-lay
 touches the skill tree. promoter runs claim → land (atomic, idempotent) → drop: a crash between
 claim and drop leaves the claim file in place. SessionStart retries tracked detached POSIX runs only
 after all registered writer groups disappear; the next ordinary drain can recover untracked queues
-(at-least-once + atomic land = effectively exactly-once). If nothing runs, zero land (fail-safe).
+Queue identities survive claim/release; promoter receipts and version journals provide per-operation
+recovery. read() exposes the original proposal view, take() adds the trusted operation identity.
 """
 import json
 import os
 import re
+import uuid
 
-from autoharness.lib import atomic, layer, lock, run_owners
+from autoharness.lib import atomic, layer, lock, operations, redact, run_owners
 
 _SAFE_RUN = re.compile(r"^[A-Za-z0-9_-]+$")
 UNREADABLE = "unreadable"  # key of the marker decoding returns for a line that is not a JSON object
@@ -29,6 +31,10 @@ def locked(run_id, root=None):
 
 
 def append(run_id, intent, root=None):
+    intent = {key: redact.data(value) if key in ("reason", "evidence") else value
+              for key, value in intent.items()}
+    operation_id = uuid.uuid4().hex
+    intent[operations.ID_FIELD] = operation_id  # callers cannot choose a receipt identity
     p = _path(run_id, root)
     p.parent.mkdir(parents=True, exist_ok=True)
     # O_APPEND only keeps a write whole up to PIPE_BUF, and a staged skill body
@@ -39,6 +45,9 @@ def append(run_id, intent, root=None):
         torn = p.exists() and p.stat().st_size > 0 and _last_byte(p) != b"\n"
         with p.open("a", encoding="utf-8") as f:
             f.write(("\n" if torn else "") + json.dumps(intent, ensure_ascii=False) + "\n")
+            f.flush()
+            os.fsync(f.fileno())
+    return operation_id
 
 
 def _last_byte(p):
@@ -54,7 +63,7 @@ def read(run_id, root=None):
     return _decode(p.read_text(encoding="utf-8", errors="replace"))
 
 
-def _decode(text):
+def _decode(text, *, include_ids=False):
     out = []
     # written as UTF-8 whatever the locale; a torn append (crash or full disk mid-line) must not take
     # the whole queue down with it, so an unreadable line comes back as a marker the drain accounts
@@ -67,7 +76,11 @@ def _decode(text):
             intent = json.loads(line)
         except json.JSONDecodeError:
             intent = None
-        out.append(intent if isinstance(intent, dict) else {UNREADABLE: line[:200]})
+        if not isinstance(intent, dict):
+            intent = {UNREADABLE: line[:200]}
+        if not include_ids:
+            intent.pop(operations.ID_FIELD, None)
+        out.append(intent)
     return out
 
 
@@ -112,7 +125,14 @@ def take(run_id, root=None):
             source = claimed
         else:
             return []
-        return _decode(source.read_text(encoding="utf-8", errors="replace"))
+        intents = _decode(source.read_text(encoding="utf-8", errors="replace"), include_ids=True)
+        if any(not operations.valid_id(intent.get(operations.ID_FIELD)) for intent in intents):
+            for intent in intents:
+                if not operations.valid_id(intent.get(operations.ID_FIELD)):
+                    intent[operations.ID_FIELD] = uuid.uuid4().hex
+            # Upgrade legacy/torn records durably before anything can be applied.
+            atomic.write_text(source, "".join(json.dumps(intent, ensure_ascii=False) + "\n" for intent in intents))
+        return intents
 
 
 def drop(run_id, root=None):

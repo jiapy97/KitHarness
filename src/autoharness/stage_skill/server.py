@@ -22,7 +22,7 @@ import os
 import sys
 
 from autoharness import config
-from autoharness.lib import intent_queue, layer, validate
+from autoharness.lib import intent_queue, layer, redact, validate
 
 _ACTIONS = ("create", "update", "patch", "remove_file", "delete")
 _BODY_ACTIONS = ("create", "update")
@@ -141,6 +141,9 @@ def _content_errors(params):
     files = params.get("files")
     errors += validate.check_files(files, creating=params["action"] == "create")
     errors += validate.structure(body, files)
+    for text in [body, *((files or {}).values() if isinstance(files, dict) else ())]:
+        if isinstance(text, str) and redact.secret_hits(text):
+            errors.append(("secret", "body and subfiles must not contain credentials"))
     if params.get("action") in ("create", "update"):
         if not validate._body_lines(body):
             errors.append(("completeness", "skill body is empty after frontmatter"))
@@ -181,11 +184,13 @@ def stage(params, *, run_id, root=None):
     if errors:
         return {"ok": False, "errors": errors, "intent": None}
     intent = _intent(params)
+    for key in ("reason", "evidence"):
+        intent[key] = redact.redact(intent[key])
     try:
-        intent_queue.append(run_id, intent, root)
+        operation_id = intent_queue.append(run_id, intent, root)
     except ValueError as exc:
         return {"ok": False, "errors": [("queue", str(exc))], "intent": None}
-    return {"ok": True, "errors": [], "intent": intent}
+    return {"ok": True, "errors": [], "intent": intent, "operation_id": operation_id}
 
 
 def _ok(req_id, result):

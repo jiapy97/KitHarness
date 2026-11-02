@@ -55,6 +55,9 @@ class _SplitWriter:
     def __enter__(self):
         return self
 
+    def __getattr__(self, name):
+        return getattr(self._handle, name)
+
     def __exit__(self, *exc):
         return self._handle.__exit__(*exc)
 

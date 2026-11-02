@@ -171,6 +171,8 @@ def test_create_that_died_inside_its_sidecar_write_replays_as_ours(tmp_path, mon
         promoter.promote(_create(), roots=roots)
     monkeypatch.setattr(atomic.os, "replace", real_replace)
     sdir = layer.symbol_dir("project", "foo", roots["project"])
+    assert not sdir.exists()  # failed creation now restores the original absence
+    sdir.mkdir(parents=True)
     (sdir / f"{sidecar.FILENAME}.x1y2z3.tmp").write_text("{")  # what a SIGKILL would leave
 
     v = promoter.promote(_create(), roots=roots)

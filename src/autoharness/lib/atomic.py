@@ -5,10 +5,26 @@ skill_store / sidecar / counters all reuse it. A crash mid-write leaves only a s
 (swept on skill_store startup); the target file is either the old content or the new content, never
 a half-write.
 """
+import errno
 import os
 import stat
 import tempfile
 from pathlib import Path
+
+
+def sync_dir(path):
+    """Persist rename metadata on platforms supporting directory fsync."""
+    if os.name == "nt":
+        return
+    fd = os.open(path, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+    try:
+        try:
+            os.fsync(fd)
+        except OSError as exc:
+            if exc.errno not in (errno.EINVAL, errno.ENOTSUP):
+                raise
+    finally:
+        os.close(fd)
 
 
 def write_bytes(path, data):
@@ -27,6 +43,7 @@ def write_bytes(path, data):
             f.flush()
             os.fsync(f.fileno())
         os.replace(tmp, path)
+        sync_dir(path.parent)
     except BaseException:
         try:
             os.unlink(tmp)

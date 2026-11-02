@@ -52,7 +52,8 @@ def _rules(rules_path):
                     f"unknown validator {validate!r} on rule {category}.{rule['name']}"
                 )
             compiled.append(
-                (category, rule["name"], re.compile(rule["pattern"]), _VALIDATORS.get(validate))
+                (category, rule["name"], re.compile(rule["pattern"]), _VALIDATORS.get(validate),
+                 re.compile(rule["end_pattern"]) if rule.get("end_pattern") else None)
             )
     return compiled
 
@@ -64,7 +65,7 @@ def _token(category, name):
 @functools.lru_cache(maxsize=4)
 def _placeholder(key):
     # only this rule set's own tokens: a made-up `[REDACTED:secret:<a real key>]` is still raw text
-    return re.compile("|".join(re.escape(_token(category, name)) for category, name, _, _ in _rules(key)))
+    return re.compile("|".join(re.escape(_token(category, name)) for category, name, _, _, _ in _rules(key)))
 
 
 def _raw(text, key):
@@ -80,19 +81,35 @@ def _raw(text, key):
     return raw
 
 
-def _kept(rx, validator, text):
+_NONSPACE = re.compile(r"\S+")
+_SPAN = re.compile(r"[\s\S]*")
+
+
+def _kept(rx, validator, text, end_rx=None):
     """Matches of *rx* in *text* that the rule's validator keeps, overlapping ones included: the search
     resumes one character on, not after the match. finditer skipped a card right after a phone number
     (one digit run whose first window fails luhn), and resuming after a kept window that happens to pass
     luhn would skip the rest of a real card it overlaps; overlapping kept matches merge into one span."""
-    if validator is None:
+    if end_rx is not None:
+        # Delimited secrets: scan each non-space token once for its final valid end,
+        # then find the first prefix. Repeated URL prefixes must not rescan the tail.
+        for token in _NONSPACE.finditer(text):
+            last = None
+            for endpoint in end_rx.finditer(text, token.start(), token.end()):
+                last = endpoint
+            if last is not None:
+                prefix = rx.search(text, token.start(), last.start())
+                if prefix is not None and prefix.end() < last.start():
+                    yield _SPAN.match(text, prefix.start(), last.end())
+        return
+    if validator is None and "key" not in rx.groupindex:
         yield from rx.finditer(text)
         return
     pos = 0
     while (match := rx.search(text, pos)) is not None:
-        if validator(match.group(0)):
+        if validator is None or validator(match.group(0)):
             yield match
-        pos = match.start() + 1
+        pos = match.end("key") if "key" in rx.groupindex else match.start() + 1
 
 
 def _spans(text, key):
@@ -107,9 +124,9 @@ def _spans(text, key):
     found = {
         category: sorted(
             (match.start(), match.end(), rank, _token(category, name))
-            for rank, (rule_category, name, rx, validator) in enumerate(rules)
+            for rank, (rule_category, name, rx, validator, end_rx) in enumerate(rules)
             if rule_category == category
-            for match in _kept(rx, validator, text)
+            for match in _kept(rx, validator, text, end_rx)
             if raw(match)
         )
         for category in ("secret", "pii")
@@ -159,7 +176,18 @@ def secret_hits(text, rules_path=None):
     raw = _raw(text, key)
     return [
         name
-        for category, name, rx, validator in _rules(key)
+        for category, name, rx, validator, end_rx in _rules(key)
         if category == "secret"
-        and any(raw(match) for match in _kept(rx, validator, text))
+        and any(raw(match) for match in _kept(rx, validator, text, end_rx))
     ]
+
+
+def data(value):
+    """Redact string values at structured persistence exits without rewriting field names."""
+    if isinstance(value, str):
+        return redact(value)
+    if isinstance(value, dict):
+        return {key: data(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [data(item) for item in value]
+    return value
