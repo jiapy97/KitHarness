@@ -137,9 +137,15 @@ configure unless you want to change the pace.
 | Variable | Default | What it does |
 |---|---|---|
 | `AUTOHARNESS_REFLECT_EVERY_N` | `50` | Reflection cadence, counted in **tool calls**, not turns: every main-session tool call advances a counter, and the turn that pushes it past N ends with a background reflection. A working stretch triggers; a conversation that only talks never does. Lower = learns faster and spawns more child sessions. |
-| `AUTOHARNESS_CONSOLIDATE_EVERY_N` | `250` | Same quantum for the curator, the periodic pass that merges the library as a whole. Held well above the reflection cadence — consolidation is rarer than distillation. |
+| `AUTOHARNESS_CONSOLIDATE_EVERY_N` | `250` | Curator cadence in **main-session tool calls**, accumulated across sessions in one project. Stop launches at most one pass when the threshold is crossed and preserves the remainder. `0` disables it; negative values fall back to the default. |
 | `AUTOHARNESS_DIGEST_EXCHANGES` | `20` | How many exchanges *before* the episode window are compressed into the reflector's prior-context digest (text + tool names only). Unused by the fork carrier, which replays the real conversation instead. |
 | `AUTOHARNESS_CARRIER` | `bundle` | What carries the reflection. `bundle` hands a redacted window + digest to a fresh subagent. `fork` resumes and forks the session that just ended, so the reflector reads the real conversation on the parent's warm cache. Stays `bundle` until the cache-hit measurement is in. |
+
+Chat-only turns do not advance either learning cadence. When both are due, Stop requests
+consolidation first and keeps reflection activity for a later Stop or SessionEnd. Background
+execution remains subject to the [runtime limits](docs/runtime-controls.md); a launch request
+is not proof that a model job completed. Existing request counters remain in turns for lifecycle
+aging; they are not converted into historical tool activity.
 
 **Recall — what the model sees**
 
@@ -156,9 +162,9 @@ configure unless you want to change the pace.
 |---|---|---|
 | `AUTOHARNESS_MATURITY_PROJECT` | `100` | Probation gate, project layer: after this many requests have arrived in its layer since a skill landed, it faces graduation review. Until then it's recalled as usual but can't be archived. |
 | `AUTOHARNESS_MATURITY_GLOBAL` | `300` | Same gate for the global layer — higher because a global skill loads in every project. |
-| `AUTOHARNESS_CAPACITY_PROJECT` | `50` | Cap on *mature* skills in the project layer. For graduates, capacity contention is the only death: nothing is archived until the mature pool exceeds this, then the lowest usage rates go first. It does not bound the session-start index: probation members are indexed too and are outside this cap, so the index is a function of the creation rate rather than of the two caps. |
+| `AUTOHARNESS_CAPACITY_PROJECT` | `50` | Cap on mature skills surviving graduation review, including viewed-only skills and those spared by suspended review. Lowest use/request rates go first; views do not raise that rate. Probation remains outside the cap, so this does not bound the full session-start index. |
 | `AUTOHARNESS_CAPACITY_GLOBAL` | `20` | Same cap for the global layer — smaller because its blast radius is every project. |
-| `AUTOHARNESS_GRADUATION_SUSPENDED` | `0` | Set to `1` to park graduation review entirely, so nothing is archived for going unused. Meant for when you have reason to doubt the recall surface: archiving on zero use would then be punishing skills for never having been offered. Capacity contention still applies. |
+| `AUTOHARNESS_GRADUATION_SUSPENDED` | `0` | Set to `1` to suspend graduation review when recall is unreliable. Mature zero-use skills still join capacity contention and can be archived under pressure. |
 | `AUTOHARNESS_SNAPSHOT_KEEP` | `5` | How many pre-run snapshots of each skill tree the curator keeps before merging. A merge is the one operation a single atomic rename can't undo. |
 
 **Notify — hearing about it as it happens**

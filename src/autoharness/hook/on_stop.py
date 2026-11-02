@@ -7,6 +7,8 @@ verdict and resetting once reflect_every_n is reached. Cadence is deliberately c
 (threshold errs sparse — precipitation is maintenance, not realtime; SessionEnd flush catches
 the tail). Recursion guard: a reflector child session's Stop must neither re-trigger reflection
 nor reset, otherwise infinite self-reflection. Bad/missing session-id -> no trigger (fail-safe).
+When the dispatcher has launched consolidation, defer keeps due reflection activity
+intact for a later Stop or the existing SessionEnd tail flush.
 """
 import os
 
@@ -14,7 +16,7 @@ from autoharness import config
 from autoharness.lib import counters
 
 
-def on_stop(event, *, root=None, n=None):
+def on_stop(event, *, root=None, n=None, defer=False):
     if os.environ.get(config.CHILD_SESSION_ENV):
         return {"triggered": False, "reason": "recursion_guard"}
     session_id = event.get("session_id")
@@ -26,6 +28,9 @@ def on_stop(event, *, root=None, n=None):
     except ValueError:
         return {"triggered": False, "reason": "bad_session"}
     if count >= n:
+        if defer:
+            return {"triggered": False, "session_id": session_id, "count": count, "n": n,
+                    "reason": "consolidation_priority"}
         counters.reset_session(session_id, root)
         return {"triggered": True, "session_id": session_id, "window_n": n, "count": count}
     return {"triggered": False, "session_id": session_id, "count": count, "n": n}

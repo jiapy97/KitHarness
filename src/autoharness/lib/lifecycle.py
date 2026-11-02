@@ -3,10 +3,11 @@
 mng.md: the survival criterion is **call rate** (call count / layer requests since creation), not
 wall-clock. Probation protects the new (denominator below the maturity threshold = live but not
 evicted, not counted against the cap). Graduation review sits exactly at the probation boundary:
-a mature symbol with zero calls is archived and never enters the pool — a full probation with no
-use is genuine dormancy now that the numerator counts the Read path. Graduates (calls ≥ 1) die
-only by capacity contention: when the mature pool exceeds the cap, archive the lowest by ascending
-rate. The decision only reads cumulative watermarks (sidecar calls + anchor, layer request count),
+a mature symbol with no use AND no view is archived, unless review is suspended.
+Every mature symbol spared by review enters capacity contention, including viewed-only symbols
+and zero-use symbols under suspended review. Only use feeds the rate; views never inflate it.
+When this pool exceeds the cap, archive the lowest by ascending rate.
+The decision only reads cumulative watermarks (sidecar use/view + anchor, layer request count),
 so any repo's SessionStart reaches the same conclusion. on_session_start takes this list and runs
 skill_store.archive on each.
 
@@ -35,7 +36,7 @@ def evaluate(members, request_count, *, maturity, capacity, review_suspended=Fal
             # recall surface is known-broken (archiving for zero use would bury surfacing's failure).
             if not review_suspended and m.get("view", 0) == 0:
                 archive.add(m["name"])
-            continue  # spared zero-use symbols stay out of the pool either way
+                continue
         survivors.append((_rate(use, denom), m["name"]))
     if len(survivors) > capacity:
         survivors.sort(

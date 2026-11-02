@@ -1,14 +1,16 @@
-"""Session counter (CAP trigger: +1 per Stop, reset at N) + per-layer request counter (MNG denominator: +1 per turn).
+"""Tool activity counters (reflection per session, consolidation per project) and
+per-layer request counters (MNG denominator: +1 per main-session Stop).
 
 Single implementation, per-layer; O(1) read-modify-write, persisted immediately (each hook is a
 separate short-lived process, nothing survives in memory). The numerator (call count) belongs to
 sidecar (travels with the symbol across layers), not here. Session counts live in the repo-layer
 state area (cap.md: session-scoped, written to this repo's .claude, not into live skills).
 
-ponytail: the global request counter under concurrent multi-repo writes is still unprotected; the
-counter for one root is now serialized through lib.lock, which is the seam for that case too.
+All read-modify-write increments use cross-process locks. The consolidation
+watermark is separate from reflection resets and survives session cleanup.
 """
 import re
+from contextlib import contextmanager
 
 from autoharness.lib import atomic, layer, lock
 
@@ -37,6 +39,37 @@ def request_count(lyr, root=None):
 
 def bump_request(lyr, root=None):
     return _bump(layer.state_dir(lyr, root) / "requests")
+
+
+def activity_count(root=None):
+    return _read_int(layer.state_dir(layer.PROJECT, root) / "tool-calls")
+
+
+def bump_activity(root=None):
+    return _bump(layer.state_dir(layer.PROJECT, root) / "tool-calls")
+
+
+@contextmanager
+def consolidation_tick(n, root=None):
+    """Reserve due activity while launching; only consume it after a normal exit.
+
+    A heavy turn consumes all crossed periods in one launch, retaining the
+    remainder. No modulo equality test, launch bursts or duplicate concurrent
+    claims. A synchronous launch exception leaves the watermark unchanged.
+    """
+    if n <= 0:
+        yield None
+        return
+    marker = layer.state_dir(layer.PROJECT, root) / "curator-watermark"
+    with lock.file_lock(marker.with_suffix(".lock")):
+        count = activity_count(root)
+        previous = _read_int(marker)
+        if count - previous < n:
+            yield None
+            return
+        watermark = previous + ((count - previous) // n) * n
+        yield {"count": count, "watermark": watermark}
+        atomic.write_text(marker, str(watermark))
 
 
 def _session_path(session_id, root=None):

@@ -31,7 +31,7 @@ def _int_env(name, default, minimum=None):
 # Recalibrated with the numerator: the old turn-based 10 lands near 30-50 tool calls, and the standing
 # ruling is to err sparse (precipitation is maintenance, and SessionEnd flushes the tail).
 REFLECT_EVERY_N = _int_env("AUTOHARNESS_REFLECT_EVERY_N", 50, minimum=1)  # the window itself is watermark-delimited (capture)
-CONSOLIDATE_EVERY_N = _int_env("AUTOHARNESS_CONSOLIDATE_EVERY_N", 250)  # ponytail: placeholder, calibrate in experiments/; curator (content-level merge) beat, same quantum as REFLECT_EVERY_N and held sparser than it
+CONSOLIDATE_EVERY_N = _int_env("AUTOHARNESS_CONSOLIDATE_EVERY_N", 250, minimum=0)  # project-wide tool calls; 0 disables consolidation
 
 # raw-capture byte caps (ponytail: placeholders, calibrate in experiments/): per transcript record,
 # and per handoff window (tail kept) — bound tool dumps / base64 away from the child context.

@@ -7,13 +7,14 @@ platform contract pins the details:
 - `Stop` = once per turn (S6) → on Stop, +1 each to both layers' request counters (the MNG-rate
   denominator), then run CAP triggering; `SubagentStop` (reflector done, S4) is not routed, not counted.
 - `PreToolUse`: `Skill` → MNG numerator instrumentation (identity in `tool_input`, S5); `Read` into a
-  managed symbol directory → same numerator (the dominant consumption path, E8), except reflector
+  managed symbol directory → view counter (not use), except reflector
   reads (library comparison, not use); reflector `agent_type` (carried in the S3 payload) on
   `Write`/`Edit` → deny (plugin top-level backstop — a plugin agent does not honor its own hooks, S1).
 - Triggering reflection starts in a detached background job (host-detach: do not block the host Stop);
   the spawn CLI entry connects to the promoter.
 
-ponytail: detached launch is a fire-and-forget Popen; robustness of orphan / timeout isolation left for observation.
+Main-session tools also advance the project consolidation counter. Stop judges both
+cadences; consolidation takes priority without resetting a deferred reflection.
 """
 import hashlib
 import json
@@ -48,7 +49,7 @@ from autoharness.hook import (  # noqa: E402
     on_stop,
     promoter,
 )
-from autoharness.lib import counters, layer  # noqa: E402
+from autoharness.lib import counters, layer, redact  # noqa: E402
 
 _SANITIZE = re.compile(r"[^A-Za-z0-9_-]")
 _WRITE_TOOLS = ("Write", "Edit", "MultiEdit", "NotebookEdit")
@@ -72,12 +73,12 @@ def _run_id(result):
     return f"{sid}-{result.get('count', 0)}-{uuid.uuid4().hex}"
 
 
-def _curate_run_id(event, pcount):
+def _curate_run_id(event, count):
     raw = str(event.get("session_id") or "")
     sid = _SANITIZE.sub("", raw)
     if not sid:
         sid = hashlib.sha256(raw.encode()).hexdigest()[:8] if raw else "run"
-    return f"{sid}-c{pcount}"  # keyed on the monotonic request count → unique per curator launch
+    return f"{sid}-c{count}-{uuid.uuid4().hex}"
 
 
 def _is_reflector(event):
@@ -115,6 +116,23 @@ def _consolidate_launch(run_id, roots):
     )
 
 
+def _maybe_consolidate(event, roots, launch):
+    launched = False
+    try:
+        with counters.consolidation_tick(config.CONSOLIDATE_EVERY_N, roots.get(layer.PROJECT)) as tick:
+            if tick is None:
+                return {"triggered": False}
+            run_id = _curate_run_id(event, tick["count"])
+            outcome = launch(run_id, roots)
+            if isinstance(outcome, dict) and outcome.get("error"):
+                raise RuntimeError(outcome["error"])
+            launched = True
+        return {"triggered": True, "run_id": run_id, "tool_calls": tick["count"],
+                "watermark": tick["watermark"]}
+    except Exception as exc:
+        return {"triggered": launched, "error": redact.redact(f"{type(exc).__name__}: {exc}")}
+
+
 def dispatch(event, *, roots=None, reflect=None, consolidate=None):
     if not isinstance(event, dict):
         return {"ignored": True, "reason": "non-object hook input"}
@@ -131,19 +149,19 @@ def dispatch(event, *, roots=None, reflect=None, consolidate=None):
                 return {"handled": name, "result": {"triggered": False, "reason": "recursion_guard"}}
             if not config.DISABLE_GLOBAL:
                 counters.bump_request(layer.GLOBAL, roots.get(layer.GLOBAL))  # MNG denominator (per turn)
-            pcount = counters.bump_request(layer.PROJECT, proot)
+            counters.bump_request(layer.PROJECT, proot)
             drain_error = None
             try:
                 promoter.drain(config.INTERACTIVE_RUN_ID, roots=roots)  # /learn and other in-session proposals; no-op when empty
             except Exception as exc:  # the queue stays for the next Stop; this turn still counts and reflects
                 drain_error = f"{type(exc).__name__}: {exc}"
-            result = on_stop.on_stop(event, root=proot)
+            consolidation = _maybe_consolidate(event, roots, curate)
+            result = on_stop.on_stop(event, root=proot, defer=consolidation["triggered"])
+            result["consolidation"] = consolidation
             if drain_error:
                 result = {**result, "drain_error": drain_error}
             if result.get("triggered"):
                 fire(event, result, roots)
-            if config.CONSOLIDATE_EVERY_N and pcount % config.CONSOLIDATE_EVERY_N == 0:
-                curate(_curate_run_id(event, pcount), roots)  # periodic content-level merge pass (rarer than reflection)
             return {"handled": name, "result": result}
         if name == "SessionEnd":
             result = on_session_end.on_session_end(event, root=proot)
@@ -162,6 +180,7 @@ def dispatch(event, *, roots=None, reflect=None, consolidate=None):
                 if isinstance(sid, str) and sid:
                     try:
                         counters.bump_session(sid, proot)
+                        counters.bump_activity(proot)
                     except ValueError:
                         pass  # unsafe session id: skip counting, never crash the host hook
             if tool == "Skill":

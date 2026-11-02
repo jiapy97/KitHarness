@@ -26,8 +26,8 @@ def test_curate_run_id_empty_session_gets_hash():
     """Same hash fallback for _curate_run_id."""
     r1 = dispatch._curate_run_id({"session_id": "..."}, 10)
     r2 = dispatch._curate_run_id({"session_id": "???"}, 10)
-    assert r1 != r2
-    assert r1.endswith("-c10")
+    assert "-c10-" in r1 and "-c10-" in r2
+    assert r1.split("-c10-")[0] != r2.split("-c10-")[0]
 
 
 def test_detached_launch_oserror_returns_error():

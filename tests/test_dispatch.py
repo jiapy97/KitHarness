@@ -116,7 +116,9 @@ def test_real_onstop_triggers_at_cadence(tmp_path):
 
 
 def test_curate_run_id_sanitized_and_unique_per_count():
-    assert dispatch._curate_run_id({"session_id": "abc/1"}, 5) == "abc1-c5"
+    first = dispatch._curate_run_id({"session_id": "abc/1"}, 5)
+    assert first.startswith("abc1-c5-")
+    assert first != dispatch._curate_run_id({"session_id": "abc/1"}, 5)
 
 
 def test_curator_fires_at_consolidate_cadence(tmp_path, monkeypatch):
@@ -124,10 +126,11 @@ def test_curator_fires_at_consolidate_cadence(tmp_path, monkeypatch):
     roots = _roots(tmp_path)
     fired = []
     for _ in range(3):
+        dispatch.dispatch({"hook_event_name": "PreToolUse", "session_id": "s1", "tool_name": "Bash"}, roots=roots)
         dispatch.dispatch({"hook_event_name": "Stop", "session_id": "s1", "transcript_path": "/t.jsonl"},
                           roots=roots, reflect=lambda *a: None,
                           consolidate=lambda run_id, r: fired.append(run_id))
-    assert fired == ["s1-c3"]  # once, on the turn the request counter hits a multiple of N
+    assert len(fired) == 1 and fired[0].startswith("s1-c3-")
 
 
 def test_curator_not_fired_off_cadence(tmp_path, monkeypatch):
@@ -135,6 +138,7 @@ def test_curator_not_fired_off_cadence(tmp_path, monkeypatch):
     roots = _roots(tmp_path)
     fired = []
     for _ in range(2):
+        dispatch.dispatch({"hook_event_name": "PreToolUse", "session_id": "s1", "tool_name": "Bash"}, roots=roots)
         dispatch.dispatch({"hook_event_name": "Stop", "session_id": "s1"},
                           roots=roots, reflect=lambda *a: None,
                           consolidate=lambda run_id, r: fired.append(run_id))
